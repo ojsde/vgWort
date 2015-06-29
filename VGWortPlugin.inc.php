@@ -143,10 +143,10 @@ class VGWortPlugin extends GenericPlugin {
 	 * Display VG Wort management link in editor home.
 	 */
 	function displayEditorHomeLinks($hookName, $params) {
-		$smarty = $params[1];
-		$output = $params[2];
+		$smarty =& $params[1];
+		$output =& $params[2];
 		$templateMgr = TemplateManager::getManager();
-		$output .= '<h3>' . $templateMgr->smartyTranslate(array('key'=>'plugins.generic.vgWort.editor.vgWort'), $smarty) . '</h3><ul class="plain"><li>&#187; <a href="' . $templateMgr->smartyUrl(array('op'=>'pixelTags'), $smarty) . '">' . $templateMgr->smartyTranslate(array('key'=>'plugins.generic.vgWort.editor.pixelTags'), $smarty) . '</a></li></ul>';
+		$output .= '<h3>' . __('plugins.generic.vgWort.editor.vgWort') . '</h3><ul class="plain"><li>&#187; <a href="' . $templateMgr->smartyUrl(array('op'=>'pixelTags'), $smarty) . '">' . __('plugins.generic.vgWort.editor.pixelTags') . '</a></li></ul>';
 		return false;
 	}
 
@@ -154,10 +154,10 @@ class VGWortPlugin extends GenericPlugin {
 	 * Enable editor pixel tags management.
 	 */
 	function setupEditorHandler($hookName, $params) {
-		$page = $params[0];
+		$page =& $params[0];
 
 		if ($page == 'editor') {
-			$op = $params[1];
+			$op =& $params[1];
 
 			if ($op) {
 				$editorPages = array(
@@ -176,7 +176,7 @@ class VGWortPlugin extends GenericPlugin {
 					define('HANDLER_CLASS', 'VGWortEditorHandler');
 					define('VGWORT_PLUGIN_NAME', $this->getName());
 					AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON, LOCALE_COMPONENT_PKP_USER, LOCALE_COMPONENT_OJS_EDITOR));
-					$handlerFile = $params[2];
+					$handlerFile =& $params[2];
 					$handlerFile = $this->getHandlerPath() . 'VGWortEditorHandler.inc.php';
 				}
 			}
@@ -191,8 +191,8 @@ class VGWortPlugin extends GenericPlugin {
 	 * Insert VG Wort field cardNo into author submission step 3 and metadata edit form
 	 */
 	function metadataFieldEdit($hookName, $params) {
-		$smarty = $params[1];
-		$output = $params[2];
+		$smarty =& $params[1];
+		$output =& $params[2];
 		$output .= $smarty->fetch($this->getTemplatePath() . 'cardNoEdit.tpl');
 		return false;
 	}
@@ -201,8 +201,8 @@ class VGWortPlugin extends GenericPlugin {
 	 * Add VG Wort field cardNo to the metadata view
 	 */
 	function metadataFieldView($hookName, $params) {
-		$smarty = $params[1];
-		$output = $params[2];
+		$smarty =& $params[1];
+		$output =& $params[2];
 		$output .= $smarty->fetch($this->getTemplatePath() . 'cardNoView.tpl');
 		return false;
 	}
@@ -211,8 +211,8 @@ class VGWortPlugin extends GenericPlugin {
 	 * Init VG Wort field cardNo
 	 */
 	function metadataInitData($hookName, $params) {
-		$form = $params[0];
-		$article = $form->article;
+		$form =& $params[0];
+		$article =& $form->article;
 
 		$formAuthors = $form->getData('authors');
 		$articleAuthors = $article->getAuthors();
@@ -227,8 +227,8 @@ class VGWortPlugin extends GenericPlugin {
 	 * Set authors' cardNo
 	 */
 	function metadataExecute($hookName, $params) {
-		$author = $params[0];
-		$formAuthor = $params[1];
+		$author =& $params[0];
+		$formAuthor =& $params[1];
 
 		$author->setData('cardNo', $formAuthor['cardNo']);
 		return false;
@@ -238,7 +238,7 @@ class VGWortPlugin extends GenericPlugin {
 	 * Add the validation check for the cardNo field (2-7 numbers and if one exists then all should exist)
 	 */
 	function addCheck($hookName, $params) {
-		$form = $params[0];
+		$form =& $params[0];
 		if (get_class($form) == 'AuthorSubmitStep3Form' || get_class($form) == 'MetadataForm' ) {
 			$form->addCheck(new FormValidatorArrayCustom($form, 'authors', 'required', 'plugins.generic.vgWort.cardNoValid', create_function('$cardNo, $regExp', 'return empty($cardNo) ? true : String::regexp_match($regExp, $cardNo);'), array('/^\d{2,7}$/'), false, array('cardNo')));
 		}
@@ -249,7 +249,7 @@ class VGWortPlugin extends GenericPlugin {
 	 * Add cardNo element to the article author
 	 */
 	function authorSubmitGetFieldNames($hookName, $params) {
-		$fields = $params[1];
+		$fields =& $params[1];
 		$fields[] = 'cardNo';
 		return false;
 	}
@@ -258,8 +258,8 @@ class VGWortPlugin extends GenericPlugin {
 	 * Handle article and submission summary view template display.
 	 */
 	function handleTemplateDisplay($hookName, $params) {
-		$smarty = $params[0];
-		$template = $params[1];
+		$smarty =& $params[0];
+		$template =& $params[1];
 
 		switch ($template) {
 			case 'article/article.tpl':
@@ -279,8 +279,8 @@ class VGWortPlugin extends GenericPlugin {
 	 * Enable editors to assign a VG Wort pixel tag to an article in the submission summary view.
 	 */
 	function assignPixelTag($hookName, $args) {
-		$smarty = $args[0];
-		$params = $args[1];
+		$smarty =& $args[0];
+		$params =& $args[1];
 		if (!isset($params['smarty_include_tpl_file'])) return false;
 		switch ($params['smarty_include_tpl_file']) {
 			case 'submission/metadata/metadata.tpl':
