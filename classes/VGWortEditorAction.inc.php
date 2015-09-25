@@ -1,14 +1,14 @@
 <?php
 
 /**
- * @file plugins/generic/vgWort/classes/VGWortEditorAction.inc.php
+ * @file classes/VGWortEditorAction.inc.php
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: June 19, 2015
+ * Last update: September 25, 2015
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
+ * @package plugins.generic.vgWort
  * @class VGWortEditorAction
- * @ingroup plugins_generic_vgWort
  *
  * @brief VGWortEditorAction class.
  */

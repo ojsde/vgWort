@@ -1,14 +1,15 @@
 <?php
 
 /**
- * @file plugins/generic/vgWort/classes/PixelTagDAO.inc.php
+ * @file classes/PixelTagDAO.inc.php
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: February 04, 2014
+ * Last update: September 25, 2015
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
+ * @package plugins.generic.vgWort
  * @class PixelTagDAO
- * @ingroup plugins_generic_vgWort
+ *
  * @see PixelTag
  *
  * @brief Operations for retrieving and modifying PixelTag objects.

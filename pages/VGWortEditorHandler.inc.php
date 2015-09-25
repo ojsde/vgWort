@@ -1,14 +1,14 @@
  <?php
 
 /**
- * @file plugins/generic/vgWort/pages/VGWortEditorHandler.inc.php
+ * @file pages/VGWortEditorHandler.inc.php
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: June 19, 2015
+ * Last update: September 25, 2015
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
+ * @package plugins.generic.vgWort
  * @class VGWortEditorHandler
- * @ingroup plugins_generic_vgWort
  *
  * @brief Handle requests for editor VG Wort functions.
  */

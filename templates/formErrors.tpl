@@ -1,8 +1,8 @@
 {**
- * @file plugins/generic/vgWort/templates/formErrors.tpl
+ * @file templates/formErrors.tpl
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: July 19, 2011  
+ * Last update: September 25, 2015
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List errors that occurred during VG Wort form processing.

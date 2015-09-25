@@ -1,14 +1,14 @@
 <?php
 
 /**
- * @file plugins/generic/vgWort/classes/form/PixelTagForm.inc.php
+ * @file classes/form/PixelTagForm.inc.php
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: February 06, 2014
+ * Last update: September 25, 2015
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
+ * @package plugins.generic.vgWort
  * @class PixelTagForm
- * @ingroup plugins_generic_vgwort
  *
  * @brief Form for creation and inserting of a migrated and already registered pixel tag
  */

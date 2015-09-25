@@ -1,8 +1,8 @@
 {**
- * plugins/generic/vgWort/templates/cardNoView.tpl
+ * templates/cardNoView.tpl
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: July 13, 2011  
+ * Last update: September 25, 2015
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * VG Wort cardNo view

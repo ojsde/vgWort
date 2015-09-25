@@ -1,8 +1,8 @@
 {**
- * plugins/generic/vgWort/templates/pixelTagForm.tpl
+ * templates/pixelTagForm.tpl
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: February 06, 2014
+ * Last update: September 25, 2015
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Pixel tag

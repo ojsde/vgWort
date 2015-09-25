@@ -1,8 +1,8 @@
 {**
- * @file plugins/generic/vgWort/templates/pixelTagsAvailable.tpl
+ * @file templates/pixelTagsAvailable.tpl
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: February 04, 2014
+ * Last update: September 25, 2015
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Display list of availabe/free pixel tags for editor management.

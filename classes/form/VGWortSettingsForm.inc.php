@@ -1,14 +1,14 @@
 <?php
 
 /**
- * @file plugins/generic/vgWort/VGWortSettingsForm.inc.php
+ * @file classes/form/VGWortSettingsForm.inc.php
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: July 19, 2011
+ * Last update: September 25, 2015
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
+ * @package plugins.generic.vgWort
  * @class VGWortSettingsForm
- * @ingroup plugins_generic_vgwort
  *
  * @brief Form for journal managers to setup VG Wort plugin
  */
