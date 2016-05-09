@@ -2,7 +2,7 @@
  * @file templates/pixelTagsRegistered.tpl
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: September 25, 2015
+ * Last update: May 10, 2016
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Display list of registered pixel tags.
@@ -16,8 +16,8 @@
 <br />
 <br />
 
-{assign var=colspan value="5"}
-{assign var=colspanPage value="2"}
+{assign var=colspan value="6"}
+{assign var=colspanPage value="3"}
 <div id="pixelTags">
 <table width="100%" class="listing">
 	<tr>
@@ -25,10 +25,11 @@
 	</tr>
 	<tr class="heading" valign="bottom">
 		<td width="25%">{translate key="plugins.generic.vgWort.pixelTag.privateCode"}</td>
-		<td width="20%">{translate key="article.authors"}</td>
+		<td width="10%">{translate key="article.authors"}</td>
+		<td width="10%">{translate key="plugins.generic.vgWort.pixelTag.translators"}</td>
 		<td width="30%">{translate key="article.title"}</td>
 		<td width="10%">{translate key="plugins.generic.vgWort.pixelTag.date_registered"}</td>
-		<td width="15%" align="right">{translate key="common.status"}</td>
+		<td width="15%" align="right">{translate key="common.status"} / {translate key="common.action"}</td>
 	</tr>
 	<tr>
 		<td colspan="{$colspan}" class="headseparator">&nbsp;</td>
@@ -36,12 +37,23 @@
 
 {iterate from=pixelTags item=pixelTag}
 {assign var=article value=$pixelTag->getArticle()}
+	{assign var=translators value=""}
+	{foreach name=vgWortTranslators from=$article->getData('vgWortTranslators') key=vgWortTranslatorIndex item=vgWortTranslator}
+		{if $vgWortTranslatorIndex != 0}
+			{assign var=translators value="`$translators`, "}
+		{/if}
+		{assign var=translators value="`$translators``$vgWortTranslator.lastName`"}
+	{/foreach}
 	<tr valign="top">
 		<td>{$pixelTag->getPrivateCode()|escape}</td>
 		<td>{$article->getAuthorString(true)|truncate:40:"..."|escape}</td>
+		<td>{$translators|truncate:40:"..."|escape|default:"&mdash;"}</td>
 		<td><a href="{url op="submission" path=$pixelTag->getArticleId()}" class="action">{$article->getLocalizedTitle()|strip_unsafe_html|truncate:40:"..."}</a></td>
 		<td>{$pixelTag->getDateRegistered()|date_format:$dateFormatShort}</td>
-		<td align="right">{if $pixelTag->getDateRemoved()}{translate key="plugins.generic.vgWort.pixelTag.removed"}{else}{translate key="plugins.generic.vgWort.pixelTag.active"}{/if}</td>
+		<td align="right">
+			{if $pixelTag->getDateRemoved()}{translate key="plugins.generic.vgWort.pixelTag.removed"}{else}{translate key="plugins.generic.vgWort.pixelTag.active"}{/if}
+			<a href="{url op="pixelTags" path="registered" action=remove pixelTagId=$pixelTag->getId()}" onclick="return confirm('{translate|escape:"jsparam" key="plugins.generic.vgWort.confirmRemove"}')" class="action">{translate key="plugins.generic.vgWort.editor.remove"}</a>
+		</td>
 	</tr>
 	<tr>
 		<td colspan="{$colspan}" class="{if $pixelTags->eof()}end{/if}separator">&nbsp;</td>

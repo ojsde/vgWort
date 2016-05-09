@@ -6,7 +6,7 @@
   *
   * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
   * Author: Marco Tullney, Technische Informationsbibliothek und Universitätsbibliothek Hannover (TIB/UB)
-  * Last update: September 25, 2015
+  * Last update: May 10, 2016
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * VG Wort plugin localization strings for the en_US (U.S. English) locale.
@@ -44,12 +44,16 @@
 	<message key="plugins.generic.vgWort.manager.settings.vgWortAPI.description">(Please use the VG Wort test system, if you would like just to test the plugin)</message>
 
 	<!-- author metadata -->
-	<message key="plugins.generic.vgWort.cardNo">VG Wort CardNo</message>
-	<message key="plugins.generic.vgWort.cardNo.description">(Your VG Wort card number)</message>
-	<message key="plugins.generic.vgWort.cardNoValid">Please enter a valid cardNo (2-7 numbers).</message>
-	<message key="plugins.generic.vgWort.cardNoRequired">The VG Wort card number is required for all authors that should take part in the payout of royalties.</message>
+	<message key="plugins.generic.vgWort.cardNo">VG Wort card number</message>
+	<message key="plugins.generic.vgWort.cardNoValid">Please enter a valid VG Wort card number (2-7 numbers).</message>
+	<!-- translators metadata -->
+	<message key="plugins.generic.vgWort.translators">VG Wort Translators</message>
+	<message key="plugins.generic.vgWort.translatorsDescription">If this article will be registered by VG Wort, all translators have to be entered here before the registration.</message>
+	<message key="plugins.generic.vgWort.addTranslator">Add Translator</message>
+	<message key="plugins.generic.vgWort.adelTranslator">Delete Translator</message>
+	<message key="plugins.generic.vgWort.translatorsRequiredData">The first name, last name, and email address of each VG Wort translator is required.</message>
 	<!-- summary view -->
-	<message key="plugins.generic.vgWort.assignDescription"><![CDATA[<strong>Be aware:</strong> Once assigned, a pixel tag can not be unassigned any more!<br />Ensure that the VG Wort card number exists for all authors that should take part in the payout of royalties, select the appropriate text type and press the button to assign a pixel tag to the article.]]></message>
+	<message key="plugins.generic.vgWort.assignDescription"><![CDATA[<strong>Be aware:</strong> Once assigned, a pixel tag can not be unassigned any more!<br />Ensure that all authors and translators are entered, select the appropriate text type and press the button to assign a pixel tag to the article.<br />It is recommended to enter VG Wort card number for all authors and translators.]]></message>
 	<message key="plugins.generic.vgWort.textType">Text type</message>
 	<message key="plugins.generic.vgWort.textType.description">(The article text has to contain more than 1800 characters.)</message>
 	<message key="plugins.generic.vgWort.changeTextType">Change to</message>
@@ -98,8 +102,9 @@
 	<message key="plugins.generic.vgWort.pixelTag.date_registered">Registered</message>
 	<message key="plugins.generic.vgWort.pixelTag.date_assigned">Assigned</message>
 	<message key="plugins.generic.vgWort.pixelTag.articleId">Article ID</message>
-	<message key="plugins.generic.vgWort.pixelTag.articleId.note"><![CDATA[<strong>Note:</strong> Please don't forget to insert the VG Wort card numbers for authors.]]></message>	
+	<message key="plugins.generic.vgWort.pixelTag.articleId.note"><![CDATA[<strong>Note:</strong> Please don't forget to insert all authors and translators, as well as their VG Wort card numbers (if available).]]></message>
 	<message key="plugins.generic.vgWort.pixelTag.date_removed">Removed</message>
+	<message key="plugins.generic.vgWort.pixelTag.translators">Translators</message>
 	
 	<!-- order -->
 	<message key="plugins.generic.vgWort.editor.pixelTagCount">Count of pixel tags (max. 100)</message>
@@ -109,6 +114,8 @@
 	<message key="plugins.generic.vgWort.editor.manuallyInsert">Insert registered pixel tag</message>	
 	<!-- register -->
 	<message key="plugins.generic.vgWort.editor.register">Register</message>
+	<message key="plugins.generic.vgWort.editor.remove">Remove</message>
+	<message key="plugins.generic.vgWort.confirmRemove">This action will unregister the text in OJS. The registration in VG Wort portal will not be affected! Are you sure you want to remove this registration?</message>
 	<!-- statistics -->
 	<message key="plugins.generic.vgWort.editor.statistics">Statistics</message>
 	<message key="plugins.generic.vgWort.month">Month</message>
@@ -122,7 +129,6 @@
 
 	<message key="plugins.generic.vgWort.errorsOccurred">Errors occurred</message>
 
-	<message key="plugins.generic.vgWort.assign.errorCode1">The VG Wort card number is required for all authors that should take part in the payout of royalties.</message>
 	<message key="plugins.generic.vgWort.assign.errorCode2">No available pixel tags. A notification email is sent to the responsible editors. Please try later.</message>
 	<message key="plugins.generic.vgWort.noWSDL">The WSDL not found at {$wsdl}. The VG Wort server could currently not be available. Please try later.</message>
 	<message key="plugins.generic.vgWort.401">Invalid VG Wort username or password defined in the plugin settings.</message>
@@ -134,7 +140,7 @@
 	<message key="plugins.generic.vgWort.order.errorCode100">A technical problem occurred. Please try later again.</message>
 	<message key="plugins.generic.vgWort.order.count">The count should be a number from 1 to 100.</message>
 
-	<message key="plugins.generic.vgWort.check.notValid">The author {$surName} has not a valid VG Wort card number.</message>
+	<message key="plugins.generic.vgWort.check.notValid">The author or translator {$surName} has not a valid VG Wort card number.</message>
 	<message key="plugins.generic.vgWort.check.errorCode100">A technical problem occurred. Please try later again.</message>
 	<message key="plugins.generic.vgWort.check.galleyRequired">PDF or HTML galley is required.</message>
 	<message key="plugins.generic.vgWort.check.articleNotPublished">The article has not been published.</message>

@@ -4,7 +4,7 @@
  * @file classes/VGWortEditorAction.inc.php
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: September 25, 2015
+ * Last update: May 10, 2016
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.vgWort
@@ -64,15 +64,15 @@ class VGWortEditorAction {
 			}
 			// catch and throw an exception if the VG Wort server is down
 			if(!@file_get_contents($vgWortAPI)) {
-        		throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl'=>$vgWortAPI)));
+				throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl' => $vgWortAPI)));
     		}
     		// catch and throw an exception if the authentication or the authorization error occurs
     		if(!@fopen(str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI), 'r')) {
 				$httpString = explode(" ", $http_response_header[0]);
-        		throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
+				throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
     		}
-			$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword, 'exceptions'=>true, 'trace'=>1, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS));
-			$result = $client->orderPixel(array("count"=>$count));
+			$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword, 'exceptions' => true, 'trace' => 1, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS));
+			$result = $client->orderPixel(array("count" => $count));
 			return array(true, $result);
 		}
 		catch (SoapFault $soapFault) {
@@ -81,7 +81,7 @@ class VGWortEditorAction {
 			}
 			$detail = $soapFault->detail;
 			$function = $detail->orderPixelFault;
-			return array(false, __('plugins.generic.vgWort.order.errorCode'.$function->errorcode, array('maxOrder'=>$function->maxOrder)));
+			return array(false, __('plugins.generic.vgWort.order.errorCode'.$function->errorcode, array('maxOrder' => $function->maxOrder)));
 		}
 	}
 
@@ -133,13 +133,11 @@ class VGWortEditorAction {
 				if (empty($filteredGalleys)) {
 					return array(false, __('plugins.generic.vgWort.check.galleyRequired'));
 				} else {
-					// There is at least one vg wort card number and
-					// all existing vg wort card numbers are valid
-					$cardNoExists = false;
+					// All existing vg wort card numbers have to be valid
+					// For authors
 					foreach ($publishedArticle->getAuthors() as $author) {
 						$cardNo = $author->getData('cardNo');
 						if (!empty($cardNo)) {
-							$cardNoExists = true;
 							// is the card number valid?
 							$checkAuthorResult = $this->checkAuthor($pixelTag->getJournalId(), $cardNo, $author->getLastName());
 							if (!$checkAuthorResult[0]) {
@@ -147,8 +145,19 @@ class VGWortEditorAction {
 							}
 						}
 					}
-					if (!$cardNoExists) {
-						 return array(false, __('plugins.generic.vgWort.cardNoRequired'));
+					// For translators
+					$vgWortTranslators = $publishedArticle->getData('vgWortTranslators');
+					if ($vgWortTranslators) {
+						foreach ($vgWortTranslators as $vgWortTranslator) {
+							$cardNo = $vgWortTranslator['cardNo'];
+							if (!empty($cardNo)) {
+								// is the card number valid?
+								$checkAuthorResult = $this->checkAuthor($pixelTag->getJournalId(), $cardNo, $vgWortTranslator['lastName']);
+								if (!$checkAuthorResult[0]) {
+									return array(false, $checkAuthorResult[1]);
+								}
+							}
+						}
 					}
 				}
 			}
@@ -179,16 +188,16 @@ class VGWortEditorAction {
 			}
 			// catch and throw an exception if the VG Wort server is down
 			if(!@file_get_contents($vgWortAPI)) {
-        		throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl'=>$vgWortAPI)));
+				throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl' => $vgWortAPI)));
     		}
     		// catch and throw an exception if the authentication or the authorization error occurs
 			if(!@fopen(str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI), 'r')) {
 				$httpString = explode(" ", $http_response_header[0]);
-        		throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
+				throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
     		}
     		$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
-			$result = $client->checkAuthor(array("cardNumber"=>$cardNo, "surName"=>$surName));
-			return array($result->valid, __('plugins.generic.vgWort.check.notValid', array('surName'=>$surName)));
+			$result = $client->checkAuthor(array("cardNumber" => $cardNo, "surName" => $surName));
+			return array($result->valid, __('plugins.generic.vgWort.check.notValid', array('surName' => $surName)));
 		}
 		catch (SoapFault $soapFault) {
 			if($soapFault->faultcode == 'noWSDL' || $soapFault->faultcode == 'httpError') {
@@ -224,28 +233,44 @@ class VGWortEditorAction {
 		$publishedArticle = & $publishedArticleDao->getPublishedArticleByArticleId($pixelTag->getArticleId());
 
 		// get authors information: vg wort card number, first (max. 40 characters) and last name
-		$authors = array('author'=>array());
+		$authors = array('author' => array());
 		foreach ($publishedArticle->getAuthors() as $author) {
 			$cardNo = $author->getData('cardNo');
 			if (!empty($cardNo)) {
-				$authors['author'][] = array('cardNumber'=>$author->getData('cardNo'), 'firstName'=>substr($author->getFirstName(), 0, 39), 'surName'=>$author->getLastName());
+				$authors['author'][] = array('cardNumber' => $author->getData('cardNo'), 'firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
+			} else {
+				$authors['author'][] = array('firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
 			}
 		}
-		$parties = array('authors'=>$authors);
+		$parties = array('authors' => $authors);
+		// get translators information: vg wort card number, first (max. 40 characters) and last name
+		$vgWortTranslators = $publishedArticle->getData('vgWortTranslators');
+		if ($vgWortTranslators) {
+			$translators = array('translator' => array());
+			foreach ($vgWortTranslators as $vgWortTranslator) {
+				$cardNo = $vgWortTranslator['cardNo'];
+				if (!empty($cardNo)) {
+					$translators['translator'][] = array('cardNumber' => $vgWortTranslator['cardNo'], 'firstName' => substr($vgWortTranslator['firstName'], 0, 39), 'surName' => $vgWortTranslator['lastName']);
+				} else {
+					$translators['translator'][] = array('firstName' => substr($vgWortTranslator['firstName'], 0, 39), 'surName' => $vgWortTranslator['lastName']);
+				}
+			}
+			$parties['translators'] = $translators;
+		}
 
 		// get all galleys
 		$galleys =& $publishedArticle->getGalleys();
 		// filter HTML und PDF galleys -- VG Wort concerns only HTML und PDF formats
 		$filteredGalleys = array_filter($galleys, array($this, 'filterGalleys'));
 		// construct the VG Wort webranges for all HTML and PDF galleys
-		$webranges = array('webrange'=>array());
+		$webranges = array('webrange' => array());
 		foreach ($filteredGalleys as $filteredGalley) {
 			$url = $request->url($request->getRequestedContextPath(), 'article', 'view', array($publishedArticle->getBestArticleId($journal), $filteredGalley->getBestGalleyId($journal)));
-			$webrange = array('url'=>array($url));
+			$webrange = array('url' => array($url));
 			$webranges['webrange'][] = $webrange;
 			if ($filteredGalley->isPdfGalley()) {
 				$downlaodUrl = $request->url($request->getRequestedContextPath(), 'article', 'download', array($publishedArticle->getBestArticleId($journal), $filteredGalley->getBestGalleyId($journal)));
-				$webrange = array('url'=>array($downlaodUrl));
+				$webrange = array('url' => array($downlaodUrl));
 				$webranges['webrange'][] = $webrange;
 			}
 		}
@@ -270,9 +295,9 @@ class VGWortEditorAction {
 		$articleFileManager = new ArticleFileManager($pixelTag->getArticleId());
 		$content =& $articleFileManager->readFile($galley->getFileId());
 		if ($galley->isHTMLGalley()) {
-			$text = array('plainText'=>strip_tags($content));
+			$text = array('plainText' => strip_tags($content));
 		} else { // PDF
-			$text = array('pdf'=>$content);
+			$text = array('pdf' => $content);
 		}
 
 		// get the title (max. 100 characters):
@@ -287,7 +312,7 @@ class VGWortEditorAction {
 		$isLyric = ($pixelTag->getTextType() == TYPE_LYRIC);
 
 		// create a VG Wort message
-		$message = array('lyric'=>$isLyric, 'shorttext'=>$shortText, 'text'=>$text);
+		$message = array('lyric' => $isLyric, 'shorttext' => $shortText, 'text' => $text);
 
 		$vgWortUserId = $vgWortPlugin->getSetting($pixelTag->getJournalId(), 'vgWortUserId');
 		$vgWortUserPassword = $vgWortPlugin->getSetting($pixelTag->getJournalId(), 'vgWortUserPassword');
@@ -303,15 +328,15 @@ class VGWortEditorAction {
 			}
 			// catch and throw an exception if the VG Wort server is down
 			if(!@file_get_contents($vgWortAPI)) {
-        		throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl'=>$vgWortAPI)));
+				throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl' => $vgWortAPI)));
     		}
     		// catch and throw an exception if the authentication or the authorization error occurs
     		if(!@fopen(str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI), 'r')) {
 				$httpString = explode(" ", $http_response_header[0]);
-        		throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
+				throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
     		}
     		$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
-    		$result = $client->newMessage(array("parties"=>$parties, "privateidentificationid"=>$pixelTag->getPrivateCode(), "messagetext"=>$message, "webranges"=>$webranges));
+			$result = $client->newMessage(array("parties" => $parties, "privateidentificationid" => $pixelTag->getPrivateCode(), "messagetext" => $message, "webranges" => $webranges));
 			return array($result->status == 'OK', '');
 		}
 		catch (SoapFault $soapFault) {
@@ -320,7 +345,7 @@ class VGWortEditorAction {
 			}
 			$detail = $soapFault->detail;
 			$function = $detail->newMessageFault;
-			return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode, array('cardNumber'=>$function->cardNumber, 'surName'=>$function->surName)));
+			return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode, array('cardNumber' => $function->cardNumber, 'surName' => $function->surName)));
 		}
 	}
 
@@ -335,30 +360,34 @@ class VGWortEditorAction {
 		$email->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 		$email->addCc($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 		$article =& $pixelTag->getArticle();
-		$authorNames = '';
-		$index = 1;
 		foreach ($article->getAuthors() as $author) {
-			$cardNo = $author->getData('cardNo');
-			if (!empty($cardNo)) {
-				$email->addRecipient($author->getEmail(), $author->getFullName());
-				if ($index == 1) {
-				    $authorNames = $author->getFullName();
-				} else {
-				    $authorNames .= ', ' .$author->getFullName();
-				}
-				$index++;
-			}
-			unset($author);
+			$email->addRecipient($author->getEmail(), $author->getFullName());
+			$emailParamArray = array(
+					'authorName' => $author->getFullName(),
+					'privateCode' => $pixelTag->getPrivateCode(),
+					'articleTitle' => $article->getLocalizedTitle(),
+					'journalName' => $journal->getLocalizedTitle(),
+					'editorialContactSignature' => $journal->getSetting('contactName') . "\n" . $journal->getLocalizedTitle()
+			);
+			$email->assignParams($emailParamArray);
+			$email->send();
 		}
-		$emailParamArray = array(
-			'authorName' => $authorNames,
-			'privateCode' => $pixelTag->getPrivateCode(),
-			'articleTitle' => $article->getLocalizedTitle(),
-			'journalName' => $journal->getLocalizedTitle(),
-			'editorialContactSignature' => $journal->getSetting('contactName') . "\n" . $journal->getLocalizedTitle()
-		);
-		$email->assignParams($emailParamArray);
-		$email->send();
+		$vgWortTranslators = $article->getData('vgWortTranslators');
+		if ($vgWortTranslators) {
+			foreach ($vgWortTranslators as $vgWortTranslator) {
+				$vgWortTranslatorName = $vgWortTranslator['firstName'] . ' ' . ($vgWortTranslator['middleName'] != '' ? $vgWortTranslator['middleName'] . ' ' : '') . $vgWortTranslator['lastName'];
+				$email->addRecipient($vgWortTranslator['email'], $vgWortTranslatorName);
+				$emailParamArray = array(
+						'authorName' => $vgWortTranslatorName,
+						'privateCode' => $pixelTag->getPrivateCode(),
+						'articleTitle' => $article->getLocalizedTitle(),
+						'journalName' => $journal->getLocalizedTitle(),
+						'editorialContactSignature' => $journal->getSetting('contactName') . "\n" . $journal->getLocalizedTitle()
+				);
+				$email->assignParams($emailParamArray);
+				$email->send();
+			}
+		}
 	}
 
 	/**
@@ -382,12 +411,12 @@ class VGWortEditorAction {
 			}
 			// catch and throw an exception if the VG Wort server is down
 			if(!@file_get_contents($vgWortAPI)) {
-        		throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl'=>$vgWortAPI)));
+				throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl' => $vgWortAPI)));
     		}
     		// catch and throw an exception if the authentication or the authorization error occurs
     		if(!@fopen(str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI), 'r')) {
 				$httpString = explode(" ", $http_response_header[0]);
-        		throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
+				throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
     		}
     		$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
 			$result = $client->qualityControl();

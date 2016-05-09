@@ -6,7 +6,7 @@
   *
   * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
   * Author: Marco Tullney, Technische Informationsbibliothek und Universitätsbibliothek Hannover (TIB/UB)
-  * Last update: September 25, 2015
+  * Last update: May 10, 2016
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * VG WORT email template localized default text.
@@ -33,9 +33,9 @@ Thank you,
 
 The pixel tag with the private code "{$privateCode}" is assigned to your publication "{$articleTitle}" in {$journalName} and registered at VG Wort.
 
-If the prerequisite for the payment of royalties for this electronic publication is reached, the authors will be notified by VG Wort. 
+If the prerequisite for the payment of royalties for this electronic publication is reached, the involved parties will be notified by VG Wort.
 
 {$editorialContactSignature}</body>
-		<description>This is an automatically generated email that is sent to an author after the registration of the pixel tag assigned to the publication.</description>
+		<description>This is an automatically generated email that is sent to authors and translators after the registration of the pixel tag assigned to the publication.</description>
 	</email_text>
 </email_texts>

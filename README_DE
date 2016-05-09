@@ -3,7 +3,7 @@
 === Version: 1.5
 === Author: Božana Bokan <bozana.bokan@fu-berlin.de>
     Center für Digitale Systeme (CeDiS), Freie Universität Berlin
-=== Last update: 25. September 2015 
+=== Last update: 10. Mai 2016
 ================================
 
 Über
@@ -28,7 +28,9 @@ Installation
 Um das Plug-In zu installieren:
  - kopieren Sie die Plug-In-Datei tar.gz in Ihr Verzeichnis OJS/plugins/generic
  - entpacken Sie das Plug-In in Ihr Verzeichnis plugins/generic:
-    $ tar xvzf vgWort-1.5.tar.gz 
+    $ tar xvzf vgWort-1.6.tar.gz
+    oder
+    $ unzip vgWort-1.6.zip
  - aus Ihrem OJS-Verzeichnis führen Sie aus:
     $ php tools/upgrade.php upgrade
  - schalten Sie das Plug-In ein, indem Sie zu Startseite > Benutzer/in > Zeitschriftenverwaltung > Verwaltung der Plug-Ins > Generische Plug-Ins gehen und "Einschalten" unter "VG Wort" wählen
@@ -45,3 +47,4 @@ Version History
 1.3 - Insert already registered pixel tags
 1.4 - Very important fix - use VG Wort live instead of test server
 1.5 - VG Wort test system in plugin settings, 
+1.6 - Wichtige Fehlerbehebung: alle Autor/innen und Übersetzer/innen müssen bei der VG Wort registriert werden. Außerdem: die Möglichkeit, die Übersetzer/innen in OJS einzutragen und eine Registrierung zu löschen.

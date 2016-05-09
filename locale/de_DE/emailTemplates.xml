@@ -6,7 +6,7 @@
   *
   * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
   * Author: Marco Tullney, Technische Informationsbibliothek und Universitätsbibliothek Hannover (TIB/UB)
-  * Last update: September 25, 2015
+  * Last update: May 10, 2016
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * VG WORT email template localized default text.
@@ -33,10 +33,10 @@ Vielen Dank,
 
 das Zählpixel mit dem privaten Code „{$privateCode}“ ist Ihrer Veröffentlichung „{$articleTitle}“ in {$journalName} zugewiesen und bei der VG Wort registriert worden.
 
-Wenn die Voraussetzungen für die Auszahlung von Vergütungen für diese elektronische Veröffentlichung erreicht werden, werden die Autor/innen von der VG Wort benachrichtigt werden. 
+Wenn die Voraussetzungen für die Auszahlung von Vergütungen für diese elektronische Veröffentlichung erreicht werden, werden die Beteiligten von der VG Wort benachrichtigt.
 
 Mit freundlichen Grüßen
 {$editorialContactSignature}</body>
-		<description>Dies ist eine automatisch erzeugte E-Mail, die an eine/n Autor/in nach der Registrierung der seiner/ihrer Publikation zugeordneten Zählpixel geschickt wird.</description>
+		<description>Dies ist eine automatisch erzeugte E-Mail, die an Autor/innen und Übersetzer/innen nach der Registrierung der ihrer Publikation zugeordneten Zählpixel geschickt wird.</description>
 	</email_text>
 </email_texts>

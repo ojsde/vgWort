@@ -4,7 +4,7 @@
  * @file pages/VGWortEditorHandler.inc.php
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: September 25, 2015
+ * Last update: May 10, 2016
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.vgWort
@@ -105,6 +105,17 @@ class VGWortEditorHandler extends Handler {
 				$template = 'pixelTagsUnregistered.tpl';
 				break;
 			case 'registered':
+				$action = (string) $request->getUserVar('action');
+				if ($action == 'remove') {
+					$pixelTagId = (int) $request->getUserVar('pixelTagId');
+					$pixelTag = & $pixelTagDao->getPixelTag($pixelTagId, $journalId);
+					// the pixel tag exists and it is registered
+					if (isset($pixelTag) && $pixelTag->getStatus() == PT_STATUS_REGISTERED) {
+						$pixelTag->setDateRegistered(NULL);
+						$pixelTag->setStatus(PT_STATUS_UNREGISTERED);
+						$pixelTagDao->updateObject($pixelTag);
+					}
+				}
 				$status = PT_STATUS_REGISTERED;
 				$sortBy = 'date_registered';
 				$sortDirection = SORT_DIRECTION_DESC;
@@ -267,17 +278,6 @@ class VGWortEditorHandler extends Handler {
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$article =& $articleDao->getArticle($articleId, $journalId, true);
 		if (isset($article)) {
-			// check if there is a card number
-			$cardNoExists = false;
-			foreach ($article->getAuthors() as $author) {
-				$cardNo = $author->getData('cardNo');
-				if (!empty($cardNo)) {
-					$cardNoExists = true;
-				}
-			}
-			if (!$cardNoExists) {
-				$request->redirect(null, null, 'submission', array($articleId), array('errorCode'=>1), 'vgWort');
-			}
 			// assign
 			$vgWortPlugin =& PluginRegistry::getPlugin('generic', VGWORT_PLUGIN_NAME);
 			$vgWortPlugin->import('classes.VGWortEditorAction');
