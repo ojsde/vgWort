@@ -52,6 +52,7 @@
 	<message key="plugins.generic.vgWort.addTranslator">Add Translator</message>
 	<message key="plugins.generic.vgWort.adelTranslator">Delete Translator</message>
 	<message key="plugins.generic.vgWort.translatorsRequiredData">The first name, last name, and email address of each VG Wort translator is required.</message>
+	<message key="plugins.generic.vgWort.translatorEmailNoValid">Please enter a valid email address for each VG Wort translator.</message>
 	<!-- summary view -->
 	<message key="plugins.generic.vgWort.assignDescription"><![CDATA[<strong>Be aware:</strong> Once assigned, a pixel tag can not be unassigned any more!<br />Ensure that all authors and translators are entered, select the appropriate text type and press the button to assign a pixel tag to the article.<br />It is recommended to enter VG Wort card number for all authors and translators.]]></message>
 	<message key="plugins.generic.vgWort.textType">Text type</message>

@@ -52,6 +52,7 @@
 	<message key="plugins.generic.vgWort.addTranslator">Übersetzer/in hinzufügen</message>
 	<message key="plugins.generic.vgWort.adelTranslator">Übersetzer/in löschen</message>
 	<message key="plugins.generic.vgWort.translatorsRequiredData">Vorname, Name und E-Mail-Adresse für jede/n Übersetzer/in erforderlich.</message>
+	<message key="plugins.generic.vgWort.translatorEmailNoValid">Bitte geben Sie eine gültige E-Mail-Adresse für jede/n Übersetzer/in an.</message>
 	<!-- summary view -->
 	<message key="plugins.generic.vgWort.assignDescription"><![CDATA[<strong>Bitte beachten Sie:</strong> Sobald ein Zählpixel zugewiesen worden ist, kann die Zuweisung nicht mehr aufgehoben werden!<br />Stellen Sie sicher, dass alle Autor/innen und Übersetzer/innen eingegeben sind, wählen Sie den entsprechenden Texttyp aus, und drücken Sie den Knopf, um ein Zählpixel dem Artikel zuzuweisen.<br />Es ist zu empfehlen, VG-Wort-Karteinummer für alle Autor/innen und Übersetzer/innen in den Artikelmetadaten einzugeben.]]></message>
 	<message key="plugins.generic.vgWort.textType">Texttyp</message>

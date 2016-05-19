@@ -314,6 +314,10 @@ class VGWortPlugin extends GenericPlugin {
 		$vgWortTranslators = $form->getData('vgWortTranslators');
 		if (!empty($vgWortTranslators)) {
 			$article->setData('vgWortTranslators', $form->getData('vgWortTranslators'));
+		} else {
+			if (!empty($article->getData('vgWortTranslators'))) {
+				$article->setData('vgWortTranslators', array());
+			}
 		}
 		return false;
 	}
@@ -328,12 +332,9 @@ class VGWortPlugin extends GenericPlugin {
 			$form->addCheck(new FormValidatorArrayCustom($form, 'authors', 'required', 'plugins.generic.vgWort.cardNoValid', create_function('$cardNo, $regExp', 'return empty($cardNo) ? true : String::regexp_match($regExp, $cardNo);'), array('/^\d{2,7}$/'), false, array('cardNo')));
 			// if it is the editors metadata form consider translators
 			if (get_class($form) == 'MetadataForm') {
-				$vgWortTranslators = $form->getData('vgWortTranslators');
-				if (!empty($vgWortTranslators)) {
-					$form->addCheck(new FormValidatorArray($form, 'vgWortTranslators', 'required', 'plugins.generic.vgWort.translatorsRequiredData', array('firstName', 'lastName')));
-					$form->addCheck(new FormValidatorArrayCustom($form, 'vgWortTranslators', 'required', 'plugins.generic.vgWort.translatorsRequiredData', create_function('$email, $regExp', 'return String::regexp_match($regExp, $email);'), array(ValidatorEmail::getRegexp()), false, array('email')));
-					$form->addCheck(new FormValidatorArrayCustom($form, 'vgWortTranslators', 'required', 'plugins.generic.vgWort.cardNoValid', create_function('$cardNo, $regExp', 'return empty($cardNo) ? true : String::regexp_match($regExp, $cardNo);'), array('/^\d{2,7}$/'), false, array('cardNo')));
-				}
+				$form->addCheck(new FormValidatorCustom($form, 'vgWortTranslators', 'required', 'plugins.generic.vgWort.translatorsRequiredData', create_function('$vgWortTranslators', 'if (isset($vgWortTranslators) && is_array($vgWortTranslators)) { foreach ($vgWortTranslators as $vgWortTranslator) { if ( empty($vgWortTranslator[\'firstName\']) || empty($vgWortTranslator[\'lastName\']) || empty($vgWortTranslator[\'email\']) ) return false; } } return true;'), array()));
+				$form->addCheck(new FormValidatorArrayCustom($form, 'vgWortTranslators', 'optional', 'plugins.generic.vgWort.translatorEmailNoValid', create_function('$email, $regExp', 'return empty($email) ? true : String::regexp_match($regExp, $email);'), array(ValidatorEmail::getRegexp()), false, array('email')));
+				$form->addCheck(new FormValidatorArrayCustom($form, 'vgWortTranslators', 'optional', 'plugins.generic.vgWort.cardNoValid', create_function('$cardNo, $regExp', 'return empty($cardNo) ? true : String::regexp_match($regExp, $cardNo);'), array('/^\d{2,7}$/'), false, array('cardNo')));
 			}
 		}
 		return false;

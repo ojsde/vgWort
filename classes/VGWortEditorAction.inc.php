@@ -147,7 +147,7 @@ class VGWortEditorAction {
 					}
 					// For translators
 					$vgWortTranslators = $publishedArticle->getData('vgWortTranslators');
-					if ($vgWortTranslators) {
+					if ($vgWortTranslators && !empty($vgWortTranslators)) {
 						foreach ($vgWortTranslators as $vgWortTranslator) {
 							$cardNo = $vgWortTranslator['cardNo'];
 							if (!empty($cardNo)) {
@@ -245,7 +245,7 @@ class VGWortEditorAction {
 		$parties = array('authors' => $authors);
 		// get translators information: vg wort card number, first (max. 40 characters) and last name
 		$vgWortTranslators = $publishedArticle->getData('vgWortTranslators');
-		if ($vgWortTranslators) {
+		if ($vgWortTranslators && !empty($vgWortTranslators)) {
 			$translators = array('translator' => array());
 			foreach ($vgWortTranslators as $vgWortTranslator) {
 				$cardNo = $vgWortTranslator['cardNo'];
@@ -375,7 +375,7 @@ class VGWortEditorAction {
 			$email->send();
 		}
 		$vgWortTranslators = $article->getData('vgWortTranslators');
-		if ($vgWortTranslators) {
+		if ($vgWortTranslators && !empty($vgWortTranslators)) {
 			foreach ($vgWortTranslators as $vgWortTranslator) {
 				$vgWortTranslatorName = $vgWortTranslator['firstName'] . ' ' . ($vgWortTranslator['middleName'] != '' ? $vgWortTranslator['middleName'] . ' ' : '') . $vgWortTranslator['lastName'];
 				$email->addRecipient($vgWortTranslator['email'], $vgWortTranslatorName);
