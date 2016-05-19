@@ -302,9 +302,11 @@ class VGWortEditorAction {
 
 		// get the title (max. 100 characters):
 		// if there is no German title, then try English, else in the primary language
+		$articleLocale = $publishedArticle->getLocale();
 		$primaryLocale = AppLocale::getPrimaryLocale();
 		$title = $publishedArticle->getTitle('de_DE');
 		if (!isset($title) || $title == '') $title = $publishedArticle->getTitle('en_US');
+		if (!isset($title) || $title == '') $title = $publishedArticle->getTitle($articleLocale);
 		if (!isset($title) || $title == '') $title = $publishedArticle->getTitle($primaryLocale);
 		$shortText = substr($title, 0, 99);
 
