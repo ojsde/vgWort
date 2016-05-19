@@ -315,7 +315,9 @@ class VGWortPlugin extends GenericPlugin {
 		if (!empty($vgWortTranslators)) {
 			$article->setData('vgWortTranslators', $form->getData('vgWortTranslators'));
 		} else {
-			if (!empty($article->getData('vgWortTranslators'))) {
+			// if there were some translators
+			$articleVGWortTranslators = $article->getData('vgWortTranslators');
+			if ($articleVGWortTranslators && !empty($articleVGWortTranslators)) {
 				$article->setData('vgWortTranslators', array());
 			}
 		}
