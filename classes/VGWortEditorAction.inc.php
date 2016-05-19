@@ -363,16 +363,19 @@ class VGWortEditorAction {
 		$email->addCc($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 		$article =& $pixelTag->getArticle();
 		foreach ($article->getAuthors() as $author) {
-			$email->addRecipient($author->getEmail(), $author->getFullName());
-			$emailParamArray = array(
-					'authorName' => $author->getFullName(),
-					'privateCode' => $pixelTag->getPrivateCode(),
-					'articleTitle' => $article->getLocalizedTitle(),
-					'journalName' => $journal->getLocalizedTitle(),
-					'editorialContactSignature' => $journal->getSetting('contactName') . "\n" . $journal->getLocalizedTitle()
-			);
-			$email->assignParams($emailParamArray);
-			$email->send();
+			$cardNo = $author->getData('cardNo');
+			if ($cardNo && !empty($cardNo)) {
+				$email->addRecipient($author->getEmail(), $author->getFullName());
+				$emailParamArray = array(
+						'authorName' => $author->getFullName(),
+						'privateCode' => $pixelTag->getPrivateCode(),
+						'articleTitle' => $article->getLocalizedTitle(),
+						'journalName' => $journal->getLocalizedTitle(),
+						'editorialContactSignature' => $journal->getSetting('contactName') . "\n" . $journal->getLocalizedTitle()
+				);
+				$email->assignParams($emailParamArray);
+				$email->send();
+			}
 		}
 		$vgWortTranslators = $article->getData('vgWortTranslators');
 		if ($vgWortTranslators && !empty($vgWortTranslators)) {
