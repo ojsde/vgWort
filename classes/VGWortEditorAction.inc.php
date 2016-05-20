@@ -347,7 +347,10 @@ class VGWortEditorAction {
 			}
 			$detail = $soapFault->detail;
 			$function = $detail->newMessageFault;
-			return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode, array('cardNumber' => $function->cardNumber, 'surName' => $function->surName)));
+			if ($function->errorcode == 4) {
+				return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode, array('cardNumber' => $function->cardNumber, 'surName' => $function->surName)));
+			}
+			return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode));
 		}
 	}
 
