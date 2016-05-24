@@ -361,13 +361,13 @@ class VGWortEditorAction {
 	 */
 	function notifyAuthors(&$journal, &$pixelTag) {
 		import('classes.mail.MailTemplate');
-		$email = new MailTemplate('VGWORT_REGISTER_NOTIFY');
-		$email->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
-		$email->addCc($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 		$article =& $pixelTag->getArticle();
 		foreach ($article->getAuthors() as $author) {
 			$cardNo = $author->getData('cardNo');
 			if ($cardNo && !empty($cardNo)) {
+				$email = new MailTemplate('VGWORT_REGISTER_NOTIFY');
+				$email->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
+				$email->addCc($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 				$email->addRecipient($author->getEmail(), $author->getFullName());
 				$emailParamArray = array(
 						'authorName' => $author->getFullName(),
@@ -384,6 +384,9 @@ class VGWortEditorAction {
 		if ($vgWortTranslators && !empty($vgWortTranslators)) {
 			foreach ($vgWortTranslators as $vgWortTranslator) {
 				$vgWortTranslatorName = $vgWortTranslator['firstName'] . ' ' . ($vgWortTranslator['middleName'] != '' ? $vgWortTranslator['middleName'] . ' ' : '') . $vgWortTranslator['lastName'];
+				$email = new MailTemplate('VGWORT_REGISTER_NOTIFY');
+				$email->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
+				$email->addCc($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 				$email->addRecipient($vgWortTranslator['email'], $vgWortTranslatorName);
 				$emailParamArray = array(
 						'authorName' => $vgWortTranslatorName,
