@@ -3,7 +3,7 @@
 === Version: 1.5
 === Author: Božana Bokan <bozana.bokan@fu-berlin.de>
     Center for Digital Systems (CeDiS), Freie Universität Berlin
-=== Last update: May 10, 2016
+=== Last update: January 12, 2017
 ================================
 
 About
@@ -22,6 +22,7 @@ System Requirements
 -------------------
 Same requirements as the OJS 2.4.8 core.
 Additionally PHP 5 >= 5.0.1, PHP Soap, and PHP OpenSSL extension modules.
+Also, either CURL module or "allow_url_fopen = On" (in php.ini) has to exist.
 
 Installation
 ------------
