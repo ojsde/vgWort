@@ -4,7 +4,7 @@
  * @file VGWortPlugin.inc.php
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: May 10, 2016
+ * Last update: January 13, 2017
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.vgWort
@@ -103,7 +103,9 @@ class VGWortPlugin extends GenericPlugin {
 		$isPHPVersion = checkPhpVersion('5.0.1');
 		$isSoapExtension = in_array('soap', get_loaded_extensions());
 		$isOpenSSL = in_array('openssl', get_loaded_extensions());
-		return $isPHPVersion && $isSoapExtension && $isOpenSSL;
+		$isCURL = function_exists('curl_init');
+		$allowURLFopen = ini_get('allow_url_fopen');
+		return $isPHPVersion && $isSoapExtension && $isOpenSSL && ($isCURL || $allowURLFopen);
 	}
 
 	/**

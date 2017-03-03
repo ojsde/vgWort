@@ -4,7 +4,7 @@
  * @file classes/VGWortEditorAction.inc.php
  *
  * Author: Božana Bokan, Center for Digital Systems (CeDiS), Freie Universität Berlin
- * Last update: May 10, 2016
+ * Last update: January 13, 2017
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.vgWort
@@ -60,17 +60,12 @@ class VGWortEditorAction {
 		try {
 			// check if the system requirements are fulfilled
 			if (!$vgWortPlugin->requirementsFulfilled()) {
-        		return array(false, __('plugins.generic.vgWort.requirementsRequired'));
+				return array(false, __('plugins.generic.vgWort.requirementsRequired'));
 			}
-			// catch and throw an exception if the VG Wort server is down
-			if(!@file_get_contents($vgWortAPI)) {
-				throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl' => $vgWortAPI)));
-    		}
-    		// catch and throw an exception if the authentication or the authorization error occurs
-    		if(!@fopen(str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI), 'r')) {
-				$httpString = explode(" ", $http_response_header[0]);
-				throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
-    		}
+
+			// check web service: availability and credentials
+			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);
+
 			$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword, 'exceptions' => true, 'trace' => 1, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS));
 			$result = $client->orderPixel(array("count" => $count));
 			return array(true, $result);
@@ -184,17 +179,12 @@ class VGWortEditorAction {
 		try {
 			// check if the system requirements are fulfilled
 			if (!$vgWortPlugin->requirementsFulfilled()) {
-        		return array(false, __('plugins.generic.vgWort.requirementsRequired'));
+				return array(false, __('plugins.generic.vgWort.requirementsRequired'));
 			}
-			// catch and throw an exception if the VG Wort server is down
-			if(!@file_get_contents($vgWortAPI)) {
-				throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl' => $vgWortAPI)));
-    		}
-    		// catch and throw an exception if the authentication or the authorization error occurs
-			if(!@fopen(str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI), 'r')) {
-				$httpString = explode(" ", $http_response_header[0]);
-				throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
-    		}
+
+			// check web service: availability and credentials
+			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);
+
     		$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
 			$result = $client->checkAuthor(array("cardNumber" => $cardNo, "surName" => $surName));
 			return array($result->valid, __('plugins.generic.vgWort.check.notValid', array('surName' => $surName)));
@@ -326,17 +316,12 @@ class VGWortEditorAction {
 		try {
 			// check if the system requirements are fulfilled
 			if (!$vgWortPlugin->requirementsFulfilled()) {
-        		return array(false, __('plugins.generic.vgWort.requirementsRequired'));
+				return array(false, __('plugins.generic.vgWort.requirementsRequired'));
 			}
-			// catch and throw an exception if the VG Wort server is down
-			if(!@file_get_contents($vgWortAPI)) {
-				throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl' => $vgWortAPI)));
-    		}
-    		// catch and throw an exception if the authentication or the authorization error occurs
-    		if(!@fopen(str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI), 'r')) {
-				$httpString = explode(" ", $http_response_header[0]);
-				throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
-    		}
+
+			// check web service: availability and credentials
+			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);
+
     		$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
 			$result = $client->newMessage(array("parties" => $parties, "privateidentificationid" => $pixelTag->getPrivateCode(), "messagetext" => $message, "webranges" => $webranges));
 			return array($result->status == 'OK', '');
@@ -418,18 +403,13 @@ class VGWortEditorAction {
 		try {
 			// check if the system requirements are fulfilled
 			if (!$vgWortPlugin->requirementsFulfilled()) {
-        		return array(false, __('plugins.generic.vgWort.requirementsRequired'));
+				return array(false, __('plugins.generic.vgWort.requirementsRequired'));
 			}
-			// catch and throw an exception if the VG Wort server is down
-			if(!@file_get_contents($vgWortAPI)) {
-				throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl' => $vgWortAPI)));
-    		}
-    		// catch and throw an exception if the authentication or the authorization error occurs
-    		if(!@fopen(str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI), 'r')) {
-				$httpString = explode(" ", $http_response_header[0]);
-				throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
-    		}
-    		$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
+
+			// check web service: availability and credentials
+			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);
+
+			$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
 			$result = $client->qualityControl();
 			return array(true, $result);
 		}
@@ -514,6 +494,50 @@ class VGWortEditorAction {
 		$email->send();
 	}
 
+	/**
+	 * Check web service availability and credentials.
+	 * @param $vgWortUserId string
+	 * @param $vgWortUserPassword string
+	 * @param $vgWortAPI string WSDL URL
+	 */
+	function _checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI) {
+		if (function_exists('curl_init')){
+			// catch and throw an exception if the VG Wort server is down i.e.
+			// the WSDL not found
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_URL, $vgWortAPI);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+			$wsdlContent = curl_exec($curl);
+			$httpStatusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+			if($httpStatusCode != 200) {
+				throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl' => $vgWortAPI)));
+			}
+			curl_close($curl);
+
+			// catch and throw an exception if the authentication or the authorization error occurs
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_URL, str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI));
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+			$wsdlContent = curl_exec($curl);
+			$httpStatusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+			if($httpStatusCode != 200) {
+				throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpStatusCode));
+			}
+			curl_close($curl);
+		} elseif (ini_get('allow_url_fopen')) {
+			// catch and throw an exception if the VG Wort server is down i.e.
+			// the WSDL not found
+			if(!@file_get_contents($vgWortAPI)) {
+				throw new SoapFault('noWSDL', __('plugins.generic.vgWort.noWSDL', array('wsdl' => $vgWortAPI)));
+			}
+
+			// catch and throw an exception if the authentication or the authorization error occurs
+			if(!@fopen(str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI), 'r')) {
+				$httpString = explode(" ", $http_response_header[0]);
+				throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpString[1]));
+			}
+		}
+	}
 }
 
 ?>
