@@ -1,4 +1,4 @@
- <?php
+<?php
 
 /**
  * @file pages/VGWortEditorHandler.inc.php
