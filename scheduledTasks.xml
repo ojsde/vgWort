@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  * plugins/generic/vgWort/scheduledTasks.xml
+  *
+  * Copyright (c) 2018 Center for Digital Systems (CeDiS), Freie Universität Berlin
+  * Distributed under the GNU GPL v2. For full terms see the file LICENSE.
+  *
+  * VG Wort Plugin automatic pixel tags registration
+  *
+  * This file describes the schedule task that will automatically register VG Wort pixel tags.
+  *
+  -->
+
+<!DOCTYPE scheduled_tasks SYSTEM "../../../lib/pkp/dtd/scheduledTasks.dtd">
+
+<scheduled_tasks>
+	<task class="plugins.generic.vgWort.VGWortInfoSender">
+		<descr>Register VG Wort pixel tags.</descr>
+		<frequency minute="0"/>
+	</task>
+</scheduled_tasks>

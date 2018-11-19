@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE schema SYSTEM "../../../../lib/pkp/dtd/xmlSchema.dtd">
+
+<!--
+  * @file plugins/generic/vgWort/xml/schema.xml
+  *
+ * Copyright (c) 2018 Center for Digital Systems (CeDiS), Freie Universität Berlin
+ * Distributed under the GNU GPL v2. For full terms see the file LICENSE.
+  *
+  * VG Wort plugin DB schema in XML.
+  *
+  -->
+
+<schema version="0.2">
+
+	<!--
+	 *
+	 * TABLE pixel_tags
+	 *
+	 -->
+	<table name="pixel_tags">
+		<field name="pixel_tag_id" type="I8">
+			<KEY/>
+			<AUTOINCREMENT/>
+		</field>
+		<field name="context_id" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="submission_id" type="I8"/>
+		<field name="private_code" type="C2" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="public_code" type="C2" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="domain" type="C2" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="date_ordered" type="T">
+			<NOTNULL/>
+		</field>
+		<field name="date_assigned" type="T"/>
+		<field name="date_registered" type="T"/>
+		<field name="date_removed" type="T"/>
+		<field name="status" type="I2">
+			<NOTNULL/>
+		</field>
+		<field name="text_type" type="I2">
+			<NOTNULL/>
+		</field>
+		<field name="message" type="X"/>
+		<index name="pixel_tags_pixel_tag_id">
+			<col>pixel_tag_id</col>
+		</index>
+	</table>
+
+</schema>
