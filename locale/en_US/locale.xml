@@ -29,7 +29,6 @@
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacy">Privacy</message>
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacyRequired">Privacy text is required.</message>
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacy.description">This privacy text will be displayed ...</message>
-	<message key="plugins.generic.vgWort.settings.vgWortPrivacy.content">VG Wort privacy text ...</message>
 	<message key="plugins.generic.vgWort.settings.vgWortTestMode">Test mode</message>
 	<message key="plugins.generic.vgWort.settings.vgWortTestMode.description">Use the VG Wort test API (testing environment). Please do not forget to remove this option for the production.</message>
 	<!-- user and author metadata -->

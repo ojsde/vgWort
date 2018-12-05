@@ -30,7 +30,39 @@
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacy">Datenschutz</message>
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacyRequired">Der Datenschutztext wird benötigt.</message>
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacy.description">Dieser Datenschutztext wird dargestellt ...</message>
-	<message key="plugins.generic.vgWort.settings.vgWortPrivacy.content">VG-Wort-Datenschutztext ...</message>
+	<message key="plugins.generic.vgWort.settings.vgWortPrivacy.content"><![CDATA[
+		<h3>Cookies und Meldungen zu Zugriffszahlen</h3>
+		<p>Wir setzen "Session-Cookies" der VG Wort, München, zur Messung von Zugriffen auf Texten ein, um
+		die Kopierwahrscheinlichkeit zu erfassen. Session-Cookies sind kleine Informationseinheiten, die ein
+		Anbieter im Arbeitsspeicher des Computers des Besuchers speichert. In einem Session-Cookie wird
+		eine zufällig erzeugte eindeutige Identifikationsnummer abgelegt, eine sogenannte Session-ID.
+		Außerdem enthält ein Cookie die Angabe über seine Herkunft und die Speicherfrist. Session-Cookies
+		können keine anderen Daten speichern. Diese Messungen werden von der INFOnline GmbH nach
+		dem Skalierbaren Zentralen Messverfahren (SZM) durchgeführt. Sie helfen dabei, die
+		Kopierwahrscheinlichkeit einzelner Texte zur Vergütung von gesetzlichen Ansprüchen von Autoren
+		und Verlagen zu ermitteln. Wir erfassen keine personenbezogenen Daten über Cookies.</p>
+		<p>Viele unserer Seiten sind mit JavaScript-Aufrufen versehen, über die wir die Zugriffe an die
+		Verwertungsgesellschaft Wort (VG Wort) melden. Wir ermöglichen damit, dass unsere Autoren an den Ausschüttungen der VG Wort
+		partizipieren, die die gesetzliche Vergütung für die Nutzungen urheberrechtlich geschützter Werke
+		gem. § 53 UrhG sicherstellen.</p>
+		<p>Eine Nutzung unserer Angebote ist auch ohne Cookies möglich. Die meisten Browser sind so
+		eingestellt, dass sie Cookies automatisch akzeptieren. Sie können das Speichern von Cookies jedoch
+		deaktivieren oder Ihren Browser so einstellen, dass er Sie benachrichtigt, sobald Cookies gesendet
+		werden.</p>
+		<h3>Datenschutzerklärung zur Nutzung des Skalierbaren Zentralen Messverfahrens</h3>
+		<p style="text-decoration: underline;">Webangebote</p>
+		<p>Unsere Website und unser mobiles Webangebot nutzen das „Skalierbare Zentrale Messverfahren“
+		(SZM) der INFOnline GmbH (http://www.infonline.de) für die Ermittlung statistischer Kennwerte zur
+		Ermittlung der Kopierwahrscheinlichkeit von Texten.</p>
+		<p>Dabei werden anonyme Messwerte erhoben. Die Zugriffszahlenmessung verwendet zur
+		Wiedererkennung von Computersystemen alternativ ein Session-Cookie oder eine Signatur, die aus
+		verschiedenen automatisch übertragenen Informationen Ihres Browsers erstellt wird. IP-Adressen
+		werden nur in anonymisierter Form verarbeitet.</p>
+		<p>Das Verfahren wurde unter der Beachtung des Datenschutzes entwickelt. Einziges Ziel des
+		Verfahrens ist es, die Kopierwahrscheinlichkeit einzelner Texte zu ermitteln.</p>
+		<p>Zu keinem Zeitpunkt werden einzelne Nutzer identifiziert. Ihre Identität bleibt immer geschützt. Sie
+		erhalten über das System keine Werbung.</p>
+	]]></message>
 	<message key="plugins.generic.vgWort.settings.vgWortTestMode">Testmodus</message>
 	<message key="plugins.generic.vgWort.settings.vgWortTestMode.description">Die VG-Wort-Test-API (Testumgebung) benutzen. Bitte vergessen Sie nicht, diese Option vor dem Produktivbetrieb abzuwählen.</message>
 	<!-- user and author metadata -->

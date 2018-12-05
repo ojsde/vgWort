@@ -51,13 +51,14 @@ class VGWortSettingsForm extends Form {
 				if (!$fieldValue) $fieldValue = '';
 			} elseif ($fieldName =='vgWortPrivacy') {
 				if (empty($fieldValue)) {
-					$defaultLocale = 'en_US';
+					$defaultLocale = 'de_DE';
 					$defaultTranslatedText = __('plugins.generic.vgWort.settings.vgWortPrivacy.content', array(), $defaultLocale);
 					$fieldValue = array($defaultLocale => $defaultTranslatedText);
 					$context = $request->getContext();
 					$supportedFormLocales = $context->getSupportedFormLocales();
 					foreach ($supportedFormLocales as $supportedFormLocale) {
 						if ($supportedFormLocale != $defaultLocale) {
+							$this->plugin->addLocaleData($supportedFormLocale);
 							$translatedText = __('plugins.generic.vgWort.settings.vgWortPrivacy.content', array(), $supportedFormLocale);
 							if (substr($translatedText, 0, 2) === '##') $translatedText = $defaultTranslatedText;
 							$fieldValue[$supportedFormLocale] = $translatedText;
