@@ -110,21 +110,15 @@ class VGWortEditorAction {
 				if (empty($supportedGalleys)) {
 					return array(false, __('plugins.generic.vgWort.check.galleyRequired'));
 				} else {
-					// check that there is at least one VG Wort card number and
-					// that all existing card numbers are valid
-					$cardNoExists = false;
+					// check that all existing card numbers are valid
 					foreach ($publishedArticle->getAuthors() as $author) {
 						$cardNo = $author->getData('vgWortCardNo');
 						if (!empty($cardNo)) {
-							$cardNoExists = true;
 							$checkAuthorResult = $this->checkAuthor($pixelTag->getContextId(), $cardNo, $author->getLastName());
 							if (!$checkAuthorResult[0]) {
 								return array(false, $checkAuthorResult[1]);
 							}
 						}
-					}
-					if (!$cardNoExists) {
-						return array(false, __('plugins.generic.vgWort.check.cardNoRequired'));
 					}
 				}
 			}

@@ -125,11 +125,12 @@
 	<message key="plugins.generic.vgWort.order.errorCode2">Die maximale Anzahl an Zählpixeln ({$maxOrder}) für dieses Jahr wurde überschritten.</message>
 	<message key="plugins.generic.vgWort.order.errorCode3">Es wurde keine E-Mail-Adresse für Ihren VG-Wort-Account angegeben. Bitte geben Sie eine E-Mail-Adresse für Ihren Account im VG-Wort-Portal ein.</message>
 	<message key="plugins.generic.vgWort.order.errorCode100">Ein technisches Problem ist aufgetreten. Bitte versuchen Sie es später noch einmal.</message>
+
 	<message key="plugins.generic.vgWort.check.notValid">Der/die Autor/in oder der/die Übersetzer/in {$surName} hat keine gültige VG-Wort-Karteinummer.</message>
 	<message key="plugins.generic.vgWort.check.errorCode100">Ein technisches Problem ist aufgetreten. Bitte versuchen Sie es später noch einmal.</message>
 	<message key="plugins.generic.vgWort.check.galleyRequired">Es wird eine PDF-, HTML- oder EPUB-Fahne benötigt, die kleiner als 15MB ist.</message>
 	<message key="plugins.generic.vgWort.check.articleNotPublished">Der Artikel ist nicht veröffentlicht.</message>
-	<message key="plugins.generic.vgWort.check.cardNoRequired">Es existiert keine VG-Wort-Karteikarte.</message>
+
 	<message key="plugins.generic.vgWort.register.errorCode1">Dieses Zählpixel gibt es nicht.</message>
 	<message key="plugins.generic.vgWort.register.errorCode2">Dieses Zählpixel gehört einem anderen Account.</message>
 	<message key="plugins.generic.vgWort.register.errorCode3">Dieses Zählpixel ist bereits gemeldet.</message>

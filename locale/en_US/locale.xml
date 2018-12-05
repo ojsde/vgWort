@@ -96,7 +96,6 @@
 	<message key="plugins.generic.vgWort.check.errorCode100">A technical problem occurred. Please try later again.</message>
 	<message key="plugins.generic.vgWort.check.galleyRequired">A full text file in PDF, HTML or EPUB format, and less than 15MB is required.</message>
 	<message key="plugins.generic.vgWort.check.articleNotPublished">The article has not been published.</message>
-	<message key="plugins.generic.vgWort.check.cardNoRequired">No VG Wort card number exists.</message>
 
 	<message key="plugins.generic.vgWort.register.errorCode1">There is no such pixel tag.</message>
 	<message key="plugins.generic.vgWort.register.errorCode2">The pixel tag belongs to somebody else.</message>
