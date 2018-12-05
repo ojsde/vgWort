@@ -109,6 +109,7 @@
 	<!-- actions -->
 	<message key="plugins.generic.vgWort.pixelTags.register">melden</message>
 	<message key="plugins.generic.vgWort.pixelTags.register.confirm">Sind Sie sicher, dass Sie dieses Zählpixel melden möchten?</message>
+	<message key="plugins.generic.vgWort.pixelTags.register.success">Meldung erfolgreich!</message>
 	<!-- notifications -->
 	<message key="plugins.generic.vgWort.notification.vgWortError">Die Meldung des VG-Wort-Zählpixels ist fehlgeschlagen.</message>
 	<message key="plugins.generic.vgWort.notification.vgWortErrorExists">Es existieren fehlgeschlagene Zählpixelmeldungen.</message>

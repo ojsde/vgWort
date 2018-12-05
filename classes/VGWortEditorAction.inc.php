@@ -164,7 +164,7 @@ class VGWortEditorAction {
 				$this->_removeNotification($pixelTag);
 				// set parameters fo rthe trivial notification for the current user
 				$notificationType = NOTIFICATION_TYPE_SUCCESS;
-				$notificationMsg = __('plugins.importexport.common.register.success');
+				$notificationMsg = __('plugins.generic.vgWort.pixelTags.register.success');
 			}
 		}
 		if ($isError) {
@@ -258,29 +258,35 @@ class VGWortEditorAction {
 		$submissionAuthors = array_filter($contributors, array($this, '_filterAuthors'));
 		// get submission translators
 		$submissionTranslators = array_filter($contributors, array($this, '_filterTranslators'));
+		// there has to be either an author or a translator
+		assert (!empty($submissionAuthors) || !empty($submissionTranslators));
 
 		// get authors information: vg wort card number, first (max. 40 characters) and last name
-		$authors = array('author' => array());
-		foreach ($submissionAuthors as $author) {
-			$cardNo = $author->getData('vgWortCardNo');
-			if (!empty($cardNo)) {
-				$authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
-			} else {
-				$authors['author'][] = array('firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
+		if (!empty($submissionAuthors)) {
+			$authors = array('author' => array());
+			foreach ($submissionAuthors as $author) {
+				$cardNo = $author->getData('vgWortCardNo');
+				if (!empty($cardNo)) {
+					$authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
+				} else {
+					$authors['author'][] = array('firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
+				}
 			}
+			$parties = array('authors' => $authors);
 		}
-		$parties = array('authors' => $authors);
 		// get translators information: vg wort card number, first (max. 40 characters) and last name
-		$translators = array('translator' => array());
-		foreach ($submissionTranslators as $translator) {
-			$cardNo = $translator->getData('vgWortCardNo');
-			if (!empty($cardNo)) {
-				$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
-			} else {
-				$translators['translator'][] = array('firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
+		if (!empty($submissionTranslators)) {
+			$translators = array('translator' => array());
+			foreach ($submissionTranslators as $translator) {
+				$cardNo = $translator->getData('vgWortCardNo');
+				if (!empty($cardNo)) {
+					$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
+				} else {
+					$translators['translator'][] = array('firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
+				}
 			}
+			$parties['translators'] = $translators;
 		}
-		$parties['translators'] = $translators;
 
 		// get supported galleys
 		$galleys = (array) $publishedArticle->getGalleys();

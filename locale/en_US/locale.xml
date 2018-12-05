@@ -75,6 +75,7 @@
 	<!-- actions -->
 	<message key="plugins.generic.vgWort.pixelTags.register">register</message>
 	<message key="plugins.generic.vgWort.pixelTags.register.confirm">Are you sure you want to register this pixel tag?</message>
+	<message key="plugins.generic.vgWort.pixelTags.register.success">Registration successful!</message>
 	<!-- notifications -->
 	<message key="plugins.generic.vgWort.notification.vgWortError">VG Wort pixel tag registration failed.</message>
 	<message key="plugins.generic.vgWort.notification.vgWortErrorExists">There are failed pixel tag registrations.</message>
