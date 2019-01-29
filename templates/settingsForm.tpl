@@ -45,12 +45,14 @@
 			{fbvElement type="text" id="daysAfterPublication" name="daysAfterPublication" label="plugins.generic.vgWort.settings.vgWortRegistration.daysAfterPublication" value=$daysAfterPublication" size=$fbvStyles.size.MEDIUM}
 		{/fbvFormSection}
 	{/fbvFormArea}
+	{*
 	{fbvFormArea id="vgWortPrivacyArea" title="plugins.generic.vgWort.settings.vgWortPrivacy" class="border"}
 		<p>{translate key="plugins.generic.vgWort.settings.vgWortPrivacy.description"}</p>
 		{fbvFormSection}
 			{fbvElement type="textarea" multilingual=true name="vgWortPrivacy" id="vgWortPrivacy" value=$vgWortPrivacy rich="extended"}
 		{/fbvFormSection}
 	{/fbvFormArea}
+	*}
 	{fbvFormArea id="vgWortTestModeArea" title="plugins.generic.vgWort.settings.vgWortTestMode" class="border"}
 		{fbvFormSection list="true"}
 			{fbvElement type="checkbox" id="vgWortTestAPI" name="vgWortTestAPI" label="plugins.generic.vgWort.settings.vgWortTestMode.description" checked=$vgWortTestAPI|compare:true}

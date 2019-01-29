@@ -26,9 +26,11 @@
 	<message key="plugins.generic.vgWort.settings.vgWortRegistration.dateInYear">Date in a year</message>
 	<message key="plugins.generic.vgWort.settings.vgWortRegistration.daysAfterPublication">Number of days after publication</message>
 	<message key="plugins.generic.vgWort.settings.clearDate">Clear</message>
+<!--
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacy">Privacy</message>
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacyRequired">Privacy text is required.</message>
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacy.description">This privacy text will be displayed ...</message>
+-->
 	<message key="plugins.generic.vgWort.settings.vgWortTestMode">Test mode</message>
 	<message key="plugins.generic.vgWort.settings.vgWortTestMode.description">Use the VG Wort test API (testing environment). Please do not forget to remove this option for the production.</message>
 	<!-- user and author metadata -->

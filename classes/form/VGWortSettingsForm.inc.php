@@ -36,7 +36,7 @@ class VGWortSettingsForm extends Form {
 
 		$this->addCheck(new FormValidator($this, 'vgWortUserId', 'required', 'plugins.generic.vgWort.settings.vgWortUserIdRequired'));
 		$this->addCheck(new FormValidator($this, 'vgWortUserPassword', 'required', 'plugins.generic.vgWort.settings.vgWortUserPasswordRequired'));
-		$this->addCheck(new FormValidator($this, 'vgWortPrivacy', 'required', 'plugins.generic.vgWort.settings.vgWortPrivacyRequired'));
+		//$this->addCheck(new FormValidator($this, 'vgWortPrivacy', 'required', 'plugins.generic.vgWort.settings.vgWortPrivacyRequired'));
 		$this->addCheck(new FormValidatorPost($this));
 		$this->addCheck(new FormValidatorCSRF($this));
 	}
@@ -49,7 +49,9 @@ class VGWortSettingsForm extends Form {
 			$fieldValue = $this->plugin->getSetting($this->contextId, $fieldName);
 			if ($fieldName == 'daysAfterPublication') {
 				if (!$fieldValue) $fieldValue = '';
-			} elseif ($fieldName =='vgWortPrivacy') {
+			}
+			/*
+			elseif ($fieldName =='vgWortPrivacy') {
 				if (empty($fieldValue)) {
 					$defaultLocale = 'de_DE';
 					$defaultTranslatedText = __('plugins.generic.vgWort.settings.vgWortPrivacy.content', array(), $defaultLocale);
@@ -66,6 +68,7 @@ class VGWortSettingsForm extends Form {
 					}
 				}
 			}
+			*/
 			$this->setData($fieldName, $fieldValue);
 		}
 	}
@@ -107,7 +110,7 @@ class VGWortSettingsForm extends Form {
 			'vgWortUserPassword' => 'string',
 			'dateInYear' => 'string',
 			'daysAfterPublication' => 'int',
-			'vgWortPrivacy' => 'object',
+			//'vgWortPrivacy' => 'object',
 			'vgWortTestAPI' => 'bool'
 		);
 	}

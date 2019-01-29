@@ -27,6 +27,7 @@
 	<message key="plugins.generic.vgWort.settings.vgWortRegistration.dateInYear">Datum im Jahr</message>
 	<message key="plugins.generic.vgWort.settings.vgWortRegistration.daysAfterPublication">Anzahl der Tage nach der Artikelpublikation</message>
 	<message key="plugins.generic.vgWort.settings.clearDate">Leeren</message>
+<!-- 
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacy">Datenschutz</message>
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacyRequired">Der Datenschutztext wird benötigt.</message>
 	<message key="plugins.generic.vgWort.settings.vgWortPrivacy.description">Dieser Datenschutztext wird dargestellt ...</message>
@@ -63,6 +64,7 @@
 		<p>Zu keinem Zeitpunkt werden einzelne Nutzer identifiziert. Ihre Identität bleibt immer geschützt. Sie
 		erhalten über das System keine Werbung.</p>
 	]]></message>
+-->
 	<message key="plugins.generic.vgWort.settings.vgWortTestMode">Testmodus</message>
 	<message key="plugins.generic.vgWort.settings.vgWortTestMode.description">Die VG-Wort-Test-API (Testumgebung) benutzen. Bitte vergessen Sie nicht, diese Option vor dem Produktivbetrieb abzuwählen.</message>
 	<!-- user and author metadata -->
