@@ -321,11 +321,11 @@ class VGWortEditorAction {
 		$content = $submissionFileManager->readFileFromPath($galleyFile->getFilePath());
 		$galleyFileType = $galleyFile->getFileType();
 		if ($galleyFileType == 'text/html') {
-			$text = array('plainText' => strip_tags($content));
+			$text = array('plainText' => base64_encode(strip_tags($content)));
 		} elseif ($galleyFileType == 'application/pdf') {
-			$text = array('pdf' => $content);
+			$text = array('pdf' => base64_encode($content));
 		} elseif ($galleyFileType == 'application/epub+zip') {
-			$text = array('epub' => $content);
+			$text = array('epub' => base64_encode($content));
 		}
 
 		// get the title (max. 100 characters):
