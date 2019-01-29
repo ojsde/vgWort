@@ -587,7 +587,7 @@ class VGWortPlugin extends GenericPlugin {
 						if ($galley->isPdfGalley()) {
 							// insert the JS function, that is used when the download link is clicked on
 							$search = '<header class="header_view">';
-							$replace = $search . '<script>function vgwPixelCall() { document.getElementById("div_vgwpixel").innerHTML="' . $pixelTagImg . '"; }</script>';
+							$replace = $search . '<script>function vgwPixelCall() { document.getElementById("div_vgwpixel").innerHTML="<img src=\'' . $pixelTagSrc . '?ts="+Date.now()+"\' width=\'1\' height=\'1\' alt=\'\' />"; }</script>';
 							$output = str_replace($search, $replace, $output);
 
 							// change the galley download link
@@ -609,7 +609,7 @@ class VGWortPlugin extends GenericPlugin {
 					} elseif (!$galley && !empty($downloadGalleys)) { // it is the article view page and there are download galley links there
 						// insert the JS function, used when galley links are clicked on
 						$search = '<article class="obj_article_details">';
-						$replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="' . $pixelTagImg . '"; }</script>';
+						$replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="<img src=\'' . $pixelTagSrc . '?ts="+Date.now()+"\' width=\'1\' height=\'1\' alt=\'\' />"; }</script>';
 						$output = str_replace($search, $replace, $output);
 
 						foreach ($downloadGalleys as $galley) {
@@ -661,7 +661,7 @@ class VGWortPlugin extends GenericPlugin {
 						if (!empty($downloadGalleys) && !$scriptInserted) {
 							// insert the JS function, used when galley links are clicked on
 							$search = '<div class="obj_issue_toc">';
-							$replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="' . $pixelTagImg . '"; }</script>';
+							$replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="<img src=\'' . $pixelTagSrc . '?ts="+Date.now()+"\' width=\'1\' height=\'1\' alt=\'\' />"; }</script>';
 							$output = str_replace($search, $replace, $output);
 							$scriptInserted = true;
 						}
