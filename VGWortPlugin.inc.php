@@ -586,41 +586,41 @@ class VGWortPlugin extends GenericPlugin {
 						// if it is a PDF galley there will be the download link
 						if ($galley->isPdfGalley()) {
 							// insert the JS function, that is used when the download link is clicked on
-							//$search = '<header class="header_view">';
-							//$replace = $search . '<script>function vgwPixelCall() { document.getElementById("div_vgwpixel").innerHTML="' . $pixelTagImg . '"; }</script>';
-							//$output = str_replace($search, $replace, $output);
+							$search = '<header class="header_view">';
+							$replace = $search . '<script>function vgwPixelCall() { document.getElementById("div_vgwpixel").innerHTML="' . $pixelTagImg . '"; }</script>';
+							$output = str_replace($search, $replace, $output);
 
 							// change the galley download link
 							// insert pixel tag for galleys download links using JS
 							// when download link is clicked on, the pixel tag image should be inserted after the header in order not to distroy the layout
-							//$search = '</header>';
-							//$replace = $search . '<div id="div_vgwpixel"></div>';
-							//$output = str_replace($search, $replace, $output);
+							$search = '</header>';
+							$replace = $search . '<div id="div_vgwpixel"></div>';
+							$output = str_replace($search, $replace, $output);
 							// Note: the galley download URL is without the file ID but with the ending "/"
 							$galleyUrl = Request::url(null, 'article', 'download', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId())) . '/';
 							$search = '<a href="' . $galleyUrl . '" class="download" download>';
-							//$replace = '<a href="' . $galleyUrl . '" onclick="vgwPixelCall();" class="download" download>';
+							$replace = '<a href="' . $galleyUrl . '" onclick="vgwPixelCall();" class="download" download>';
 							// insert pixel tag for galleys download links using VG Wort redirect
-							$newGalleyUrl = $pixelTagSrc . '?l=' . $galleyUrl;
-							$replace = '<a href="' . $newGalleyUrl . '" class="download" download>';
+							//$newGalleyUrl = $pixelTagSrc . '?l=' . $galleyUrl;
+							//$replace = '<a href="' . $newGalleyUrl . '" class="download" download>';
 							$output = str_replace($search, $replace, $output);
 
 						}
 					} elseif (!$galley && !empty($downloadGalleys)) { // it is the article view page and there are download galley links there
 						// insert the JS function, used when galley links are clicked on
-						//$search = '<article class="obj_article_details">';
-						//$replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="' . $pixelTagImg . '"; }</script>';
-						//$output = str_replace($search, $replace, $output);
+						$search = '<article class="obj_article_details">';
+						$replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="' . $pixelTagImg . '"; }</script>';
+						$output = str_replace($search, $replace, $output);
 
 						foreach ($downloadGalleys as $galley) {
 						 	// change galley download links
 							$galleyUrl = Request::url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId()));
 							$search = '#<a class="(.+)" href="' . $galleyUrl . '">#';
 							// insert pixel tag for galleys download links using JS
-							//$replace = '<div id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');">';
+							$replace = '<div id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');">';
 						 	// insert pixel tag for galleys download links using VG Wort redirect
-							$newGalleyUrl = $pixelTagSrc . '?l=' . $galleyUrl;
-							$replace = '<a class="$1" href="' . $newGalleyUrl . '">';
+							//$newGalleyUrl = $pixelTagSrc . '?l=' . $galleyUrl;
+							//$replace = '<a class="$1" href="' . $newGalleyUrl . '">';
 							$output = preg_replace($search, $replace, $output);
 
 						}
@@ -640,7 +640,7 @@ class VGWortPlugin extends GenericPlugin {
 		$issue = $smarty->get_template_vars('issue');
 		$publishedArticles = $smarty->get_template_vars('publishedArticles');
 		if ($issue->getPublished()) {
-			//$scriptInserted = false;
+			$scriptInserted = false;
 			foreach ($publishedArticles as $sectionId) {
 				foreach ($sectionId['articles'] as $publishedArticle) {
 					// get the assigned pixel tag
@@ -658,7 +658,6 @@ class VGWortPlugin extends GenericPlugin {
 						// get only download galleys, that should get the VG Wort pixel tag
 						$downloadGalleys = array_filter($articleGalleys, array($this, 'filterDownloadGalleys'));
 
-						/*
 						if (!empty($downloadGalleys) && !$scriptInserted) {
 							// insert the JS function, used when galley links are clicked on
 							$search = '<div class="obj_issue_toc">';
@@ -666,17 +665,16 @@ class VGWortPlugin extends GenericPlugin {
 							$output = str_replace($search, $replace, $output);
 							$scriptInserted = true;
 						}
-						*/
 
 						foreach ($downloadGalleys as $galley) {
 							// change galley download links
 							$galleyUrl = Request::url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId()));
 							$search = '#<a class="(.+)" href="' . $galleyUrl . '">#';
 							// insert pixel tag for galleys download links using JS
-							//$replace = '<div id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');">';
+							$replace = '<div id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');">';
 							// insert pixel tag for galleys download links using VG Wort redirect
-							$newGalleyUrl = $pixelTagSrc . '?l=' . $galleyUrl;
-							$replace = '<a class="$1" href="' . $newGalleyUrl . '">';
+							//$newGalleyUrl = $pixelTagSrc . '?l=' . $galleyUrl;
+							//$replace = '<a class="$1" href="' . $newGalleyUrl . '">';
 							$output = preg_replace($search, $replace, $output);
 
 						}
