@@ -221,7 +221,11 @@ class VGWortEditorAction {
 			}
 			$detail = $soapFault->detail;
 			$function = $detail->checkAuthorFault;
-			return array(false, __('plugins.generic.vgWort.check.errorCode'.$function->errorcode));
+			if (isset($function)) {
+			     return array(false, __('plugins.generic.vgWort.check.errorCode'.$function->errorcode));
+			}
+			error_log($soapFault);
+			return array(false, __('plugins.generic.vgWort.check.errorCode'), array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring));
 		}
 	}
 
@@ -323,9 +327,11 @@ class VGWortEditorAction {
 		if ($galleyFileType == 'text/html') {
 			$text = array('plainText' => base64_encode(strip_tags($content)));
 		} elseif ($galleyFileType == 'application/pdf') {
-			$text = array('pdf' => base64_encode($content));
+			//$text = array('pdf' => base64_encode($content));
+			// base64_encode of pdf causes soapClient/Business Exception
+			$text = array('pdf' => $content);
 		} elseif ($galleyFileType == 'application/epub+zip') {
-			$text = array('epub' => base64_encode($content));
+			$text = array('epub' => $content);
 		}
 
 		// get the title (max. 100 characters):
@@ -370,10 +376,13 @@ class VGWortEditorAction {
 			}
 			$detail = $soapFault->detail;
 			$function = $detail->newMessageFault;
-			if ($function->errorcode == 4) {
-				return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode, array('cardNumber' => $function->cardNumber, 'surName' => $function->surName)));
+			if (isset($function)) {
+			    if ($function->errorcode == 4) {
+			        return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode, array('cardNumber' => $function->cardNumber, 'surName' => $function->surName)));
+			    }
 			}
-			return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode));
+			error_log($soapFault);
+			return array(false, __('plugins.generic.vgWort.register.errorCode', array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring)));
 		}
 	}
 

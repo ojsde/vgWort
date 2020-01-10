@@ -100,7 +100,7 @@ class VGWortPlugin extends GenericPlugin {
 	/**
 	 * @copydoc Plugin::getTemplatePath()
 	 */
-	function getTemplatePath() {
+	function getTemplatePath($inCore = false) {
 		return parent::getTemplatePath() . 'templates/';
 	}
 

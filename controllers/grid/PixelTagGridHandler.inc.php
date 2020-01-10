@@ -45,7 +45,7 @@ class PixelTagGridHandler extends GridHandler {
 	/**
 	 * @copydoc PKPHandler::initialize()
 	 */
-	function initialize($request, $args) {
+	function initialize($request, $args = NULL) {
 		parent::initialize($request, $args);
 
 		$router = $request->getRouter();

@@ -94,16 +94,19 @@
 	<message key="plugins.generic.vgWort.order.errorCode3">No email exists for your VG Wort account. Please enter an email for your account on VG Wort portal.</message>
 	<message key="plugins.generic.vgWort.order.errorCode100">A technical problem occurred. Please try later again.</message>
 
+	<message key="plugins.generic.vgWort.check.errorCode">An unhandled error ({$faultcode}/{$faultstring}) occured while checking the authors.</message>
 	<message key="plugins.generic.vgWort.check.notValid">The author or the translator {$surName} has not a valid VG Wort card number.</message>
 	<message key="plugins.generic.vgWort.check.errorCode100">A technical problem occurred. Please try later again.</message>
 	<message key="plugins.generic.vgWort.check.galleyRequired">A full text file in PDF, HTML or EPUB format, and less than 15MB is required.</message>
 	<message key="plugins.generic.vgWort.check.articleNotPublished">The article has not been published.</message>
 
+	<message key="plugins.generic.vgWort.register.errorCode">An unhandled error ({$faultcode}/{$faultstring}) occured while registering.</message>
 	<message key="plugins.generic.vgWort.register.errorCode1">There is no such pixel tag.</message>
 	<message key="plugins.generic.vgWort.register.errorCode2">The pixel tag belongs to somebody else.</message>
 	<message key="plugins.generic.vgWort.register.errorCode3">The pixel tag is already registered.</message>
 	<message key="plugins.generic.vgWort.register.errorCode4">The VG Wort card number ({$cardNumber}) doesn't accord to the user ({$surName}).</message>
 	<message key="plugins.generic.vgWort.register.errorCode5">The text doesn't contain 1800 characters.</message>
 	<message key="plugins.generic.vgWort.register.errorCode100">A technical problem occurred. Please try later again.</message>
+	<message key="plugins.generic.vgWort.register.validationError">A SOAP-Validation-Errror occured.</message>
 
 </locale>
