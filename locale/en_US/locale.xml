@@ -55,7 +55,7 @@
 	<message key="plugins.generic.vgWort.pixelTag.assign">Assign a VG Wort pixel tag to this article.</message>
 	<message key="plugins.generic.vgWort.pixelTag.remove">Remove/unassign the VG Wort pixel tag from this article.</message>
 	<message key="plugins.generic.vgWort.pixelTag.removed">VG Wort pixel tag was removed/unassigned from this article.</message>
-	<message key="plugins.generic.vgWort.pixelTag.representation.notAssigned">No VG Wort pixel tag has not been assigned to this article yet.</message>
+	<message key="plugins.generic.vgWort.pixelTag.representation.notAssigned">No VG Wort pixel tag has been assigned to this article yet.</message>
 	<message key="plugins.generic.vgWort.pixelTag.representation.notSupported">The VG Wort pixel tag cannot be assigned to this galley. The galley either does not contain a full text file, it is not in the format PDF, HTML or EPUB, or the file size is bigger than 15MB.</message>
 	<message key="plugins.generic.vgWort.pixelTag.representation.assigned">The VG Wort pixel tag will be assigned to this galley i.e. this galley will be considered in the VG Wort counting.</message>
 	<message key="plugins.generic.vgWort.pixelTag.representation.exclude">Exclude this galley from assigning it the VG Wort pixel tag i.e. from the VG Wort counting.</message>

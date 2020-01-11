@@ -32,7 +32,8 @@ class VGWortSettingsForm extends Form {
 		$this->contextId = $contextId;
 		$this->plugin = $plugin;
 
-		parent::__construct($plugin->getTemplatePath() . 'settingsForm.tpl');
+		//parent::__construct($plugin->getTemplatePath() . 'settingsForm.tpl');
+		parent::__construct($plugin->getTemplateResource('settingsForm.tpl'));
 
 		$this->addCheck(new FormValidator($this, 'vgWortUserId', 'required', 'plugins.generic.vgWort.settings.vgWortUserIdRequired'));
 		$this->addCheck(new FormValidator($this, 'vgWortUserPassword', 'required', 'plugins.generic.vgWort.settings.vgWortUserPasswordRequired'));
@@ -44,7 +45,7 @@ class VGWortSettingsForm extends Form {
 	/**
 	 * @copydoc Form::initData()
 	 */
-	function initData($request) {
+	function initData() {
 		foreach($this->_getFormFields() as $fieldName => $fieldType) {
 			$fieldValue = $this->plugin->getSetting($this->contextId, $fieldName);
 			if ($fieldName == 'daysAfterPublication') {
@@ -76,7 +77,7 @@ class VGWortSettingsForm extends Form {
 	/**
 	 * @copydoc Form::fetch()
 	 */
-	function fetch($request) {
+	function fetch($request, $template = NULL, $display = false) {
 		$templateMgr = TemplateManager::getManager($request);
 		$templateMgr->assign('pluginName', $this->plugin->getName());
 		return parent::fetch($request);

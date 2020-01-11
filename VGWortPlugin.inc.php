@@ -100,10 +100,10 @@ class VGWortPlugin extends GenericPlugin {
 	/**
 	 * @copydoc Plugin::getTemplatePath()
 	 */
-	function getTemplatePath($inCore = false) {
+/*	function getTemplatePath($inCore = false) {
 		return parent::getTemplatePath() . 'templates/';
 	}
-
+*/
 	/**
 	 * @copydoc Plugin::getInstallSchemaFile()
 	 */
@@ -169,7 +169,8 @@ class VGWortPlugin extends GenericPlugin {
 		if ($hookName == 'Common::UserDetails::AdditionalItems') {
 			$smarty->assign('vgWortFieldTitle', 'plugins.generic.vgWort.cardNo');
 		}
-		$output .= $smarty->fetch($this->getTemplatePath() . 'vgWortCardNo.tpl');
+		//$output .= $smarty->fetch($this->getTemplatePath() . 'vgWortCardNo.tpl');
+		$output .= $smarty->fetch($this->getTemplateResource('vgWortCardNo.tpl'));
 		return false;
 	}
 
@@ -273,7 +274,8 @@ class VGWortPlugin extends GenericPlugin {
 		if ($galleyNotSupported) $smarty->assign('galleyNotSupported', $galleyNotSupported);
 		$smarty->assign('vgWortTextType', $vgWortTextType);
 		$smarty->assign('typeOptions', PixelTag::getTextTypeOptions());
-		$output .= $smarty->fetch($this->getTemplatePath() . 'assignPixelTag.tpl');
+		//$output .= $smarty->fetch($this->getTemplatePath() . 'assignPixelTag.tpl');
+		$output .= $smarty->fetch($this->getTemplateResource('assignPixelTag.tpl'));
 		return false;
 	}
 
@@ -501,7 +503,8 @@ class VGWortPlugin extends GenericPlugin {
 	function pixelTagTab($hookName, $params) {
 		$smarty =& $params[1];
 		$output =& $params[2];
-		$output .= $smarty->fetch($this->getTemplatePath() . 'distributionNavLink.tpl');
+		//$output .= $smarty->fetch($this->getTemplatePath() . 'distributionNavLink.tpl');
+		$output .= $smarty->fetch($this->getTemplateResource('distributionNavLink.tpl'));		
 		return false;
 	}
 

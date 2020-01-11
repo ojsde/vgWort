@@ -12,8 +12,10 @@
  * @brief VGWortEditorAction class.
  */
 
-define('PIXEL_SERVICE_WSDL', 'https://tom.vgwort.de/services/1.0/pixelService.wsdl');
-define('MESSAGE_SERVICE_WSDL', 'https://tom.vgwort.de/services/1.13/messageService.wsdl');
+//define('PIXEL_SERVICE_WSDL', 'https://tom.vgwort.de/services/1.0/pixelService.wsdl');
+//define('MESSAGE_SERVICE_WSDL', 'https://tom.vgwort.de/services/1.13/messageService.wsdl');
+define('PIXEL_SERVICE_WSDL', 'https://tom-test.vgwort.de/services/1.0/pixelService.wsdl');
+define('MESSAGE_SERVICE_WSDL', 'https://tom-test.vgwort.de/services/1.13/messageService.wsdl');
 /* just to test the plugin, please use the VG Wort test portal: */
 define('PIXEL_SERVICE_WSDL_TEST', 'https://tom-test.vgwort.de/services/1.0/pixelService.wsdl');
 define('MESSAGE_SERVICE_WSDL_TEST', 'https://tom-test.vgwort.de/services/1.13/messageService.wsdl');
@@ -260,14 +262,17 @@ class VGWortEditorAction {
 		assert (!empty($submissionAuthors) || !empty($submissionTranslators));
 
 		// get authors information: vg wort card number, first (max. 40 characters) and last name
+		$locale = $publishedArticle->getLocale();
 		if (!empty($submissionAuthors)) {
 			$authors = array('author' => array());
 			foreach ($submissionAuthors as $author) {
 				$cardNo = $author->getData('vgWortCardNo');
 				if (!empty($cardNo)) {
-					$authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
+					//$authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
+					$authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => substr($author->getGivenName($locale), 0, 39), 'surName' => $author->getFamilyName($locale));
 				} else {
-					$authors['author'][] = array('firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
+					//$authors['author'][] = array('firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
+					$authors['author'][] = array('firstName' => substr($author->getGivenName($locale), 0, 39), 'surName' => $author->getFamilyName($locale));
 				}
 			}
 			$parties = array('authors' => $authors);
@@ -278,9 +283,11 @@ class VGWortEditorAction {
 			foreach ($submissionTranslators as $translator) {
 				$cardNo = $translator->getData('vgWortCardNo');
 				if (!empty($cardNo)) {
-					$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
+					//$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
+					$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstname' => substr($translator->getGivenName($locale), 0, 39), 'surName' => $translator->getFamilyName($locale));
 				} else {
-					$translators['translator'][] = array('firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
+					//$translators['translator'][] = array('firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
+					$translators['translator'][] = array('firstname' => substr($translator->getGivenName($locale), 0, 39), 'surName' => $translator->getFamilyName($locale));
 				}
 			}
 			$parties['translators'] = $translators;
@@ -382,6 +389,8 @@ class VGWortEditorAction {
 			    }
 			}
 			error_log($soapFault);
+			error_log("SoapFault:Soap:parties: ".print_r($parties, TRUE));
+			error_log("SoapFault:Soap:message: ".print_r($message, TRUE));
 			return array(false, __('plugins.generic.vgWort.register.errorCode', array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring)));
 		}
 	}
