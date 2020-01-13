@@ -518,10 +518,12 @@ class VGWortPlugin extends GenericPlugin {
 			case 'frontend/pages/article.tpl':
 			case 'plugins/plugins/generic/pdfJsViewer/generic/pdfJsViewer:templates//articleGalley.tpl':
 			case 'plugins/plugins/generic/htmlArticleGalley/generic/htmlArticleGalley:display.tpl':
-				$smarty->register_outputfilter(array($this, 'insertPixelTagArticlePage'));
+				//$smarty->register_outputfilter(array($this, 'insertPixelTagArticlePage'));
+				$smarty->registerFilter('output',array($this, 'insertPixelTagArticlePage'));
 				break;
 			case 'frontend/pages/issue.tpl':
-				$smarty->register_outputfilter(array($this, 'insertPixelTagIssueTOC'));
+				//$smarty->register_outputfilter(array($this, 'insertPixelTagIssueTOC'));
+				$smarty->registerFilter('output',array($this, 'insertPixelTagIssueTOC'));
 				break;
 		}
 		return false;
@@ -631,7 +633,8 @@ class VGWortPlugin extends GenericPlugin {
 				}
 			}
 		}
-		$smarty->unregister_outputfilter('insertPixelTagArticlePage');
+		//$smarty->unregister_outputfilter('insertPixelTagArticlePage');
+		$smarty->unregisterFilter('output', array($this, 'insertPixelTagArticlePage'));
 		return $output;
 	}
 
@@ -685,7 +688,8 @@ class VGWortPlugin extends GenericPlugin {
 				}
 			}
 		}
-		$smarty->unregister_outputfilter('insertPixelTagIssueTOC');
+		//$smarty->unregister_outputfilter('insertPixelTagIssueTOC');
+		$smarty->unregisterFilter('output', array($this, 'insertPixelTagIssueTOC'));
 		return $output;
 	}
 
