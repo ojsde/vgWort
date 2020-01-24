@@ -70,6 +70,7 @@
 	<message key="plugins.generic.vgWort.pixelTag.registered.removed">Registered, removed</message>
 	<message key="plugins.generic.vgWort.pixelTag.failed">Failed</message>
 	<message key="plugins.generic.vgWort.pixelTag.noStatusMessage">No failure message found.</message>
+	<message key="plugins.generic.vgWort.pixelTag.LocalizationNotice">Please note that the data is transferred in the submission language of the selected article. For individuals to participate in royalty disribution, the spelling of names has to be identical to the spelling as regsitred with vgWort. The submission langauge can be selected in the article metadata.</message>
 	<!-- pixel tags listing -->
 	<message key="plugins.generic.vgWort.pixelTags">Pixel Tags</message>
 	<message key="plugins.generic.vgWort.pixelTags.codes">Private and Public Code</message>
@@ -101,12 +102,14 @@
 	<message key="plugins.generic.vgWort.check.articleNotPublished">The article has not been published.</message>
 
 	<message key="plugins.generic.vgWort.register.errorCode">An unhandled error ({$faultcode}/{$faultstring}) occured while registering.</message>
-	<message key="plugins.generic.vgWort.register.errorCode1">There is no such pixel tag.</message>
-	<message key="plugins.generic.vgWort.register.errorCode2">The pixel tag belongs to somebody else.</message>
-	<message key="plugins.generic.vgWort.register.errorCode3">The pixel tag is already registered.</message>
-	<message key="plugins.generic.vgWort.register.errorCode4">The VG Wort card number ({$cardNumber}) doesn't accord to the user ({$surName}).</message>
-	<message key="plugins.generic.vgWort.register.errorCode5">The text doesn't contain 1800 characters.</message>
-	<message key="plugins.generic.vgWort.register.errorCode100">A technical problem occurred. Please try later again.</message>
-	<message key="plugins.generic.vgWort.register.validationError">A SOAP-Validation-Errror occured.</message>
+	<message key="plugins.generic.vgWort.register.validationError">A vgWort-Validation-Errror occured.
+	vgWort provided the following error details:
+	
+	{$details}</message>
+	<message key="plugins.generic.vgWort.register.vgWortBusinessException">A vgWort-Business-Exception occured.
+	VgWort provided the following error details:
 
+	Error code: {$errorcode}
+
+	{$errormsg}</message>
 </locale>

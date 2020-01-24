@@ -8,6 +8,9 @@
  *
  *}
 <!-- VG Wort -->
+{fbvFormSection}
+	<p class="pkp_help">{translate key="plugins.generic.vgWort.pixelTag.LocalizationNotice"}</p>
+{/fbvFormSection}
 {if $failedExists}
 	<div id="pixelTagsNotification" class="pkp_notification " style="display: block;">
 		<div id="pkp_notification_pixel_tags">

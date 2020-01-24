@@ -116,7 +116,9 @@ class VGWortEditorAction {
 					foreach ($publishedArticle->getAuthors() as $author) {
 						$cardNo = $author->getData('vgWortCardNo');
 						if (!empty($cardNo)) {
-							$checkAuthorResult = $this->checkAuthor($pixelTag->getContextId(), $cardNo, $author->getLastName());
+						    $locale = $publishedArticle->getLocale();
+							//$checkAuthorResult = $this->checkAuthor($pixelTag->getContextId(), $cardNo, $author->getLastName());
+						    $checkAuthorResult = $this->checkAuthor($pixelTag->getContextId(), $cardNo, $author->getFamilyName($locale));
 							if (!$checkAuthorResult[0]) {
 								return array(false, $checkAuthorResult[1]);
 							}
@@ -284,10 +286,10 @@ class VGWortEditorAction {
 				$cardNo = $translator->getData('vgWortCardNo');
 				if (!empty($cardNo)) {
 					//$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
-					$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstname' => substr($translator->getGivenName($locale), 0, 39), 'surName' => $translator->getFamilyName($locale));
+					$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => substr($translator->getGivenName($locale), 0, 39), 'surName' => $translator->getFamilyName($locale));
 				} else {
 					//$translators['translator'][] = array('firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
-					$translators['translator'][] = array('firstname' => substr($translator->getGivenName($locale), 0, 39), 'surName' => $translator->getFamilyName($locale));
+					$translators['translator'][] = array('firstName' => substr($translator->getGivenName($locale), 0, 39), 'surName' => $translator->getFamilyName($locale));
 				}
 			}
 			$parties['translators'] = $translators;
@@ -334,11 +336,13 @@ class VGWortEditorAction {
 		if ($galleyFileType == 'text/html') {
 			$text = array('plainText' => base64_encode(strip_tags($content)));
 		} elseif ($galleyFileType == 'application/pdf') {
-			//$text = array('pdf' => base64_encode($content));
-			// base64_encode of pdf causes soapClient/Business Exception
-			$text = array('pdf' => $content);
+		    //$text = array('pdf' => base64_encode($content));
+		    // base64_encode of pdf causes soapClient/Business Exception -> vgWort Errorcode 8
+		    $text = array('pdf' => $content);
 		} elseif ($galleyFileType == 'application/epub+zip') {
-			$text = array('epub' => $content);
+		    //$text = array('epub' => base64_encode($content));
+		    // base64_encode of epub causes soapClient/Business Exception -> vgWort Errorcode 20
+		    $text = array('epub' => $content);
 		}
 
 		// get the title (max. 100 characters):
@@ -378,20 +382,44 @@ class VGWortEditorAction {
 			return array($result->status == 'OK', '');
 		}
 		catch (SoapFault $soapFault) {
-			if($soapFault->faultcode == 'noWSDL' || $soapFault->faultcode == 'httpError') {
+		    
+		    // log error details
+		    error_log($soapFault);
+		    
+		    if($soapFault->faultcode == 'noWSDL' || $soapFault->faultcode == 'httpError') {
 				return array(false, $soapFault->faultstring);
 			}
-			$detail = $soapFault->detail;
-			$function = $detail->newMessageFault;
-			if (isset($function)) {
-			    if ($function->errorcode == 4) {
-			        return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode, array('cardNumber' => $function->cardNumber, 'surName' => $function->surName)));
-			    }
-			}
-			error_log($soapFault);
-			error_log("SoapFault:Soap:parties: ".print_r($parties, TRUE));
-			error_log("SoapFault:Soap:message: ".print_r($message, TRUE));
-			return array(false, __('plugins.generic.vgWort.register.errorCode', array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring)));
+			
+			switch ($soapFault->faultstring)
+			{
+			    case "Validation error":
+			        $errorDetails = (array) $soapFault->detail;
+			        error_log(print_r($errorDetails, TRUE));
+			        return array(false, __('plugins.generic.vgWort.register.validationError', array('details' => implode($errorDetails['ValidationError']))));
+			    case "Business Exception":
+			        $errorDetails = $soapFault->detail->newMessageFault;
+			        error_log(print_r($errorDetails, TRUE));
+			        return array(false, __('plugins.generic.vgWort.register.vgWortBusinessException', array('errorcode' => $errorDetails->errorcode, 'errormsg' => $errorDetails->errormsg)));
+			        
+// 			        $function = $detail->newMessageFault;
+// 			        error_log(print_r("RS_DEBUG", TRUE));
+// 			        error_log(print_r($detail, TRUE));
+// 			        if (isset($function)) {
+// 			            if ($function->errorcode == 4) {
+// 			                return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode, array('cardNumber' => $function->cardNumber, 'surName' => $function->surName)));
+// 			            }
+// 			            if ($function->errorcode == 5) {
+// 			                return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode));
+// 			            }
+// 			            if ($function->errorcode == 8) {
+// 			                error_log(print_r($function, TRUE));
+// 			                return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode, array('details' => $function->errormsg)));
+// 			            }
+// 			        }
+			    default:
+			        error_log(print_r($soapFault->detail, TRUE));
+			        return array(false, __('plugins.generic.vgWort.register.errorCode', array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring)));
+			}			
 		}
 	}
 

@@ -518,6 +518,10 @@ class VGWortPlugin extends GenericPlugin {
 			case 'frontend/pages/article.tpl':
 			case 'plugins/plugins/generic/pdfJsViewer/generic/pdfJsViewer:templates//articleGalley.tpl':
 			case 'plugins/plugins/generic/htmlArticleGalley/generic/htmlArticleGalley:display.tpl':
+			
+			case 'frontend-pages:article.tpl':
+			case 'plugins-plugins-generic-pdfJsViewer-generic-pdfJsViewer:articleGalley.tpl':
+            case 'plugins-plugins-generic-htmlArticleGalley-generic-htmlArticleGalley:display.tpl':
 				//$smarty->register_outputfilter(array($this, 'insertPixelTagArticlePage'));
 				$smarty->registerFilter('output',array($this, 'insertPixelTagArticlePage'));
 				break;
@@ -548,7 +552,7 @@ class VGWortPlugin extends GenericPlugin {
 	/**
 	 * Insert the VG Wort pixel tag for galleys on the article view page.
 	 */
-	function insertPixelTagArticlePage($output, &$smarty) {
+	function insertPixelTagArticlePage($output, $smarty) {
 		$journal = $smarty->get_template_vars('currentJournal');
 		$article = $smarty->get_template_vars('article');
 

@@ -95,7 +95,7 @@ class PixelTagGridCellProvider extends GridCellProvider {
 				if (!empty($pixelTag->getMessage())) {
 					return array('label' => '');
 				}
-				return array('label' => '&mdash');
+				return array('label' => '&mdash;');
 			case 'title':
 				return array('label' => '');
 			default: assert(false); break;

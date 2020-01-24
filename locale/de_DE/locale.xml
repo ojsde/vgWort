@@ -104,6 +104,7 @@
 	<message key="plugins.generic.vgWort.pixelTag.registered.removed">Gemeldet, entfernt</message>
 	<message key="plugins.generic.vgWort.pixelTag.failed">Fehlgeschlagen</message>
 	<message key="plugins.generic.vgWort.pixelTag.noStatusMessage">Es wurde keine Fehlermeldung gefunden.</message>
+	<message key="plugins.generic.vgWort.pixelTag.LocalizationNotice">Bitte beachten sie, dass die Daten in der Einreichungssprache des ausgewählten Artikels übertragen werden. Für Personen welche an der Ausschüttung von Tantiemen teilnehmen möchten, muss die Schreibweise der Namen indentisch sein zu der bei vgWort registrierten Schreibweise. Die Einreichungssprache kann in den Artikel-Metadaten ausgewählt werden.</message>
 	<!-- pixel tags listing -->
 	<message key="plugins.generic.vgWort.pixelTags">Zählpixel</message>
 	<message key="plugins.generic.vgWort.pixelTags.codes">Privater and Öffentlicher Code</message>
@@ -135,11 +136,14 @@
 	<message key="plugins.generic.vgWort.check.articleNotPublished">Der Artikel ist nicht veröffentlicht.</message>
 
 	<message key="plugins.generic.vgWort.register.errorCode">Ein nicht handhabbarer Fehler ({$faultcode}/{$faultstring}) ist bei der Meldung aufgetreten.</message>
-	<message key="plugins.generic.vgWort.register.errorCode1">Dieses Zählpixel gibt es nicht.</message>
-	<message key="plugins.generic.vgWort.register.errorCode2">Dieses Zählpixel gehört einem anderen Account.</message>
-	<message key="plugins.generic.vgWort.register.errorCode3">Dieses Zählpixel ist bereits gemeldet.</message>
-	<message key="plugins.generic.vgWort.register.errorCode4">Die VG-Wort-Karteinummer ({$cardNumber}) passt nicht zu dem/der Benutzer/in ({$surName}).</message>
-	<message key="plugins.generic.vgWort.register.errorCode5">Der Text enthält weniger als 1800 Zeichen.</message>
-	<message key="plugins.generic.vgWort.register.errorCode100">Ein technisches Problem ist aufgetreten. Bitte versuchen Sie es später noch einmal.</message>
-	<message key="plugins.generic.vgWort.register.validationError">Es ist ein SOAP-Validierungsfehler aufgetreten.</message>
+	<message key="plugins.generic.vgWort.register.validationError">Ein vgWort-Validierungsfehler ist aufgetreten.
+	vgWort stellt die folgeden Fehlerinformationen zu Verfügung:
+	
+	{$details}</message>
+	<message key="plugins.generic.vgWort.register.vgWortBusinessException">Eine vgWort-Business-Ausnahme ist aufgetreten.
+	vgWort stellt die folgeden Fehlerinformationen zu Verfügung:
+
+	Fehlercode: {$errorcode}
+
+	{$errormsg}</message>
 </locale>

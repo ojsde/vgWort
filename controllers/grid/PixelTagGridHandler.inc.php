@@ -284,7 +284,8 @@ class PixelTagGridHandler extends GridHandler {
 		$templateMgr->assign(array(
 			'statusMessage' => htmlentities($statusMessage),
 		));
-		return $templateMgr->fetchJson($vgWortPlugin->getTemplatePath() . 'statusMessage.tpl');
+		//return $templateMgr->fetchJson($vgWortPlugin->getTemplatePath() . 'statusMessage.tpl');
+		return $templateMgr->fetchJson($vgWortPlugin->getTemplateResource('statusMessage.tpl'));
 	}
 
 	/**
