@@ -514,17 +514,15 @@ class VGWortPlugin extends GenericPlugin {
 	function handleTemplateDisplay($hookName, $params) {
 		$smarty =& $params[0];
 		$template =& $params[1];
+		error_log("RS_DEBUG: ".print_r($template, TRUE));
 		switch ($template) {
 			case 'frontend/pages/article.tpl':
-			case 'plugins/plugins/generic/pdfJsViewer/generic/pdfJsViewer:templates//articleGalley.tpl':
-			case 'plugins/plugins/generic/htmlArticleGalley/generic/htmlArticleGalley:display.tpl':
-			
-			case 'frontend-pages:article.tpl':
 			case 'plugins-plugins-generic-pdfJsViewer-generic-pdfJsViewer:articleGalley.tpl':
             case 'plugins-plugins-generic-htmlArticleGalley-generic-htmlArticleGalley:display.tpl':
-				//$smarty->register_outputfilter(array($this, 'insertPixelTagArticlePage'));
+                //$smarty->register_outputfilter(array($this, 'insertPixelTagArticlePage'));
 				$smarty->registerFilter('output',array($this, 'insertPixelTagArticlePage'));
 				break;
+            case 'frontend/pages/indexJournal.tpl':
 			case 'frontend/pages/issue.tpl':
 				//$smarty->register_outputfilter(array($this, 'insertPixelTagIssueTOC'));
 				$smarty->registerFilter('output',array($this, 'insertPixelTagIssueTOC'));
@@ -638,7 +636,7 @@ class VGWortPlugin extends GenericPlugin {
 			}
 		}
 		//$smarty->unregister_outputfilter('insertPixelTagArticlePage');
-		$smarty->unregisterFilter('output', array($this, 'insertPixelTagArticlePage'));
+		//$smarty->unregisterFilter('output', array($this, 'insertPixelTagArticlePage'));
 		return $output;
 	}
 
@@ -693,7 +691,7 @@ class VGWortPlugin extends GenericPlugin {
 			}
 		}
 		//$smarty->unregister_outputfilter('insertPixelTagIssueTOC');
-		$smarty->unregisterFilter('output', array($this, 'insertPixelTagIssueTOC'));
+		//$smarty->unregisterFilter('output', array($this, 'insertPixelTagIssueTOC'));
 		return $output;
 	}
 
