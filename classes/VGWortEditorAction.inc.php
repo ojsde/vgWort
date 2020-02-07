@@ -395,7 +395,7 @@ class VGWortEditorAction {
 			    case "Validation error":
 			        $errorDetails = (array) $soapFault->detail;
 			        error_log(print_r($errorDetails, TRUE));
-			        return array(false, __('plugins.generic.vgWort.register.validationError', array('details' => implode($errorDetails['ValidationError']))));
+			        return array(false, __('plugins.generic.vgWort.register.validationError', array('details' => is_array($errorDetails['ValidationError'])?implode($errorDetails['ValidationError']):print_r($errorDetails['ValidationError'], TRUE))));
 			    case "Business Exception":
 			        $errorDetails = $soapFault->detail->newMessageFault;
 			        error_log(print_r($errorDetails, TRUE));
