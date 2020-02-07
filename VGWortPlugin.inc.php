@@ -517,6 +517,8 @@ class VGWortPlugin extends GenericPlugin {
 		error_log("RS_DEBUG: ".print_r($template, TRUE));
 		switch ($template) {
 			case 'frontend/pages/article.tpl':
+			//case 'plugins/plugins-generic-pdfJsViewer-generic-pdfJsViewer:articleGalley.tpl':
+			//case 'plugins/plugins-generic-htmlArticleGalley-generic-htmlArticleGalley:display.tpl':
 			case 'plugins-plugins-generic-pdfJsViewer-generic-pdfJsViewer:articleGalley.tpl':
             case 'plugins-plugins-generic-htmlArticleGalley-generic-htmlArticleGalley:display.tpl':
                 //$smarty->register_outputfilter(array($this, 'insertPixelTagArticlePage'));
@@ -551,6 +553,7 @@ class VGWortPlugin extends GenericPlugin {
 	 * Insert the VG Wort pixel tag for galleys on the article view page.
 	 */
 	function insertPixelTagArticlePage($output, $smarty) {
+	    error_log("RS_DEBUG: ".print_r(" insertPixelTagArticlePage", TRUE));
 		$journal = $smarty->get_template_vars('currentJournal');
 		$article = $smarty->get_template_vars('article');
 
@@ -585,6 +588,7 @@ class VGWortPlugin extends GenericPlugin {
 					// currently provided only by PdfJSViewerPlugin and HTMLArticleGalleyPlugin
 					// check if the galley is excluded from VG Wort pixel tag assignment
 					if ($galley && !$galley->getData('excludeVGWortAssignPixel')) {
+					    error_log("RS_DEBUG: ".print_r("galley view page GALLEYID: ".$galley->getID(), TRUE));
 						// isert the pixel tag image into the HTML code
 						$search = '</header>';
 						$replace = $search . $pixelTagImg;
@@ -620,6 +624,7 @@ class VGWortPlugin extends GenericPlugin {
 						$output = str_replace($search, $replace, $output);
 
 						foreach ($downloadGalleys as $galley) {
+						    error_log("RS_DEBUG: ".print_r("article view page GALLEYID: ".$galley->getID(), TRUE));
 						 	// change galley download links
 							$galleyUrl = Request::url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId()));
 							$search = '#<a class="(.+)" href="' . $galleyUrl . '">#';
@@ -635,15 +640,20 @@ class VGWortPlugin extends GenericPlugin {
 				}
 			}
 		}
+		error_log("RS_DEBUG: ".print_r("UNREGISTER", TRUE));
+		error_log("RS_DEBUG: preg_match: ".print_r(preg_match('/vgwPixelCall/',$output)===1?'TRUE':'FALSE', TRUE));
 		//$smarty->unregister_outputfilter('insertPixelTagArticlePage');
-		//$smarty->unregisterFilter('output', array($this, 'insertPixelTagArticlePage'));
+		if (preg_match('/vgwPixelCall/',$output)===1) $smarty->unregisterFilter('output', array($this, 'insertPixelTagArticlePage'));
 		return $output;
 	}
 
 	/**
 	 * Insert the VG Wort pixel tag for galleys on the issue TOC page.
 	 */
-	function insertPixelTagIssueTOC($output, &$smarty) {
+	function insertPixelTagIssueTOC($output, $smarty) {
+	    
+	    //[Thu Feb 06 13:03:25.368773 2020] [php7:warn] [pid 4261] [client 160.45.169.0:60088] PHP Warning:  Parameter 2 to VGWortPlugin::insertPixelTagIssueTOC() expected to be a reference, value given in /data/ojs/comparativepopulationstudies.de/lib/pkp/lib/vendor/smarty/smarty/libs/sysplugins/smarty_internal_runtime_filterhandler.php on line 63, referer: http://ojs-dev-05.cedis.fu-berlin.de/index.php/CPoS/article/view/326
+	    
 		$journal = $smarty->get_template_vars('currentJournal');
 		$issue = $smarty->get_template_vars('issue');
 		$publishedArticles = $smarty->get_template_vars('publishedArticles');
@@ -676,7 +686,8 @@ class VGWortPlugin extends GenericPlugin {
 
 						foreach ($downloadGalleys as $galley) {
 							// change galley download links
-							$galleyUrl = Request::url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId()));
+							$request = new PKPRequest();
+							$galleyUrl = $request->url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId()));
 							$search = '#<a class="(.+)" href="' . $galleyUrl . '">#';
 							// insert pixel tag for galleys download links using JS
 							$replace = '<div id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');">';
@@ -691,7 +702,7 @@ class VGWortPlugin extends GenericPlugin {
 			}
 		}
 		//$smarty->unregister_outputfilter('insertPixelTagIssueTOC');
-		//$smarty->unregisterFilter('output', array($this, 'insertPixelTagIssueTOC'));
+		if (preg_match('/vgwPixelCall/',$output)===1) $smarty->unregisterFilter('output', array($this, 'insertPixelTagIssueTOC'));
 		return $output;
 	}
 
