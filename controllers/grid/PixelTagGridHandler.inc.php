@@ -200,8 +200,7 @@ class PixelTagGridHandler extends GridHandler {
 	function getFilterForm() {
 		//return 'plugins/generic/vgWort/templates/controllers/grid/pixelTagGridFilter.tpl';
 		$vgWortPlugin = PluginRegistry::getPlugin('generic', VGWORT_PLUGIN_NAME);
-		//$template = $vgWortPlugin->getTemplatePath() . '/controllers/grid/pixelTagGridFilter.tpl';
-		$template = $vgWortPlugin->getTemplateResource('controllers/grid/pixelTagGridFilter.tpl');
+		$template = method_exists($vgWortPlugin, 'getTemplateResource') ? $vgWortPlugin->getTemplateResource('/controllers/grid/pixelTagGridFilter.tpl') : $vgWortPlugin->getTemplatePath() . '/controllers/grid/pixelTagGridFilter.tpl';
 		return $template;
 	}
 
@@ -263,9 +262,9 @@ class PixelTagGridHandler extends GridHandler {
 		$vgWortPlugin = PluginRegistry::getPlugin('generic', VGWORT_PLUGIN_NAME);
 		$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
 		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->assign('failedExists', $pixelTagDao->failedUnregisteredActiveExists($request->getContext()->getId()));
-		//return $templateMgr->fetchJson($vgWortPlugin->getTemplatePath() . 'pixelTagsTab.tpl');
-		return $templateMgr->fetchJson($vgWortPlugin->getTemplateResource('pixelTagsTab.tpl'));
+		$templateMgr->assign('failedExists', $pixelTagDao->failedUnregisteredActiveExists($request->getContext()->getId()));		
+		$templateFile = method_exists($vgWortPlugin, 'getTemplateResource') ? $vgWortPlugin->getTemplateResource('pixelTagsTab.tpl') : $vgWortPlugin->getTemplatePath() . 'pixelTagsTab.tpl';
+		return $templateMgr->fetchJson($templateFile);
 	}
 
 	/**
