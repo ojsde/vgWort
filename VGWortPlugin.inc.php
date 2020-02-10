@@ -605,7 +605,7 @@ class VGWortPlugin extends GenericPlugin {
 							// insert pixel tag for galleys download links using JS
 							// when download link is clicked on, the pixel tag image should be inserted after the header in order not to distroy the layout
 							$search = '</header>';
-							$replace = $search . '<div id="div_vgwpixel></div>';
+							$replace = $search . '<div id="div_vgwpixel"></div>';
 							$output = str_replace($search, $replace, $output);
 							// Note: the galley download URL is without the file ID but with the ending "/"
 							$galleyUrl = $request->url(null, 'article', 'download', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId())) . '/';
