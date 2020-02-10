@@ -99,10 +99,14 @@ class VGWortPlugin extends GenericPlugin {
 
 	/**
 	 * @copydoc Plugin::getTemplatePath()
-	 * This function is needed for backwards compatibility with OJS 3.1.1 (not reuired from OJS 3.1.2 onwards)
 	 */
 	function getTemplatePath($inCore = false) {
-		return parent::getTemplatePath() . 'templates/';
+	    $ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
+        if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+		  return parent::getTemplatePath() . 'templates/';
+        } else {
+          return parent::getTemplatePath();
+        }
 	}
 
 	/**
