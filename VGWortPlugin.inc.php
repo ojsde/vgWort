@@ -99,11 +99,12 @@ class VGWortPlugin extends GenericPlugin {
 
 	/**
 	 * @copydoc Plugin::getTemplatePath()
+	 * This function is needed for backwards compatibility with OJS 3.1.1 (not reuired from OJS 3.1.2 onwards)
 	 */
-/*	function getTemplatePath($inCore = false) {
+	function getTemplatePath($inCore = false) {
 		return parent::getTemplatePath() . 'templates/';
 	}
-*/
+
 	/**
 	 * @copydoc Plugin::getInstallSchemaFile()
 	 */
@@ -503,8 +504,8 @@ class VGWortPlugin extends GenericPlugin {
 	function pixelTagTab($hookName, $params) {
 		$smarty =& $params[1];
 		$output =& $params[2];
-		//$output .= $smarty->fetch($this->getTemplatePath() . 'distributionNavLink.tpl');
-		$output .= $smarty->fetch($this->getTemplateResource('distributionNavLink.tpl'));		
+		$templateFile = method_exists($this, 'getTemplateResource') ? $this->getTemplateResource('distributionNavLink.tpl') : $this->getTemplatePath() . 'distributionNavLink.tpl';
+		$output .= $smarty->fetch($templateFile);
 		return false;
 	}
 

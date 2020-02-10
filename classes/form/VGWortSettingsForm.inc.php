@@ -33,7 +33,8 @@ class VGWortSettingsForm extends Form {
 		$this->plugin = $plugin;
 
 		//parent::__construct($plugin->getTemplatePath() . 'settingsForm.tpl');
-		parent::__construct($plugin->getTemplateResource('settingsForm.tpl'));
+		//parent::__construct($plugin->getTemplateResource('settingsForm.tpl'));
+		parent::__construct(method_exists($plugin, 'getTemplateResource') ? $plugin->getTemplateResource('settingsForm.tpl') : $plugin->getTemplatePath() . 'settingsForm.tpl');
 
 		$this->addCheck(new FormValidator($this, 'vgWortUserId', 'required', 'plugins.generic.vgWort.settings.vgWortUserIdRequired'));
 		$this->addCheck(new FormValidator($this, 'vgWortUserPassword', 'required', 'plugins.generic.vgWort.settings.vgWortUserPasswordRequired'));

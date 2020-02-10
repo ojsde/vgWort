@@ -243,6 +243,7 @@ class VGWortEditorAction {
 	 */
 	function newMessage($pixelTag, $request) {
 		$vgWortPlugin = $this->_plugin;
+		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
 
 		$dispatcher = $request->getDispatcher();
 		$context = $request->getContext();
@@ -270,11 +271,17 @@ class VGWortEditorAction {
 			foreach ($submissionAuthors as $author) {
 				$cardNo = $author->getData('vgWortCardNo');
 				if (!empty($cardNo)) {
-					//$authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
-					$authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => substr($author->getGivenName($locale), 0, 39), 'surName' => $author->getFamilyName($locale));
+				    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+                        $authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
+				    } else {
+					   $authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => substr($author->getGivenName($locale), 0, 39), 'surName' => $author->getFamilyName($locale));
+				    }
 				} else {
-					//$authors['author'][] = array('firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
-					$authors['author'][] = array('firstName' => substr($author->getGivenName($locale), 0, 39), 'surName' => $author->getFamilyName($locale));
+				    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+				        $authors['author'][] = array('firstName' => substr($author->getFirstName(), 0, 39), 'surName' => $author->getLastName());
+                    } else {
+					   $authors['author'][] = array('firstName' => substr($author->getGivenName($locale), 0, 39), 'surName' => $author->getFamilyName($locale));
+                    }
 				}
 			}
 			$parties = array('authors' => $authors);
@@ -285,11 +292,17 @@ class VGWortEditorAction {
 			foreach ($submissionTranslators as $translator) {
 				$cardNo = $translator->getData('vgWortCardNo');
 				if (!empty($cardNo)) {
-					//$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
-					$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => substr($translator->getGivenName($locale), 0, 39), 'surName' => $translator->getFamilyName($locale));
+				    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+					   $translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
+				    } else {
+					   $translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => substr($translator->getGivenName($locale), 0, 39), 'surName' => $translator->getFamilyName($locale));
+				    }
 				} else {
-					//$translators['translator'][] = array('firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
-					$translators['translator'][] = array('firstName' => substr($translator->getGivenName($locale), 0, 39), 'surName' => $translator->getFamilyName($locale));
+				    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+					   $translators['translator'][] = array('firstName' => substr($translator->getFirstName(), 0, 39), 'surName' => $translator->getLastName());
+				    } else {
+					   $translators['translator'][] = array('firstName' => substr($translator->getGivenName($locale), 0, 39), 'surName' => $translator->getFamilyName($locale));
+				    }
 				}
 			}
 			$parties['translators'] = $translators;
