@@ -170,8 +170,8 @@ class VGWortPlugin extends GenericPlugin {
 		if ($hookName == 'Common::UserDetails::AdditionalItems') {
 			$smarty->assign('vgWortFieldTitle', 'plugins.generic.vgWort.cardNo');
 		}
-		//$output .= $smarty->fetch($this->getTemplatePath() . 'vgWortCardNo.tpl');
-		$output .= $smarty->fetch($this->getTemplateResource('vgWortCardNo.tpl'));
+		$templateFile = method_exists($this, 'getTemplateResource') ? $this->getTemplateResource('vgWortCardNo.tpl') : $this->getTemplatePath() . 'vgWortCardNo.tpl';
+		$output .= $smarty->fetch($templateFile);
 		return false;
 	}
 
@@ -275,8 +275,8 @@ class VGWortPlugin extends GenericPlugin {
 		if ($galleyNotSupported) $smarty->assign('galleyNotSupported', $galleyNotSupported);
 		$smarty->assign('vgWortTextType', $vgWortTextType);
 		$smarty->assign('typeOptions', PixelTag::getTextTypeOptions());
-		//$output .= $smarty->fetch($this->getTemplatePath() . 'assignPixelTag.tpl');
-		$output .= $smarty->fetch($this->getTemplateResource('assignPixelTag.tpl'));
+		$templateFile = method_exists($this, 'getTemplateResource') ? $this->getTemplateResource('assignPixelTag.tpl') : $this->getTemplatePath() . 'assignPixelTag.tpl';
+		$output .= $smarty->fetch($templateFile);
 		return false;
 	}
 
@@ -515,20 +515,31 @@ class VGWortPlugin extends GenericPlugin {
 	function handleTemplateDisplay($hookName, $params) {
 		$smarty =& $params[0];
 		$template =& $params[1];
-		error_log("RS_DEBUG: ".print_r($template, TRUE));
+		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
+
 		switch ($template) {
 			case 'frontend/pages/article.tpl':
+			//OJS 3.1.1
 			//case 'plugins/plugins-generic-pdfJsViewer-generic-pdfJsViewer:articleGalley.tpl':
 			//case 'plugins/plugins-generic-htmlArticleGalley-generic-htmlArticleGalley:display.tpl':
+			case 'plugins/plugins/generic/pdfJsViewer/generic/pdfJsViewer:templates//articleGalley.tpl':
+			case 'plugins/plugins/generic/htmlArticleGalley/generic/htmlArticleGalley:display.tpl':
+			//OJS 3.1.2
 			case 'plugins-plugins-generic-pdfJsViewer-generic-pdfJsViewer:articleGalley.tpl':
             case 'plugins-plugins-generic-htmlArticleGalley-generic-htmlArticleGalley:display.tpl':
-                //$smarty->register_outputfilter(array($this, 'insertPixelTagArticlePage'));
-				$smarty->registerFilter('output',array($this, 'insertPixelTagArticlePage'));
+                if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+                    $smarty->register_outputfilter(array($this, 'insertPixelTagArticlePage'));
+                } else {
+                    $smarty->registerFilter('output',array($this, 'insertPixelTagArticlePage'));
+                }
 				break;
             case 'frontend/pages/indexJournal.tpl':
 			case 'frontend/pages/issue.tpl':
-				//$smarty->register_outputfilter(array($this, 'insertPixelTagIssueTOC'));
-				$smarty->registerFilter('output',array($this, 'insertPixelTagIssueTOC'));
+			    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+				    $smarty->register_outputfilter(array($this, 'insertPixelTagIssueTOC'));
+			    } else {
+				    $smarty->registerFilter('output',array($this, 'insertPixelTagIssueTOC'));
+			    }
 				break;
 		}
 		return false;
@@ -554,12 +565,11 @@ class VGWortPlugin extends GenericPlugin {
 	 * Insert the VG Wort pixel tag for galleys on the article view page.
 	 */
 	function insertPixelTagArticlePage($output, $smarty) {
-	    error_log("RS_DEBUG: ".print_r(" insertPixelTagArticlePage", TRUE));
 		$journal = $smarty->get_template_vars('currentJournal');
 		$article = $smarty->get_template_vars('article');
 		
 		// get the galley if it exists and check if it is supported by VG Wort
-		// currently the variable is provided only by the PdfJSViewerPlugin and the HTMLArticleGalleyPluin
+		// currently the variable is provided only by the PdfJSViewerPlugin and the HTMLArticleGalleyPlugin
 		$galley = $smarty->get_template_vars('galley');
 		if (!$galley || !$this->galleySupported($galley)) $galley = null;
 
@@ -570,13 +580,13 @@ class VGWortPlugin extends GenericPlugin {
 
 		$publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
 		$publishedArticle =  $publishedArticleDao->getByArticleId($article->getId(), $journal->getId());
-		if (isset($publishedArticle)) {
+		if (isset($publishedArticle)) {		    
 			$issueDao = DAORegistry::getDAO('IssueDAO');
 			$issue = $issueDao->getById($publishedArticle->getIssueId(), $journal->getId());
 			if ($issue->getPublished()) {
 				// get the assigned pixel tag
 				$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
-				$pixelTag = $pixelTagDao->getPixelTagBySubmissionId($publishedArticle->getId(), $journal->getId());
+				$pixelTag = $pixelTagDao->getPixelTagBySubmissionId($publishedArticle->getId(), $journal->getId());				
 				if (isset($pixelTag) && !$pixelTag->getDateRemoved()) {
 					$application = PKPApplication::getApplication();
 					$request = $application->getRequest();
@@ -587,9 +597,8 @@ class VGWortPlugin extends GenericPlugin {
 
 					// if galley exists it is the galley view page
 					// currently provided only by PdfJSViewerPlugin and HTMLArticleGalleyPlugin
-					// check if the galley is excluded from VG Wort pixel tag assignment
+					// check if the galley is excluded from VG Wort pixel tag assignment					
 					if ($galley && !$galley->getData('excludeVGWortAssignPixel')) {
-					    error_log("RS_DEBUG: ".print_r("galley view page GALLEYID: ".$galley->getID(), TRUE));
 						// isert the pixel tag image into the HTML code
 						$search = '</header>';
 						$replace = $search . $pixelTagImg;
@@ -625,7 +634,6 @@ class VGWortPlugin extends GenericPlugin {
 						$output = str_replace($search, $replace, $output);
 
 						foreach ($downloadGalleys as $galley) {
-						    error_log("RS_DEBUG: ".print_r("article view page GALLEYID: ".$galley->getID(), TRUE));
 						 	// change galley download links
 							$galleyUrl = $request->url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId()));
 							$search = '#<a class="(.+)" href="' . $galleyUrl . '">#';
@@ -641,10 +649,13 @@ class VGWortPlugin extends GenericPlugin {
 				}
 			}
 		}
-		error_log("RS_DEBUG: ".print_r("UNREGISTER", TRUE));
-		error_log("RS_DEBUG: preg_match: ".print_r(preg_match('/vgwPixelCall/',$output)===1?'TRUE':'FALSE', TRUE));
-		//$smarty->unregister_outputfilter('insertPixelTagArticlePage');
-		if (preg_match('/vgwPixelCall/',$output)===1) $smarty->unregisterFilter('output', array($this, 'insertPixelTagArticlePage'));
+		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
+		if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+		    $smarty->unregister_outputfilter('insertPixelTagArticlePage');
+		} else {
+            //if (preg_match('/vgwPixelCall/',$output)===1)
+            $smarty->unregisterFilter('output', array($this, 'insertPixelTagArticlePage'));
+		}
 		return $output;
 	}
 
@@ -697,8 +708,13 @@ class VGWortPlugin extends GenericPlugin {
 				}
 			}
 		}
-		//$smarty->unregister_outputfilter('insertPixelTagIssueTOC');
-		if (preg_match('/vgwPixelCall/',$output)===1) $smarty->unregisterFilter('output', array($this, 'insertPixelTagIssueTOC'));
+		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
+		if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+            $smarty->unregister_outputfilter('insertPixelTagIssueTOC');
+		} else  {
+            //if (preg_match('/vgwPixelCall/',$output)===1)
+            $smarty->unregisterFilter('output', array($this, 'insertPixelTagIssueTOC'));
+		}
 		return $output;
 	}
 

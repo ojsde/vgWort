@@ -415,7 +415,6 @@ class VGWortEditorAction {
 			        return array(false, __('plugins.generic.vgWort.register.vgWortBusinessException', array('errorcode' => $errorDetails->errorcode, 'errormsg' => $errorDetails->errormsg)));
 			        
 // 			        $function = $detail->newMessageFault;
-// 			        error_log(print_r("RS_DEBUG", TRUE));
 // 			        error_log(print_r($detail, TRUE));
 // 			        if (isset($function)) {
 // 			            if ($function->errorcode == 4) {
