@@ -42,7 +42,7 @@
 			<a href="#" onClick="javascript:clearDate()">{translate key="plugins.generic.vgWort.settings.clearDate"}</a>
 		{/fbvFormSection}
 		{fbvFormSection}
-			{fbvElement type="text" id="daysAfterPublication" name="daysAfterPublication" label="plugins.generic.vgWort.settings.vgWortRegistration.daysAfterPublication" value=$daysAfterPublication" size=$fbvStyles.size.MEDIUM}
+			{fbvElement type="text" id="daysAfterPublication" name="daysAfterPublication" label="plugins.generic.vgWort.settings.vgWortRegistration.daysAfterPublication" value=$daysAfterPublication size=$fbvStyles.size.MEDIUM}
 		{/fbvFormSection}
 	{/fbvFormArea}
 	{*

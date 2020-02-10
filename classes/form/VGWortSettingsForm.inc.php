@@ -29,10 +29,11 @@ class VGWortSettingsForm extends Form {
 	 * @param $contextId int
 	 */
 	function __construct($plugin, $contextId) {
-		$this->contextId = $contextId;
-		$this->plugin = $plugin;
 
-		parent::__construct($plugin->getTemplatePath() . 'settingsForm.tpl');
+	    $this->contextId = $contextId;
+		$this->plugin = $plugin;
+		
+		parent::__construct(method_exists($plugin, 'getTemplateResource') ? $plugin->getTemplateResource('settingsForm.tpl') : $plugin->getTemplatePath() . 'settingsForm.tpl');
 
 		$this->addCheck(new FormValidator($this, 'vgWortUserId', 'required', 'plugins.generic.vgWort.settings.vgWortUserIdRequired'));
 		$this->addCheck(new FormValidator($this, 'vgWortUserPassword', 'required', 'plugins.generic.vgWort.settings.vgWortUserPasswordRequired'));
@@ -44,7 +45,7 @@ class VGWortSettingsForm extends Form {
 	/**
 	 * @copydoc Form::initData()
 	 */
-	function initData($request) {
+	function initData() {
 		foreach($this->_getFormFields() as $fieldName => $fieldType) {
 			$fieldValue = $this->plugin->getSetting($this->contextId, $fieldName);
 			if ($fieldName == 'daysAfterPublication') {
@@ -76,7 +77,7 @@ class VGWortSettingsForm extends Form {
 	/**
 	 * @copydoc Form::fetch()
 	 */
-	function fetch($request) {
+	function fetch($request, $template = NULL, $display = false) {
 		$templateMgr = TemplateManager::getManager($request);
 		$templateMgr->assign('pluginName', $this->plugin->getName());
 		return parent::fetch($request);
@@ -92,7 +93,7 @@ class VGWortSettingsForm extends Form {
 	/**
 	 * Save settings.
 	 */
-	function execute() {
+	function execute(...$functionArgs) {
 		foreach($this->_getFormFields() as $fieldName => $fieldType) {
 			if ($fieldName == 'dateInYear') {
 			}

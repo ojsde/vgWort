@@ -263,7 +263,8 @@ class PixelTagGridHandler extends GridHandler {
 		$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
 		$templateMgr = TemplateManager::getManager($request);
 		$templateMgr->assign('failedExists', $pixelTagDao->failedUnregisteredActiveExists($request->getContext()->getId()));
-		return $templateMgr->fetchJson($vgWortPlugin->getTemplatePath() . 'pixelTagsTab.tpl');
+		//return $templateMgr->fetchJson($vgWortPlugin->getTemplatePath() . 'pixelTagsTab.tpl');
+		return $templateMgr->fetchJson(method_exists($plugin, 'getTemplateResource') ? $plugin->getTemplateResource('pixelTagsTab.tpl') : $vgWortPlugin->getTemplatePath() . 'pixelTagsTab.tpl');
 	}
 
 	/**
@@ -282,7 +283,8 @@ class PixelTagGridHandler extends GridHandler {
 		$templateMgr->assign(array(
 			'statusMessage' => htmlentities($statusMessage),
 		));
-		return $templateMgr->fetchJson($vgWortPlugin->getTemplatePath() . 'statusMessage.tpl');
+		//return $templateMgr->fetchJson($vgWortPlugin->getTemplatePath() . 'statusMessage.tpl');
+		return $templateMgr->fetchJson(method_exists($plugin, 'getTemplateResource') ? $plugin->getTemplateResource('statusMessage.tpl') : $vgWortPlugin->getTemplatePath() . 'statusMessage.tpl');
 	}
 
 	/**
