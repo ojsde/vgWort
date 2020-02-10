@@ -629,7 +629,7 @@ class VGWortPlugin extends GenericPlugin {
 							$galleyUrl = $request->url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId()));
 							$search = '#<a class="(.+)" href="' . $galleyUrl . '">#';
 							// insert pixel tag for galleys download links using JS
-							$replace = '<div id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');">';
+							$replace = '<div style="font-size:0;line-height:0;width:0;" id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');">';
 						 	// insert pixel tag for galleys download links using VG Wort redirect
 							//$newGalleyUrl = $pixelTagSrc . '?l=' . $galleyUrl;
 							//$replace = '<a class="$1" href="' . $newGalleyUrl . '">';
@@ -686,7 +686,7 @@ class VGWortPlugin extends GenericPlugin {
 							$galleyUrl = $request->url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId()));
 							$search = '#<a class="(.+)" href="' . $galleyUrl . '">#';
 							// insert pixel tag for galleys download links using JS
-							$replace = '<div id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');">';
+							$replace = '<div style="font-size:0;line-height:0; width:0;" id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');">';
 							// insert pixel tag for galleys download links using VG Wort redirect
 							//$newGalleyUrl = $pixelTagSrc . '?l=' . $galleyUrl;
 							//$replace = '<a class="$1" href="' . $newGalleyUrl . '">';
