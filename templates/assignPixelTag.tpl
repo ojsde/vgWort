@@ -8,10 +8,10 @@
  *
  *}
 <!-- VG Wort -->
-{fbvFormArea id="vgWortAssignPixelFormArea" class="border" title="plugins.generic.vgWort.pixelTag"}
+{fbvFormArea id="vgWortAssignPixelFormArea" class="border"}
 	{if $pubObject instanceof Submission}
 		{if !$pixelTag}
-			{fbvFormSection}
+			{fbvFormSection title="plugins.generic.vgWort.pixelTag"}
 				<p class="pkp_help">{translate key="plugins.generic.vgWort.pixelTag.textType.description"}</p>
 				{fbvElement type="select" id="vgWortTextType" name="vgWortTextType" from=$typeOptions selected=$vgWortTextType label="plugins.generic.vgWort.pixelTag.textType" translate=true size=$fbvStyles.size.SMALL}
 			{/fbvFormSection}
@@ -19,7 +19,7 @@
 				{fbvElement type="checkbox" id="vgWortAssignPixel" name="vgWortAssignPixel" value="1" checked=true label="plugins.generic.vgWort.pixelTag.assign"}
 			{/fbvFormSection}
 		{else}
-			{fbvFormSection}
+			{fbvFormSection title="plugins.generic.vgWort.pixelTag"}
 			<div class="item pixelTag">
 				<div class="sub_item">
 					<span class="label">
@@ -89,16 +89,16 @@
 		{/if}
 	{elseif $pubObject instanceof Representation}
 		{if !$pixelTag}
-			{fbvFormSection}
+			{fbvFormSection title="plugins.generic.vgWort.pixelTag"}
 				<p>{translate key="plugins.generic.vgWort.pixelTag.representation.notAssigned"}</p>
 			{/fbvFormSection}
 		{else}	
 			{if $pixelTag->getDateRemoved()}
-				{fbvFormSection}
+				{fbvFormSection title="plugins.generic.vgWort.pixelTag"}
 					<p>{translate key="plugins.generic.vgWort.pixelTag.removed"}</p>
 				{/fbvFormSection}
 			{elseif $galleyNotSupported}
-				{fbvFormSection}
+				{fbvFormSection title="plugins.generic.vgWort.pixelTag"}
 					<p>{translate key="plugins.generic.vgWort.pixelTag.representation.notSupported"}</p>
 				{/fbvFormSection}
 			{else}
@@ -107,7 +107,7 @@
 				{else}
 					<p>{translate key="plugins.generic.vgWort.pixelTag.representation.assigned"}</p>
 				{/if}
-				{fbvFormSection list=true}
+				{fbvFormSection list=true title="plugins.generic.vgWort.pixelTag"}
 					{fbvElement type="checkbox" id="excludeVGWortAssignPixel" name="excludeVGWortAssignPixel" value="1" checked=$excludeVGWortAssignPixel|compare:true label="plugins.generic.vgWort.pixelTag.representation.exclude"}
 				{/fbvFormSection}
 			{/if}
