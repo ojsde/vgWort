@@ -654,11 +654,13 @@ class VGWortPlugin extends GenericPlugin {
 			}
 		}
 		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
-		if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-		    $smarty->unregister_outputfilter('insertPixelTagArticlePage');
-		} else {
-            //if (preg_match('/vgwPixelCall/',$output)===1)
-            $smarty->unregisterFilter('output', array($this, 'insertPixelTagArticlePage'));
+		//unregister filter if we reached the page body end tag
+		if (preg_match('#</body>#', $output)) {
+    		if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+    		    $smarty->unregister_outputfilter('insertPixelTagArticlePage');
+    		} else {
+                $smarty->unregisterFilter('output', array($this, 'insertPixelTagArticlePage'));
+    		}
 		}
 		return $output;
 	}
@@ -666,7 +668,7 @@ class VGWortPlugin extends GenericPlugin {
 	/**
 	 * Insert the VG Wort pixel tag for galleys on the issue TOC page.
 	 */
-	function insertPixelTagIssueTOC($output, $smarty) { 
+	function insertPixelTagIssueTOC($output, $smarty) {
 		$journal = $smarty->get_template_vars('currentJournal');
 		$issue = $smarty->get_template_vars('issue');
 		$publishedArticles = $smarty->get_template_vars('publishedArticles');
@@ -697,7 +699,6 @@ class VGWortPlugin extends GenericPlugin {
 							$scriptInserted = true;
 						}
 						foreach ($downloadGalleys as $galley) {
-						    $RS_i++;
 							// change galley download links
 							$galleyUrl = $request->url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $galley->getBestGalleyId()));
 							$search = '#<a class="(.+)" href="' . $galleyUrl . '">#';
@@ -713,11 +714,13 @@ class VGWortPlugin extends GenericPlugin {
 			}
 		}
 		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
-		if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-            $smarty->unregister_outputfilter('insertPixelTagIssueTOC');
-		} else  {
-            //if (preg_match('/vgwPixelCall/',$output)===1)
-            $smarty->unregisterFilter('output', array($this, 'insertPixelTagIssueTOC'));
+		//unregister filter if we reached the page body end tag
+		if (preg_match('#</body>#', $output)) {
+		    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+                $smarty->unregister_outputfilter('insertPixelTagIssueTOC');
+            } else  {
+		      $smarty->unregisterFilter('output', array($this, 'insertPixelTagIssueTOC'));
+		    }
 		}
 		return $output;
 	}
