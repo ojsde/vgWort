@@ -135,9 +135,9 @@ class VGWortEditorAction {
 	 * @param $pixelTag PixelTag
 	 * @param $request Request
 	 */
-	 function registerPixelTag($pixelTag, $request) {
+	 function registerPixelTag($pixelTag, $request, $contextId = null) {
 		$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
-
+		
 		// check if the requirements for the registration are fulfilled
 		$checkResult = $this->check($pixelTag, $request);
 
@@ -147,7 +147,7 @@ class VGWortEditorAction {
 			$errorMsg = $checkResult[1];
 		} else {
 			// register
-			$registerResult = $this->newMessage($pixelTag, $request);
+			$registerResult = $this->newMessage($pixelTag, $request, $contextId);
 
 			$isError = !$registerResult[0];
 			$errorMsg = $registerResult[1];
@@ -241,14 +241,14 @@ class VGWortEditorAction {
 	 * the check is already done, i.e. the article and the issue are published,
 	 * there is a supported galley and the existing card numbers are valid
 	 */
-	function newMessage($pixelTag, $request) {
+	function newMessage($pixelTag, $request, $contextId = null) {
 		$vgWortPlugin = $this->_plugin;
 		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
-
-		$dispatcher = $request->getDispatcher();
-		$context = $request->getContext();
-		$contextId = $context->getId();
-
+		
+		if (!isset($contextId)) {
+		  $contextId = $vgWortPlugin->getCurrentContextId();//$context->getId();
+		}		
+		
 		$vgWortPlugin->import('classes.PixelTag');
 
 		$publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
@@ -314,13 +314,15 @@ class VGWortEditorAction {
 		// construct the VG Wort webranges for the supported galleys
 		$webranges = array('webrange' => array());
 		foreach ($supportedGalleys as $supportedGalley) {
-			$url = $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', array($publishedArticle->getBestArticleId(), $supportedGalley->getBestGalleyId()));
+		    $url = $request->url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $supportedGalley->getBestGalleyId()));			
 			$webrange = array('url' => array($url));
 			$webranges['webrange'][] = $webrange;
-			$downlaodUrl1 = $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', array($publishedArticle->getBestArticleId(), $supportedGalley->getBestGalleyId()));
+			
+			$downlaodUrl1 = $request->url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $supportedGalley->getBestGalleyId()));
 			$webrange = array('url' => array($downlaodUrl1));
 			$webranges['webrange'][] = $webrange;
-			$downlaodUrl2 = $dispatcher->url($request, ROUTE_PAGE, $context->getPath(), 'article', 'view', array($publishedArticle->getBestArticleId(), $supportedGalley->getBestGalleyId(), $supportedGalley->getFileId()));
+			
+			$downlaodUrl2 = $request->url(null, 'article', 'view', array($publishedArticle->getBestArticleId(), $supportedGalley->getBestGalleyId(), $supportedGalley->getFileId()));
 			$webrange = array('url' => array($downlaodUrl2));
 			$webranges['webrange'][] = $webrange;
 		}
@@ -388,10 +390,9 @@ class VGWortEditorAction {
 			}
 
 			// check web service: availability and credentials
-			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);
-
+			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);			
 			$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
-			$result = $client->newMessage(array("parties" => $parties, "privateidentificationid" => $pixelTag->getPrivateCode(), "messagetext" => $message, "webranges" => $webranges));
+			$result = $client->newMessage(array("parties" => $parties, "privateidentificationid" => $pixelTag->getPrivateCode(), "messagetext" => $message, "webranges" => $webranges));		
 			return array($result->status == 'OK', '');
 		}
 		catch (SoapFault $soapFault) {
@@ -413,7 +414,6 @@ class VGWortEditorAction {
 			        $errorDetails = $soapFault->detail->newMessageFault;
 			        error_log(print_r($errorDetails, TRUE));
 			        return array(false, __('plugins.generic.vgWort.register.vgWortBusinessException', array('errorcode' => $errorDetails->errorcode, 'errormsg' => $errorDetails->errormsg)));
-			        
 // 			        $function = $detail->newMessageFault;
 // 			        error_log(print_r($detail, TRUE));
 // 			        if (isset($function)) {
@@ -428,8 +428,11 @@ class VGWortEditorAction {
 // 			                return array(false, __('plugins.generic.vgWort.register.errorCode'.$function->errorcode, array('details' => $function->errormsg)));
 // 			            }
 // 			        }
+			        return array(false, __('plugins.generic.vgWort.register.errorCode', array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring)));
 			    default:
-			        error_log(print_r($soapFault->detail, TRUE));
+			        if (isset($soapFault->detail)) {
+			             error_log(print_r($soapFault->detail, TRUE));
+			        }
 			        return array(false, __('plugins.generic.vgWort.register.errorCode', array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring)));
 			}			
 		}
