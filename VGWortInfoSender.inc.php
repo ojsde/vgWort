@@ -27,7 +27,7 @@ class VGWortInfoSender extends ScheduledTask {
 		PluginRegistry::loadCategory('generic');
 		$plugin = PluginRegistry::getPlugin('generic', 'vgwortplugin'); /* @var $plugin VGWortPlugin */
 		$this->_plugin = $plugin;
-
+		
 		if (is_a($plugin, 'VGWortPlugin')) {
 			$plugin->addLocaleData();
 			$plugin->import('classes.PixelTag');
@@ -50,23 +50,18 @@ class VGWortInfoSender extends ScheduledTask {
 	 * @copydoc ScheduledTask::executeActions()
 	 */
 	function executeActions() {
-		if (!$this->_plugin) return false;
-
+		if (!$this->_plugin) return false;	
 		$plugin = $this->_plugin;
 		$journals = $this->_getJournals();
 
-		$application = PKPApplication::getApplication();
-		$request = $application->getRequest();
-
 		$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
 		import('plugins.generic.vgWort.classes.VGWortEditorAction');
-		$vgWortEditorAction = new VGWortEditorAction($plugin);
 
-		foreach ($journals as $journal) {
+		foreach ($journals as $journal) {	    
 			// get this task's last run date
 			$taskDao = DAORegistry::getDAO('ScheduledTaskDAO'); /* @var $taskDao ScheduledTaskDAO */
 			$lastRunTime = $taskDao->getLastRunTime('plugins.generic.vgwort.VGWortInfoSender');
-			$lastRunShortDate = date('Y-m-d', strtotime($lastRunTime));
+			$lastRunShortDate = date('Y-m-d', $lastRunTime);
 
 			// In case when both plugin settings for the automatic registration (dateInYear and daysAfterPublication) exist,
 			// and the dateInYear can be applied,
@@ -86,6 +81,7 @@ class VGWortInfoSender extends ScheduledTask {
 				$checkDateInYear = date("Y-m-d", mktime(0, 0, 0, $month, $day, $currYear));
 
 				if (time() >= strtotime($checkDateInYear) && strtotime($lastRunShortDate) < strtotime($checkDateInYear)) {
+			    
 					// get all unregistered and active pixel tags,
 					// the failed pixel tags (containing a message) are considered here as well
 					$unregisteredActivePixelTags = $pixelTagDao->getAllForRegistration($journal->getId());
@@ -99,13 +95,14 @@ class VGWortInfoSender extends ScheduledTask {
 			// should be registered in specific time after the article publication
 			$daysAfterPublication = $plugin->getSetting($journal->getId(), 'daysAfterPublication');
 			$publicationDate = date('Y-m-d', strtotime('-'.$daysAfterPublication.' days', time()));
-
+			
 			if ($daysAfterPublication > 0 && !$justRegistered) {
 				// get all unregistered, active and failed pixel tags
-				// assigned to articles that are published before the specified date
-				$unregisteredActivePixelTags = $pixelTagDao->getAllForRegistration($journal->getId(), $publicationDate);
+				// assigned to articles that are published before the specified date			    
+			    
+			    $unregisteredActivePixelTags = $pixelTagDao->getAllForRegistration($journal->getId(), $publicationDate);
 				// register the pixel tags
-				$this->_registerPixelTags($unregisteredActivePixelTags);
+			    $this->_registerPixelTags($unregisteredActivePixelTags,$journal->getId());
 			}
 		}
 		return true;
@@ -115,11 +112,16 @@ class VGWortInfoSender extends ScheduledTask {
 	 * Register the pixel tags.
 	 * @param $pixelTags DAOResultFactory
 	 */
-	function _registerPixelTags($pixelTags) {
+	function _registerPixelTags($pixelTags,$contextId) {
+	    $plugin = $this->_plugin;
+	    $application = PKPApplication::getApplication();
+	    $request = $application->getRequest();
+	    $vgWortEditorAction = new VGWortEditorAction($plugin);
+	    
 		while ($pixelTag = $pixelTags->next()) {
 			// double check that the pixel tag was not removed
 			if (!$pixelTag->getDateRemoved()) {
-				$vgWortEditorAction->registerPixelTag($pixelTag, $request);
+				$vgWortEditorAction->registerPixelTag($pixelTag, $request, $contextId);
 			}
 		}
 	}
@@ -133,10 +135,11 @@ class VGWortInfoSender extends ScheduledTask {
 		$plugin = $this->_plugin;
 		$contextDao = Application::getContextDAO(); /* @var $contextDao JournalDAO */
 		$journalFactory = $contextDao->getAll(true);
-
+		
 		$journals = array();
 		while($journal = $journalFactory->next()) {
 			$journalId = $journal->getId();
+			
 			if (!$plugin->getSetting($journalId, 'vgWortUserId') || !$plugin->getSetting($journalId, 'vgWortUserPassword') ||
 				($plugin->getSetting($journalId, 'dateInYear') == '' && !$plugin->getSetting($journalId, 'daysAfterPublication'))) continue;
 			$journals[] = $journal;
