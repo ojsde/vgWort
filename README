@@ -1,8 +1,8 @@
 ================================
 === OJS VG Wort Plugin
-=== Version: 1.7
-=== Author: Božana Bokan <bozana.bokan@posteo.net>
-=== Last update: November 27, 2018
+=== Version: 2.0
+=== Author: Božana Bokan, Ronald Steffen
+=== Last update: June 23, 2020
 ================================
 
 About
@@ -18,7 +18,7 @@ This plugin is licensed under the GNU General Public License v2. See the file LI
 System Requirements
 -------------------
 This plugin is compatible with...
-- OJS 3.1.1-4
+- OJS 3.1.1 and OJS 3.1.2
 
 Additionally PHP Soap, and PHP OpenSSL extension modules.
 
@@ -58,3 +58,4 @@ Version History
 1.5 - VG Wort test system in plugin settings, 
 1.6 - Fix a major error: all authors and translators has to be registered at VG Wort. Also: add the possibility to enter translators and to remove a registration.
 1.7 - Plugin version for OJS 3.1.1-4
+2.0 - Plugin version for OJS 3.1.2

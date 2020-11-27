@@ -12,13 +12,12 @@
  * @brief VGWortEditorAction class.
  */
 
-//define('PIXEL_SERVICE_WSDL', 'https://tom.vgwort.de/services/1.0/pixelService.wsdl');
-//define('MESSAGE_SERVICE_WSDL', 'https://tom.vgwort.de/services/1.13/messageService.wsdl');
-define('PIXEL_SERVICE_WSDL', 'https://tom-test.vgwort.de/services/1.0/pixelService.wsdl');
-define('MESSAGE_SERVICE_WSDL', 'https://tom-test.vgwort.de/services/1.13/messageService.wsdl');
-/* just to test the plugin, please use the VG Wort test portal: */
-define('PIXEL_SERVICE_WSDL_TEST', 'https://tom-test.vgwort.de/services/1.0/pixelService.wsdl');
-define('MESSAGE_SERVICE_WSDL_TEST', 'https://tom-test.vgwort.de/services/1.13/messageService.wsdl');
+define('PIXEL_SERVICE_WSDL', 'https://tom.vgwort.de/services/1.0/pixelService.wsdl');
+define('MESSAGE_SERVICE_WSDL', 'https://tom.vgwort.de/services/1.13/messageService.wsdl');
+
+/* to just test the plugin, please use the VG Wort test portal: */
+//define('PIXEL_SERVICE_WSDL_TEST', 'https://tom-test.vgwort.de/services/1.0/pixelService.wsdl');
+//define('MESSAGE_SERVICE_WSDL_TEST', 'https://tom-test.vgwort.de/services/1.13/messageService.wsdl');
 
 
 class VGWortEditorAction {
