@@ -33,7 +33,7 @@ Installation via command line without Git:
  - unzip the archive to the folder plugins/generic/
  - rename the main plugin folder to "vgWort" if necessary
  - from your OJS application's installation directory, run the upgrade script (it is recommended to back up your database first):
-   php tools/upgrade.php upgrade or php tools/installPluginVersion.php (see https://github.com/pkp/pkp-lib/issues/2503)
+   php tools/upgrade.php upgrade or php lib/pkp/tools/installPluginVersion.php (see https://github.com/pkp/pkp-lib/issues/2503)
 
 Installation with Git:
  - cd [my_ojs_installation]/plugins/generic

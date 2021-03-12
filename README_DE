@@ -34,7 +34,7 @@ Installation über die Kommandozeile ohne Git:
  - ggf. Umbenennen des Hauptverzeichnisses in "vgWort"
  - Aktualisierung der Datenbank (es empfiehlt sich, zuerst ein Backup der Datenbank zu erstellen),
    führen Sie dazu aus Ihrem OJS-Verzeichnis aus: php tools/upgrade.php upgrade oder
-   php tools/installPluginVersion.php (see https://github.com/pkp/pkp-lib/issues/2503)
+   hp lib/pkp/tools/installPluginVersion.php plugins/generic/vgWort/version.xml (see https://github.com/pkp/pkp-lib/issues/2503)
 
 Installation über die Kommandozeile mit Git:
  - cd [my_ojs_installation]/plugins/generic

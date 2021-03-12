@@ -672,7 +672,7 @@ class VGWortPlugin extends GenericPlugin {
 		$journal = $smarty->get_template_vars('currentJournal');
 		$issue = $smarty->get_template_vars('issue');
 		$publishedArticles = $smarty->get_template_vars('publishedArticles');
-		if ($issue->getPublished()) {
+		if (exists($issue) ? $issue->getPublished() : false) {
 			$scriptInserted = false;
 			foreach ($publishedArticles as $sectionId) {
 				foreach ($sectionId['articles'] as $publishedArticle) {
