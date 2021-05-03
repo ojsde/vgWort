@@ -41,7 +41,12 @@ Installation with Git:
  - cd vgWort
  - git checkout [branch]
  - cd [my_ojs_installation]
- - php tools/upgrade.php upgrade or php tools/installPluginVersion.php (s. https://github.com/pkp/pkp-lib/issues/2503, it is recommended to back up your database first)
+ - php tools/upgrade.php upgrade
+     or
+   php tools/installPluginVersion.php
+     and
+   php tools/dbXMLtoSQL.php -schema execute plugins/generic/vgWort/xml/schema.xml
+   (s. https://github.com/pkp/pkp-lib/issues/2503, it is recommended to back up your database first)
 
 Contact/Support
 ---------------
