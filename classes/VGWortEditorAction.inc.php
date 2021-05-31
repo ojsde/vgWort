@@ -348,7 +348,7 @@ class VGWortEditorAction {
 		$content = $submissionFileManager->readFileFromPath($galleyFile->getFilePath());
 		$galleyFileType = $galleyFile->getFileType();
 		if ($galleyFileType == 'text/html') {
-			$text = array('plainText' => base64_encode(strip_tags($content)));
+			$text = array('plainText' => strip_tags($content));
 		} elseif ($galleyFileType == 'application/pdf') {
 		    //$text = array('pdf' => base64_encode($content));
 		    // base64_encode of pdf causes soapClient/Business Exception -> vgWort Errorcode 8
@@ -367,7 +367,7 @@ class VGWortEditorAction {
 		if (!isset($title) || $title == '') $title = $publishedArticle->getTitle('en_US');
 		if (!isset($title) || $title == '') $title = $publishedArticle->getTitle($submissionLocale);
 		if (!isset($title) || $title == '') $title = $publishedArticle->getTitle($primaryLocale);
-		$shortText = substr($title, 0, 99);
+		$shortText = mb_substr($title, 0, 99, "UTF-8");
 
 		// is it a poem
 		$isLyric = ($pixelTag->getTextType() == TYPE_LYRIC);
