@@ -89,7 +89,7 @@
 	<message key="plugins.generic.vgWort.pixelTag.assign">Ein VG-Wort-Zählpixel diesem Artikel zuweisen.</message>
 	<message key="plugins.generic.vgWort.pixelTag.remove">Das VG-Wort-Zählpixel von diesem Artikel entfernen.</message>
 	<message key="plugins.generic.vgWort.pixelTag.removed">Das VG-Wort-Zählpixel wurde von diesem Artikel entfernt.</message>
-	<message key="plugins.generic.vgWort.pixelTag.representation.notAssigned">Es wurde noch kein VG-Wort-Zählpixel diesem Artikel zugewiesen.</message>
+	<message key="plugins.generic.vgWort.pixelTag.representation.notAssigned">Es wurde diesem Artikel noch kein VG-Wort-Zählpixel zugewiesen.</message>
 	<message key="plugins.generic.vgWort.pixelTag.representation.notSupported">Das VG-Wort-Zählpixel kann dieser Fahne nicht zugewiesen werden. Die Fahne ist entweder kein Volltext, oder sie ist nicht im Format PDF, HTML oder EPUB, oder die Datei ist größer als 15MB.</message>
 	<message key="plugins.generic.vgWort.pixelTag.representation.assigned">Das VG-Wort-Zählpixel wird dieser Fahne zugewiesen d.h. diese Fahne wird für die VG-Wort-Zählung berücksichtigt.</message>
 	<message key="plugins.generic.vgWort.pixelTag.representation.exclude">Diese Fahne von der Zuweisung eines VG-Wort-Zählpixels d.h. von der VG-Wort-Zählung ausnehmen.</message>
@@ -146,4 +146,10 @@
 	Fehlercode: {$errorcode}
 
 	{$errormsg}</message>
+
+    <message key="plugin.generic.vgWort.pixelTag.status.registeredactive">Registriert, aktiv</message>
+    <message key="plugin.generic.vgWort.pixelTag.status.unregisteredactive">Unregistriert, aktiv</message>
+    <message key="plugin.generic.vgWort.pixelTag.status.registeredremoved">Registriert, entfernt</message>
+    <message key="plugin.generic.vgWort.pixelTag.status.unregisteredremoved">Unregistriert, entfernt</message>
+
 </locale>

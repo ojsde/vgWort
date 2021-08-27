@@ -174,6 +174,7 @@ class PixelTagDAO extends DAO {
 		);
 	}
 
+
 	/**
 	 * Delete a pixel tag.
 	 * @param $pixelTag PixelTag
@@ -270,6 +271,7 @@ class PixelTagDAO extends DAO {
 		if ($result->RecordCount() != 0) {
 			$returner = $this->_fromRow($result->GetRowAssoc(false));
 		}
+
 		$result->Close();
 		return $returner;
 	}
@@ -281,15 +283,17 @@ class PixelTagDAO extends DAO {
 	 * @return DAOResultFactory containing matching PixelTags
 	 */
 	function getAllForRegistration($contextId, $publicationDate = null) {
-		import('classes.article.PublishedArticle'); // STATUS_DECLINED
+		//echo ("STATUS_DECLINED");
+		import('classes.publication.Publication'); // STATUS_DECLINED
 		$params = array((int) $contextId, PT_STATUS_UNREGISTERED_ACTIVE, STATUS_DECLINED);
-		$result = $this->retrieve(
+        $result = $this->retrieve(
 			'SELECT pt.*
 			FROM pixel_tags pt
-			LEFT JOIN published_submissions ps ON ps.submission_id = pt.submission_id
+			LEFT JOIN publications ps ON ps.submission_id = pt.submission_id
 			LEFT JOIN submissions s ON s.submission_id = ps.submission_id
-			LEFT JOIN issues i ON i.issue_id = ps.issue_id
-			WHERE 	pt.context_id = ? AND pt.status = ? AND
+			LEFT JOIN publication_settings ps_set ON ps_set.publication_id = ps.publication_id
+            LEFT JOIN issues i ON i.issue_id = ps_set.setting_value
+			WHERE ps_set.setting_name = "issueId" AND pt.context_id = ? AND pt.status = ? AND
 				i.published = 1	AND s.status <> ?' .
 				($publicationDate ? sprintf(' AND ps.date_published < %s AND i.date_published < %s', $this->datetimeToDB($publicationDate), $this->datetimeToDB($publicationDate)) : ''),
 			$params

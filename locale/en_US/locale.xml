@@ -70,7 +70,7 @@
 	<message key="plugins.generic.vgWort.pixelTag.registered.removed">Registered, removed</message>
 	<message key="plugins.generic.vgWort.pixelTag.failed">Failed</message>
 	<message key="plugins.generic.vgWort.pixelTag.noStatusMessage">No failure message found.</message>
-	<message key="plugins.generic.vgWort.pixelTag.LocalizationNotice">Please note that the data is transferred in the submission language of the selected article. For individuals to participate in royalty disribution, the spelling of names has to be identical to the spelling as regsitred with vgWort. The submission langauge can be selected in the article metadata.</message>
+	<message key="plugins.generic.vgWort.pixelTag.LocalizationNotice">Please note that the data is transferred in the submission language of the selected article. For individuals to participate in royalty disribution, the spelling of names has to be identical to the spelling as registered with vgWort. The submission langauge can be selected in the article metadata.</message>
 	<!-- pixel tags listing -->
 	<message key="plugins.generic.vgWort.pixelTags">Pixel Tags</message>
 	<message key="plugins.generic.vgWort.pixelTags.codes">Private and Public Code</message>
@@ -112,4 +112,9 @@
 	Error code: {$errorcode}
 
 	{$errormsg}</message>
+
+	<message key="plugin.generic.vgWort.pixelTag.status.registeredactive">Registered, active</message>
+	<message key="plugin.generic.vgWort.pixelTag.status.unregisteredactive">Unregistered, active</message>
+	<message key="plugin.generic.vgWort.pixelTag.status.registeredremoved">Registered, removed</message>
+	<message key="plugin.generic.vgWort.pixelTag.status.unregisteredremoved">Unregistered, removed</message>
 </locale>
