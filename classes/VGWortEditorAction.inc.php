@@ -39,7 +39,6 @@ class VGWortEditorAction {
 	 */
 	function orderPixel($contextId) {
 		$vgWortPlugin = $this->_plugin;
-
 		$vgWortUserId = $vgWortPlugin->getSetting($contextId, 'vgWortUserId');
 		$vgWortUserPassword = $vgWortPlugin->getSetting($contextId, 'vgWortUserPassword');
 		$vgWortTestAPI = $vgWortPlugin->getSetting($contextId, 'vgWortTestAPI');
@@ -52,13 +51,13 @@ class VGWortEditorAction {
 			// check if the system requirements are fulfilled
 			if (!$vgWortPlugin->requirementsFulfilled()) {
 				return array(false, __('plugins.generic.vgWort.requirementsRequired'));
-			} 
-			
+			}
+
 			// check web service: availability and credentials
 			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);
 			$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword, 'exceptions' => true, 'trace' => 1, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS));
 			$result = $client->orderPixel(array("count" => 1));
-			
+
 			return array(true, $result);
 		}
 		catch (SoapFault $soapFault) {
@@ -99,16 +98,7 @@ class VGWortEditorAction {
 	 * @return array (successful boolean, errorMsg string)
 	 */
 	function check($pixelTag) {
-		/* PublishedArticleDAO deprecated, use SubmissionDAO instead
-		$publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
-		$publishedArticle = $publishedArticleDao->getByArticleId($pixelTag->getSubmissionId());
-		*/
-	
-        //$submissionId = $pixelTag->getSubmissionId();	
-		$submission = $pixelTag->getSubmission();
-
-        // error_log("issueId: " . $submission->getCurrentPublication()->getData('issueId'));
-        // echo ("submission status: " . var_export($submission->getStatus()));
+    	$submission = $pixelTag->getSubmission();
         if ($submission->getData('status') != STATUS_PUBLISHED) {
 			return array(false, __('plugins.generic.vgWort.check.articleNotPublished'));
 		} else {
@@ -129,7 +119,6 @@ class VGWortEditorAction {
 						$cardNo = $author->getData('vgWortCardNo');
 						if (!empty($cardNo)) {
 						    $locale = $submission->getLocale();
-							//$checkAuthorResult = $this->checkAuthor($pixelTag->getContextId(), $cardNo, $author->getLastName());
 						    $checkAuthorResult = $this->checkAuthor($pixelTag->getContextId(), $cardNo, $author->getFamilyName($locale));
 							if (!$checkAuthorResult[0]) {
 								return array(false, $checkAuthorResult[1]);
@@ -149,7 +138,7 @@ class VGWortEditorAction {
 	 */
 	 function registerPixelTag($pixelTag, $request, $contextId = null) {
 		$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
-		
+
 		// check if the requirements for the registration are fulfilled
 		$checkResult = $this->check($pixelTag, $request);
 
@@ -257,14 +246,13 @@ class VGWortEditorAction {
 	function newMessage($pixelTag, $request, $contextId = null) {
 		$vgWortPlugin = $this->_plugin;
 		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
-		
+
 		if (!isset($contextId)) {
 			$contextId = $vgWortPlugin->getCurrentContextId();//$context->getId();
-		}		
-		
+		}
+
 		$vgWortPlugin->import('classes.PixelTag');
 		$submission = $pixelTag->getSubmission();
-        //echo("submission: " . $submission->getId());
 		// get all submission contributors
 		$contributors = $submission->getAuthors();
 		// get submission authors
@@ -323,19 +311,17 @@ class VGWortEditorAction {
 		$supportedGalleys = array_filter($galleys, array($vgWortPlugin, 'galleySupported'));
 		// construct the VG Wort webranges for the supported galleys
 		$webranges = array('webrange' => array());
-		
+
         $dispatcher = Application::get()->getDispatcher();
-        //echo("request router: ");
-        //var_export($request->getRouter()->getDispatcher());
         foreach ($supportedGalleys as $supportedGalley) {
-		    $url = $dispatcher->url($request, ROUTE_PAGE, null, 'article', 'view', array($submission->getBestArticleId(), $supportedGalley->getBestGalleyId()));			
+		    $url = $dispatcher->url($request, ROUTE_PAGE, null, 'article', 'view', array($submission->getBestArticleId(), $supportedGalley->getBestGalleyId()));
 			$webrange = array('url' => array($url));
 			$webranges['webrange'][] = $webrange;
-			
+
 			$downlaodUrl1 = $dispatcher->url($request, ROUTE_PAGE, null, 'article', 'view', array($submission->getBestArticleId(), $supportedGalley->getBestGalleyId()));
 			$webrange = array('url' => array($downlaodUrl1));
 			$webranges['webrange'][] = $webrange;
-			
+
 			$downlaodUrl2 = $dispatcher->url($request, ROUTE_PAGE, null, 'article', 'view', array($submission->getBestArticleId(), $supportedGalley->getBestGalleyId(), $supportedGalley->getFileId()));
 			$webrange = array('url' => array($downlaodUrl2));
 			$webranges['webrange'][] = $webrange;
@@ -365,11 +351,9 @@ class VGWortEditorAction {
 		if ($galleyFileType == 'text/html' || $galleyFileType == 'text/xml') {
 			$text = array('plainText' => strip_tags($content));
 		} elseif ($galleyFileType == 'application/pdf') {
-		    //$text = array('pdf' => base64_encode($content));
 		    // base64_encode of pdf causes soapClient/Business Exception -> vgWort Errorcode 8
 		    $text = array('pdf' => $content);
 		} elseif ($galleyFileType == 'application/epub+zip') {
-		    //$text = array('epub' => base64_encode($content));
 		    // base64_encode of epub causes soapClient/Business Exception -> vgWort Errorcode 20
 		    $text = array('epub' => $content);
 		}
@@ -405,21 +389,21 @@ class VGWortEditorAction {
 			}
 
 			// check web service: availability and credentials
-			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);			
+			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);
 			$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
-			$result = $client->newMessage(array("parties" => $parties, "privateidentificationid" => $pixelTag->getPrivateCode(), "messagetext" => $message, "webranges" => $webranges));		
+			$result = $client->newMessage(array("parties" => $parties, "privateidentificationid" => $pixelTag->getPrivateCode(), "messagetext" => $message, "webranges" => $webranges));
 			return array($result->status == 'OK', '');
 		}
 		catch (SoapFault $soapFault) {
-		   
-			// TODO: Is this error log necessary?? 
+
+			// TODO: Is this error log necessary??
 			// log error details
 			error_log($soapFault);
-		    
+
 			if($soapFault->faultcode == 'noWSDL' || $soapFault->faultcode == 'httpError') {
 				return array(false, $soapFault->faultstring);
 			}
-			
+
 			switch ($soapFault->faultstring)
 			{
 			case "Validation error":
@@ -437,7 +421,7 @@ class VGWortEditorAction {
 					error_log(print_r($soapFault->detail, TRUE));
 				}
 				return array(false, __('plugins.generic.vgWort.register.errorCode', array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring)));
-			}			
+			}
 		}
 	}
 
@@ -571,4 +555,3 @@ class VGWortEditorAction {
 }
 
 ?>
-

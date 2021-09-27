@@ -8,10 +8,6 @@
  *
  *}
 
-{**
- * <li><a name="pixelTags" href="{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.vgWort.controllers.grid.PixelTagGridHandler" op="pixelTagsTab" tab="pixelTags"}">{translate key="plugins.generic.vgWort.pixelTags"}</a></li>
- *}
-
 <tab id="pixelTagsTab" label="{translate key="plugins.generic.vgWort.pixelTags"}">
 	<!-- VG Wort -->
 	

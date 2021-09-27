@@ -55,7 +55,6 @@ class PixelTagGridCellProvider extends GridCellProvider {
 					if (empty($title)) $title = __('common.untitled');
 					$authorsInTitle = $submission->getShortAuthorString();
 					$title = $authorsInTitle . '; ' . $title;
-					//import('classes.core.ServicesContainer');
 					return array(
 						new LinkAction(
 							'itemWorkflow',

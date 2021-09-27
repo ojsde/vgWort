@@ -15,7 +15,6 @@
 import('lib.pkp.classes.plugins.GenericPlugin');
 import('lib.pkp.classes.submission.SubmissionFile');
 import('lib.pkp.classes.components.forms.FieldOptions');
-//import('lib.pkp.classes.components.forms.FieldSelect');
 
 define('NOTIFICATION_TYPE_VGWORT_ERROR',0x400000A);
 
@@ -36,47 +35,50 @@ class VGWortPlugin extends GenericPlugin {
 				// form template
 				HookRegistry::register('Common::UserDetails::AdditionalItems', array($this, 'metadataFieldEdit'));
 				HookRegistry::register('User::PublicProfile::AdditionalItems', array($this, 'metadataFieldEdit'));
-				// form class
-				HookRegistry::register('userdetailsform::initdata', array($this, 'metadataInitData'));
-				HookRegistry::register('userdetailsform::readuservars', array($this, 'metadataReadUserVars'));
-				HookRegistry::register('userdetailsform::execute', array($this, 'metadataExecute'));
-				HookRegistry::register('userdetailsform::Constructor', array($this, 'addCheck'));
+
+                // form class
 				HookRegistry::register('authorform::initdata', array($this, 'metadataInitData'));
 				HookRegistry::register('authorform::readuservars', array($this, 'metadataReadUserVars'));
 				HookRegistry::register('authorform::execute', array($this, 'metadataExecute'));
 				HookRegistry::register('authorform::Constructor', array($this, 'addCheck'));
-				HookRegistry::register('publicprofileform::initdata', array($this, 'metadataInitData'));
-				HookRegistry::register('publicprofileform::readuservars', array($this, 'metadataReadUserVars'));
-				HookRegistry::register('publicprofileform::execute', array($this, 'metadataExecute'));
-				HookRegistry::register('publicprofileform::Constructor', array($this, 'addCheck'));
+
 				// Consider the new field/setting vgWortCarNo in the user and author DAO
 				HookRegistry::register('userdao::getAdditionalFieldNames', array($this, 'addFieldName'));
 				HookRegistry::register('authordao::getAdditionalFieldNames', array($this, 'addFieldName'));
 
 				// Assign pixel tag
 				HookRegistry::register('Form::config::before', array($this, 'addPixelField'));
-				HookRegistry::register('Publication::edit', array($this, 'pixelExecute'));
-				
+				HookRegistry::register('Publication::edit', array($this, 'pixelExecuteSubmission'));
+
+                // Assign pixel tag
+                HookRegistry::register('Templates::Controllers::Tab::PubIds::Form::PublicIdentifiersForm', array($this, 'pixelEdit'));
+                HookRegistry::register('publicidentifiersform::readuservars', array($this, 'pixelReadUserVars'));
+                HookRegistry::register('publicidentifiersform::execute', array($this, 'pixelExecuteRepresentation'));
+                HookRegistry::register('articlegalleydao::getAdditionalFieldNames', array($this, 'addPixelFieldName'));
+
 				// pixel tag listing
 				HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
 				HookRegistry::register('Template::Settings::distribution', array($this, 'pixelTagTab'));
 
 				// Hook for article galley view -- add the pixel tag
-				HookRegistry::register ('TemplateManager::display', array($this, 'handleTemplateDisplay'));
-				HookRegistry::register ('TemplateManager::fetch', array($this, 'handleTemplateFetch'));
+				HookRegistry::register('TemplateManager::display', array($this, 'handleTemplateDisplay'));
+				HookRegistry::register('TemplateManager::fetch', array($this, 'handleTemplateFetch'));
 
 				// Hook for error notifications for editors
 				HookRegistry::register('NotificationManager::getNotificationMessage', array($this, 'getNotificationMessage'));
 
-				// Add VG Wort field to Publication Identifiers Form
-				HookRegistry::register('Schema::get::publication',array($this,'addToSchema'));
+				// Add VG Wort field to "Publication Identifiers" Form
+				HookRegistry::register('Schema::get::publication', array($this, 'addToPublicationSchema'));
+
+                // Add vgWortCardNo field to "Edit contributor" Form
+                HookRegistry::register('Schema::get::author', array($this, 'addToAuthorSchema'));
 
                 // Add VG Wort Pixel to heiViewer Article Galley page
 				HookRegistry::register("Plugins::heiViewerGalley::ArticleGalley", array($this,'insertPixelTagGalleyPageHook'));
 				HookRegistry::register('AcronPlugin::parseCronTab', array($this, 'callbackParseCronTab'));
                 $this->pixelTagStatusLabels = [
                     0 => __('plugins.generic.vgWort.pixelTag.representation.notAssigned'),
-                    PT_STATUS_REGISTERED_ACTIVE => __('plugin.generic.vgWort.pixelTag.status.registeredactive'), 
+                    PT_STATUS_REGISTERED_ACTIVE => __('plugin.generic.vgWort.pixelTag.status.registeredactive'),
                     PT_STATUS_UNREGISTERED_ACTIVE => __('plugin.generic.vgWort.pixelTag.status.unregisteredactive'),
                     PT_STATUS_REGISTERED_REMOVED => __('plugin.generic.vgWort.pixelTag.status.registeredremoved'),
                     PT_STATUS_UNREGISTERED_REMOVED => __('plugin.generic.vgWort.pixelTag.status.unregisteredremoved')
@@ -130,9 +132,9 @@ class VGWortPlugin extends GenericPlugin {
 	function getTemplatePath($inCore = false) {
 	    $ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
         if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-		  return parent::getTemplatePath() . 'templates/';
+            return parent::getTemplatePath() . 'templates/';
         } else {
-          return parent::getTemplatePath();
+            return parent::getTemplatePath();
         }
 	}
 
@@ -207,7 +209,7 @@ class VGWortPlugin extends GenericPlugin {
 	}
 
 	/**
-	 * Init VG Wort field vgWorgCardNo in the user and the author form
+	 * Init VG Wort field vgWortCardNo in the user and the author form
 	 */
 	function metadataInitData($hookName, $params) {
 		$form =& $params[0];
@@ -279,7 +281,6 @@ class VGWortPlugin extends GenericPlugin {
 	 * Insert pixel tag assignemnt field into the PublicIdentifiersForm
 	 */
 	function pixelEdit($hookName, $params) {
-
 		$smarty =& $params[1];
 		$output =& $params[2];
 
@@ -287,7 +288,6 @@ class VGWortPlugin extends GenericPlugin {
 		$pubObject = $smarty->get_template_vars('pubObject');
 
 		$pixelTag = $this->getPixelTagByPubObject($pubObject, $context->getId());
-		
 		$vgWortTextType = !isset($pixelTag) ? TYPE_TEXT : $pixelTag->getTextType();
 
 		$excludeVGWortAssignPixel = $galleyNotSupported = null;
@@ -302,15 +302,17 @@ class VGWortPlugin extends GenericPlugin {
 				}
 			}
 		}
-
 		$smarty->assign('pixelTag', $pixelTag);
-		if ($excludeVGWortAssignPixel) $smarty->assign('excludeVGWortAssignPixel', $excludeVGWortAssignPixel);
-		if ($galleyNotSupported) $smarty->assign('galleyNotSupported', $galleyNotSupported);
+		if ($excludeVGWortAssignPixel) {
+            $smarty->assign('excludeVGWortAssignPixel', $excludeVGWortAssignPixel);
+        }
+		if ($galleyNotSupported) {
+            $smarty->assign('galleyNotSupported', $galleyNotSupported);
+        }
 		$smarty->assign('vgWortTextType', $vgWortTextType);
 		$smarty->assign('typeOptions', PixelTag::getTextTypeOptions());
 		$templateFile = method_exists($this, 'getTemplateResource') ? $this->getTemplateResource('assignPixelTag.tpl') : $this->getTemplatePath() . 'assignPixelTag.tpl';
 		$output .= $smarty->fetch($templateFile);
-
 		return false;
 	}
 
@@ -320,38 +322,52 @@ class VGWortPlugin extends GenericPlugin {
 	function pixelReadUserVars($hookName, $params) {
 		$form =& $params[1];
 		$vars =& $params[2];
-
 		$vars[] = 'vgWortTextType';
 		$vars[] = 'vgWortAssignPixel';
 		$vars[] = 'removeVGWortPixel';
 		$vars[] = 'excludeVGWortAssignPixel';
-	
 		return false;
 	}
+
+    /**
+     * Assign pixel tag to the article or the galley object
+     */
+    function pixelExecuteRepresentation($hookName, $params) {
+        $form =& $params[0];
+        $pubObject = $form->getPubObject();
+        $contextId = $form->getContextId();
+        $pixelTag = $this->getPixelTagByPubObject($pubObject, $contextId);
+        // save the setting for a supported galley only if it is excluded from assignment
+        if (is_a($pubObject, 'Representation') && $pixelTag && !$pixelTag->getDateRemoved()) {
+            if ($this->galleySupported($pubObject)) {
+                $galleyExcluded = $pubObject->getData('excludeVGWortAssignPixel');
+                $excludeVGWortAssignPixel = $form->getData('excludeVGWortAssignPixel') ? 1 : 0;
+                if (!$galleyExcluded && $excludeVGWortAssignPixel) {
+                    $pubObject->setData('excludeVGWortAssignPixel', $excludeVGWortAssignPixel);
+                } elseif ($galleyExcluded && !$excludeVGWortAssignPixel) {
+                    $pubObject->setData('excludeVGWortAssignPixel', null);
+                }
+            }
+        }
+        return false;
+    }
 
 	/**
 	 * Assign pixel tag to the article or the galley object
 	 */
-	function pixelExecute($hookName, $params) {
-
+	function pixelExecuteSubmission($hookName, $params) {
 		$form =& $params[0];
-		
 		$submissionId = $form->getData('submissionId');
 		$submissionFileDao =& DAORegistry::getDAO('SubmissionFileDAO');
 		$submissionDao = DAORegistry::getDAO('SubmissionDAO');
 		$submission = $submissionDao->getById($submissionId); // Submission object
-
 		$contextId = $submission->getData('contextId');
-
 		$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
-		$pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submissionId, $contextId);	
+		$pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submissionId, $contextId);
 
 		if (is_a($submission, 'Submission')) {
 			$vgWortTextType = $form->getData('vgWort::texttype');
-		
-	
 			if (isset($pixelTag)) {
-				
 				$updatePixelTag = false;
 				// pixel tag has been removed, see if it should be assigned again
 				if ($pixelTag->getDateRemoved()) {
@@ -364,11 +380,9 @@ class VGWortPlugin extends GenericPlugin {
 							$pixelTag->setStatus(PT_STATUS_REGISTERED_ACTIVE);
 						}
 						$updatePixelTag = true;
-                        //$form->setData('vgWort::pixeltag::assign', 0);
 					}
 				} else {
 					$removeVGWortPixel = $form->getData('vgWort::pixeltag::assign') ? 0 : 1;
-					// error_log("removeVGWortPixel: $removeVGWortPixel");
 					if ($removeVGWortPixel) {
 						$pixelTag->setDateRemoved(Core::getCurrentDate());
 						if ($pixelTag->getStatus() == PT_STATUS_UNREGISTERED_ACTIVE) {
@@ -377,7 +391,6 @@ class VGWortPlugin extends GenericPlugin {
 							$pixelTag->setStatus(PT_STATUS_REGISTERED_REMOVED);
 						}
 						$updatePixelTag = true;
-                        //$form->setData('vgWort::pixeltag::assign', 1);
 					}
 				}
 				// if text type changed, update
@@ -391,10 +404,8 @@ class VGWortPlugin extends GenericPlugin {
 					$pixelTagDao->updateObject($pixelTag);
 				}
                 $form->setData('vgWort::pixeltag::status', $pixelTag->getStatus());
-			
             } else {
 				$vgWortAssignPixel = $form->getData('vgWort::pixeltag::assign') ? 1 : 0;
-				
 				if ($vgWortAssignPixel) {
 					// assign pixel tag
 					if ($this->assignPixelTag($submission, $vgWortTextType)) {
@@ -404,7 +415,6 @@ class VGWortPlugin extends GenericPlugin {
 				}
             }
 		}
-
 		return false;
 	}
 
@@ -418,15 +428,14 @@ class VGWortPlugin extends GenericPlugin {
 	}
 
     /**
-
+     * Add several Pixel Tag properties
      */
-    public function addToSchema($hookName, $args) {
+    public function addToPublicationSchema($hookName, $args) {
         $schema = $args[0];
 
         // Add property for the text type
         $schema->properties->{"vgWort::texttype"} = (object) [
             'type' => 'string',
-#            'validation' => ['nullable']
         ];
 
         // Add property for assigning the pixel tag
@@ -444,9 +453,28 @@ class VGWortPlugin extends GenericPlugin {
         // Add property for pixel tag's status
         $schema->properties->{"vgWort::pixeltag::status"} = (object) [
             'type' => 'string',
-            //'readOnly' => true,
         ];
         return false;
+    }
+
+    /**
+     * Add vgWorgCardNo property to author schema
+     */
+    public function addToAuthorSchema($hookName, $args) {
+        $schema = $args[0];
+
+        // Add property for the vgWortCardNo
+        $schema->properties->{"vgWortCardNo"} = (object) [
+            'type' => 'integer'
+        ];
+        return false;
+    }
+
+    /**
+	 * Add VGWortCardNo form to Contributors form
+	 */
+	public function addVGCardNoField($hookName, $form) {
+        error_log("addVGCardNoField: test");
     }
 
 	/**
@@ -455,47 +483,35 @@ class VGWortPlugin extends GenericPlugin {
 	public function addPixelField($hookName, $form) {
 
         if ($form->id !== 'publicationIdentifiers') {
-                        return;
-                }	
+            return;
+        }
 
 		$submissionId = $form->publication->getData('submissionId');
 		$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
-        $pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submissionId); 
-        
+        $pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submissionId);
+
         if ($pixelTag == NULL) {
-            
             $pixelTagStatus = 0;
             $pixelTagAssigned = false;
             $pixelTagRemoved = false;
-            
-            $form->publication->setData('vgWort::pixeltag::status',$pixelTagStatus);                                        
+            $form->publication->setData('vgWort::pixeltag::status',$pixelTagStatus);
             $form->publication->setData('vgWort::pixeltag::assign',$pixelTagAssigned);
             $form->publication->setData('vgWort::pixeltag::remove',$pixelTagRemoved);
-
         } else {
-            
             $pixelTagStatus = $pixelTag->getStatus();
-            $form->publication->setData('vgWort::pixeltag::status',$pixelTagStatus);                         
-
+            $form->publication->setData('vgWort::pixeltag::status',$pixelTagStatus);
         }
-    	
         if ($pixelTagStatus == PT_STATUS_UNREGISTERED_ACTIVE || $pixelTagStatus == PT_STATUS_REGISTERED_ACTIVE) {
-		
             $pixelTagAssigned = true;
 			$pixelTagRemoved = false;
 			$form->publication->setData('vgWort::pixeltag::assign',$pixelTagAssigned);
 			$form->publication->setData('vgWort::pixeltag::remove',$pixelTagRemoved);
-	
     	} elseif ($pixelTagStatus == PT_STATUS_UNREGISTERED_REMOVED || $pixelTagStatus == PT_STATUS_REGISTERED_REMOVED) {
-	
     		$pixelTagAssigned = false;
 			$pixelTagRemoved = true;
 			$form->publication->setData('vgWort::pixeltag::assign',$pixelTagAssigned);
             $form->publication->setData('vgWort::pixeltag::remove',$pixelTagRemoved);
-	
     	}
-
-
         $form->addField(new \PKP\components\forms\FieldSelect('vgWort::texttype', [
             'label' => __('plugins.generic.vgWort.pixelTag.textType'),
             'description' =>  __('plugins.generic.vgWort.pixelTag.textType.description'),
@@ -506,7 +522,6 @@ class VGWortPlugin extends GenericPlugin {
                 ['value' => TYPE_LYRIC, 'label' => __('plugins.generic.vgWort.pixelTag.textType.lyric')]
             ],
         ]));
-    
         $form->addField(new \PKP\components\forms\FieldOptions('vgWort::pixeltag::assign', [
 			'label' => __('plugins.generic.vgWort.pixelTag'),
 			'description' => "Status: " . $this->pixelTagStatusLabels[$pixelTagStatus],
@@ -529,7 +544,10 @@ class VGWortPlugin extends GenericPlugin {
 		if (is_a($pubObject, 'Submission')) {
 			$submissionId = $pubObject->getData('id');//getId();
 		} elseif (is_a($pubObject, 'Representation')) {
-			$submissionId = $pubObject->getSubmissionId();
+			$publicationId = $pubObject->getData('publicationId');
+            $publicationDao = DAORegistry::getDAO('PublicationDAO');
+            $publication = $publicationDao->getById($publicationId);
+            $submissionId = $publication->getData('submissionId');
 		} else {
 			return null;
 		}
@@ -599,7 +617,6 @@ class VGWortPlugin extends GenericPlugin {
 		if (round((int) $galleyFile->getFileSize() / $megaByte) > 15) return false;
 		// check if the galley is for download
 		$pdfJsViewerPlugin = PluginRegistry::getPlugin('generic', 'pdfjsviewerplugin');
-        // error_log("filterDownloadGalleys: pdfgalley = " . ($galley->isPdfGalley() && !$pdfJsViewerPlugin));
 		$htmlArticleGalley = PluginRegistry::getPlugin('generic', 'htmlarticlegalleyplugin');
 		return (($galleyFile->getFileType() == 'text/html' && !$htmlArticleGalley) ||
 			($galley->isPdfGalley() && !$pdfJsViewerPlugin) ||
@@ -618,17 +635,12 @@ class VGWortPlugin extends GenericPlugin {
 
 		// TODO: it seems possible to order just 1 pixel tag
 		$availablePixelTag = $pixelTagDao->getAvailablePixelTag($contextId);
-		
-		/*if(!isset($availablePixelTag)) {
-			error_log("availablePixelTag nicht gesetzt");
-		}*/
 
 		if(!$availablePixelTag) {
 			// order pixel tags
 			$this->import('classes.VGWortEditorAction');
 			$vgWortEditorAction = new VGWortEditorAction($this);
 			$orderResult = $vgWortEditorAction->orderPixel($contextId);
-			
 			if (!$orderResult[0]) {
 				$application = PKPApplication::getApplication();
 				$request = Application::get()->getRequest();
@@ -674,17 +686,8 @@ class VGWortPlugin extends GenericPlugin {
 		$smarty =& $params[0];
 		$template =& $params[1];
 		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
-        // error_log("handleTemplateDisplay $template");
 		switch ($template) {
 			case 'frontend/pages/article.tpl':
-			//OJS 3.1.1
-			//case 'plugins/plugins-generic-pdfJsViewer-generic-pdfJsViewer:articleGalley.tpl':
-			//case 'plugins/plugins-generic-htmlArticleGalley-generic-htmlArticleGalley:display.tpl':
-			case 'plugins/plugins/generic/pdfJsViewer/generic/pdfJsViewer:templates//articleGalley.tpl':
-			case 'plugins/plugins/generic/htmlArticleGalley/generic/htmlArticleGalley:display.tpl':
-			//OJS 3.1.2
-			case 'plugins--plugins-generic-pdfJsViewer-generic-pdfJsViewer:articleGalley.tpl':
-            case 'plugins-plugins-generic-htmlArticleGalley-generic-htmlArticleGalley:display.tpl':
             //OJS 3.2.1
             case 'plugins-13-plugins-generic-pdfJsViewer-generic-pdfJsViewer:submissionGalley.tpl':
                 if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
@@ -698,7 +701,6 @@ class VGWortPlugin extends GenericPlugin {
 			    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
 				    $smarty->register_outputfilter(array($this, 'insertPixelTagIssueTOC'));
 			    } else {
-                    // error_log("vgwort: issue template registerfilter");
 				    $smarty->registerFilter('output',array($this, 'insertPixelTagIssueTOC'));
 			    }
 				break;
@@ -739,13 +741,15 @@ class VGWortPlugin extends GenericPlugin {
         return '<img src=\'' . $pixelTagSrc . '\' width=\'1\' height=\'1\' alt=\'\' />';
     }
 
+    /**
+	 * Add VG Wort Pixel to heiViewer Article Galley page
+	 */
     function insertPixelTagGalleyPageHook($hookName, $params) {
         $smarty =& $params[1];
         $output =& $params[2];
 
         $journal = $smarty->get_template_vars('currentJournal');
         $article = $smarty->get_template_vars('article');
-
         $pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
         $pixelTag = $pixelTagDao->getPixelTagBySubmissionId($article->getId(), $journal->getId());
         if (isset($pixelTag) && !$pixelTag->getDateRemoved()) {
@@ -754,7 +758,6 @@ class VGWortPlugin extends GenericPlugin {
             $httpsProtocol = $request->getProtocol() == 'https';
             $output = $this->buildPixelTagHTML($pixelTag, $httpsProtocol);
         }
-
         return false;
     }
 
@@ -764,7 +767,7 @@ class VGWortPlugin extends GenericPlugin {
 	function insertPixelTagArticlePage($output, $smarty) {
 		$journal = $smarty->get_template_vars('currentJournal');
 		$article = $smarty->get_template_vars('article');
-		
+
 		// get the galley if it exists and check if it is supported by VG Wort
 		// currently the variable is provided only by the PdfJSViewerPlugin and the HTMLArticleGalleyPlugin
 		$galley = $smarty->get_template_vars('galley');
@@ -778,13 +781,13 @@ class VGWortPlugin extends GenericPlugin {
 		$submissionDao = Application::getSubmissionDAO(); // Application allows usage for both OJS and OMP
         $submission = $submissionDao->getById($article->getId());//,$journal->getId());
         // error_log("insertPixelTagArticlePage" . $submission->getId());
-		if (isset($submission)) {		    
+		if (isset($submission)) {
 			$issueDao = DAORegistry::getDAO('IssueDAO');
 			$issue = $issueDao->getById($submission->getCurrentPublication()->getData('issueId'), $journal->getId());
 			if ($issue->getPublished()) {
 				// get the assigned pixel tag
 				$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
-				$pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submission->getId(), $journal->getId());				
+				$pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submission->getId(), $journal->getId());
 				if (isset($pixelTag) && !$pixelTag->getDateRemoved()) {
 					$application = PKPApplication::getApplication();
 					$request = $application->getRequest();
@@ -795,7 +798,7 @@ class VGWortPlugin extends GenericPlugin {
 
 					// if galley exists it is the galley view page
 					// currently provided only by PdfJSViewerPlugin and HTMLArticleGalleyPlugin
-					// check if the galley is excluded from VG Wort pixel tag assignment					
+					// check if the galley is excluded from VG Wort pixel tag assignment
 					if ($galley && !$galley->getData('excludeVGWortAssignPixel')) {
 						// isert the pixel tag image into the HTML code
 						$search = '</header>';
@@ -830,7 +833,6 @@ class VGWortPlugin extends GenericPlugin {
 						$search = '<article class="obj_article_details">';
 						$replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="<img src=\'' . $pixelTagSrc . '\' width=\'1\' height=\'1\' alt=\'\' />"; }</script>';
 						$output = str_replace($search, $replace, $output);
-
 						foreach ($downloadGalleys as $galley) {
 						 	// change galley download links
 							$galleyUrl = $request->url(null, 'article', 'view', array($submission->getBestArticleId(), $galley->getBestGalleyId()));
@@ -867,7 +869,6 @@ class VGWortPlugin extends GenericPlugin {
 		$issue = $smarty->get_template_vars('issue');
 
 		$publishedSubmissions = $smarty->get_template_vars('publishedSubmissions');
-        // error_log("vgwort insertPixelTagIssueTOC: " . $issue->getPublished());
 		if ($issue->getPublished()) {
 			$scriptInserted = false;
 			foreach ($publishedSubmissions as $sectionId) {
@@ -876,7 +877,6 @@ class VGWortPlugin extends GenericPlugin {
 					$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
 					$pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submission->getId(), $journal->getId());
 					if (isset($pixelTag) && !$pixelTag->getDateRemoved()) {
-                        // error_log("vgwort insertPixelTagIssueTOC: found pixelTag" . $pixelTag->getPublicCode());
 						$application = PKPApplication::getApplication();
 						$request = $application->getRequest();
 						$httpProtocol = $request->getProtocol() == 'https' ? 'https://' : 'http://';
@@ -887,21 +887,19 @@ class VGWortPlugin extends GenericPlugin {
 						$articleGalleys = $submission->getGalleys();
 						// get only download galleys, that should get the VG Wort pixel tag
 						$downloadGalleys = array_filter($articleGalleys, array($this, 'filterDownloadGalleys'));
-                        // error_log("vgwort insertPixelTagIssueTOC: downloadGalleys = ". empty($downloadGalleys));
 
 						if (!empty($downloadGalleys) && !$scriptInserted) {
 							// insert the JS function, used when galley links are clicked on
 							$search = '<div class="obj_issue_toc">';
 							$replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="<img src=\'' . $pixelTagSrc . '\' width=\'1\' height=\'1\' alt=\'\' />"; }</script>';
 							$output = str_replace($search, $replace, $output);
-                            
+
 							$scriptInserted = true;
 						}
 						foreach ($downloadGalleys as $galley) {
 							// change galley download links
 							$galleyUrl = $request->url(null, 'article', 'view', array($submission->getBestArticleId(), $galley->getBestGalleyId()));
 							$search = '#<a class="(.+)" href="' . $galleyUrl . '"(.*)>#';
-                            // error_log("insertPixelTagIssueTOC: " . $galleyUrl);
 							// insert pixel tag for galleys download links using JS
 							$replace = '<div style="font-size:0;line-height:0; width:0;" id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');" target="_target" $2>';
 							// insert pixel tag for galleys download links using VG Wort redirect
@@ -951,7 +949,7 @@ class VGWortPlugin extends GenericPlugin {
 		}
 		return false;
 	}
-
+    
 }
 
 ?>

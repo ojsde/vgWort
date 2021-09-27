@@ -17,8 +17,7 @@ Das Plugin ist unter GNU General Public License v2 lizenziert. Sehen Sie die Dat
 
 Systemanforderungen
 -------------------
-Dieses Plug-In ist kompatibel mit...
-- OJS 3.1.1, OJS 3.1.2 und OJS 3.2.1
+Dieses Plug-In Version ist kompatibel mit OJS 3.2.1.
 
 Zusätzlich werden PHP Soap und PHP OpenSSL extension modules benötigt.
 
