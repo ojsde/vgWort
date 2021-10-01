@@ -36,7 +36,7 @@ class VGWortPlugin extends GenericPlugin {
 				HookRegistry::register('Common::UserDetails::AdditionalItems', array($this, 'metadataFieldEdit'));
 				HookRegistry::register('User::PublicProfile::AdditionalItems', array($this, 'metadataFieldEdit'));
 
-				// form class
+                // form class
 				HookRegistry::register('authorform::initdata', array($this, 'metadataInitData'));
 				HookRegistry::register('authorform::readuservars', array($this, 'metadataReadUserVars'));
 				HookRegistry::register('authorform::execute', array($this, 'metadataExecute'));
@@ -50,11 +50,11 @@ class VGWortPlugin extends GenericPlugin {
 				HookRegistry::register('Form::config::before', array($this, 'addPixelField'));
 				HookRegistry::register('Publication::edit', array($this, 'pixelExecuteSubmission'));
 
-				// Assign pixel tag
-				HookRegistry::register('Templates::Controllers::Tab::PubIds::Form::PublicIdentifiersForm', array($this, 'pixelEdit'));
-				HookRegistry::register('publicidentifiersform::readuservars', array($this, 'pixelReadUserVars'));
-				HookRegistry::register('publicidentifiersform::execute', array($this, 'pixelExecuteRepresentation'));
-				HookRegistry::register('articlegalleydao::getAdditionalFieldNames', array($this, 'addPixelFieldName'));
+                // Assign pixel tag
+                HookRegistry::register('Templates::Controllers::Tab::PubIds::Form::PublicIdentifiersForm', array($this, 'pixelEdit'));
+                HookRegistry::register('publicidentifiersform::readuservars', array($this, 'pixelReadUserVars'));
+                HookRegistry::register('publicidentifiersform::execute', array($this, 'pixelExecuteRepresentation'));
+                HookRegistry::register('articlegalleydao::getAdditionalFieldNames', array($this, 'addPixelFieldName'));
 
 				// pixel tag listing
 				HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
@@ -778,10 +778,8 @@ class VGWortPlugin extends GenericPlugin {
 		$galleys = $smarty->get_template_vars('primaryGalleys');
 		// get only download galleys, that should get the VG Wort pixel tag
 		$downloadGalleys = array_filter($galleys, array($this, 'filterDownloadGalleys'));
-
 		$submissionDao = Application::getSubmissionDAO(); // Application allows usage for both OJS and OMP
         $submission = $submissionDao->getById($article->getId());//,$journal->getId());
-        // error_log("insertPixelTagArticlePage" . $submission->getId());
 		if (isset($submission)) {
 			$issueDao = DAORegistry::getDAO('IssueDAO');
 			$issue = $issueDao->getById($submission->getCurrentPublication()->getData('issueId'), $journal->getId());
@@ -853,11 +851,11 @@ class VGWortPlugin extends GenericPlugin {
 		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
 		//unregister filter if we reached the page body end tag
 		if (preg_match('#</body>#', $output)) {
-			if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-				$smarty->unregister_outputfilter('insertPixelTagArticlePage');
-			} else {
+			// if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+			// 	$smarty->unregister_outputfilter('insertPixelTagArticlePage');
+			// } else {
 				$smarty->unregisterFilter('output', array($this, 'insertPixelTagArticlePage'));
-			}
+			// }
 		}
 		return $output;
 	}
@@ -906,7 +904,6 @@ class VGWortPlugin extends GenericPlugin {
 							// insert pixel tag for galleys download links using VG Wort redirect
 							// $newGalleyUrl = $pixelTagSrc . '?l=' . $galleyUrl;
 							// $replace = '<a class="$1" href="' . $newGalleyUrl . '">';
-                            error_log("insertPixelTagIssueTOC: $search match = " . preg_match($search, $output));
 							$output = preg_replace($search, $replace, $output);
 						}
 					}
@@ -950,7 +947,7 @@ class VGWortPlugin extends GenericPlugin {
 		}
 		return false;
 	}
-    
+
 }
 
 ?>
