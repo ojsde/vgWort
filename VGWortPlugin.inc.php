@@ -36,7 +36,7 @@ class VGWortPlugin extends GenericPlugin {
 				HookRegistry::register('Common::UserDetails::AdditionalItems', array($this, 'metadataFieldEdit'));
 				HookRegistry::register('User::PublicProfile::AdditionalItems', array($this, 'metadataFieldEdit'));
 
-                // form class
+				// form class
 				HookRegistry::register('authorform::initdata', array($this, 'metadataInitData'));
 				HookRegistry::register('authorform::readuservars', array($this, 'metadataReadUserVars'));
 				HookRegistry::register('authorform::execute', array($this, 'metadataExecute'));
@@ -50,11 +50,11 @@ class VGWortPlugin extends GenericPlugin {
 				HookRegistry::register('Form::config::before', array($this, 'addPixelField'));
 				HookRegistry::register('Publication::edit', array($this, 'pixelExecuteSubmission'));
 
-                // Assign pixel tag
-                HookRegistry::register('Templates::Controllers::Tab::PubIds::Form::PublicIdentifiersForm', array($this, 'pixelEdit'));
-                HookRegistry::register('publicidentifiersform::readuservars', array($this, 'pixelReadUserVars'));
-                HookRegistry::register('publicidentifiersform::execute', array($this, 'pixelExecuteRepresentation'));
-                HookRegistry::register('articlegalleydao::getAdditionalFieldNames', array($this, 'addPixelFieldName'));
+				// Assign pixel tag
+				HookRegistry::register('Templates::Controllers::Tab::PubIds::Form::PublicIdentifiersForm', array($this, 'pixelEdit'));
+				HookRegistry::register('publicidentifiersform::readuservars', array($this, 'pixelReadUserVars'));
+				HookRegistry::register('publicidentifiersform::execute', array($this, 'pixelExecuteRepresentation'));
+				HookRegistry::register('articlegalleydao::getAdditionalFieldNames', array($this, 'addPixelFieldName'));
 
 				// pixel tag listing
 				HookRegistry::register('LoadComponentHandler', array($this, 'setupGridHandler'));
@@ -686,23 +686,24 @@ class VGWortPlugin extends GenericPlugin {
 		$smarty =& $params[0];
 		$template =& $params[1];
 		$ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
+        // the template for the pdf viewer looks like this:
+        // plugins-13-plugins-generic-pdfJsViewer-generic-pdfJsViewer:submissionGalley.tpl
+        // contextId (13) depends on journal, thus string is not static
+        if (strstr($template,"submissionGalley.tpl")) {
+            $smarty->registerFilter('output',array($this, 'insertPixelTagArticlePage'));
+            return false;
+        }
 		switch ($template) {
 			case 'frontend/pages/article.tpl':
-            //OJS 3.2.1
-            case 'plugins-13-plugins-generic-pdfJsViewer-generic-pdfJsViewer:submissionGalley.tpl':
-                if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-                    $smarty->register_outputfilter(array($this, 'insertPixelTagArticlePage'));
-                } else {
-                    $smarty->registerFilter('output',array($this, 'insertPixelTagArticlePage'));
-                }
+                $smarty->registerFilter('output',array($this, 'insertPixelTagArticlePage'));
 				break;
             case 'frontend/pages/indexJournal.tpl':
 			case 'frontend/pages/issue.tpl':
-			    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-				    $smarty->register_outputfilter(array($this, 'insertPixelTagIssueTOC'));
-			    } else {
+			    // if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+				//     $smarty->register_outputfilter(array($this, 'insertPixelTagIssueTOC'));
+			    // } else {
 				    $smarty->registerFilter('output',array($this, 'insertPixelTagIssueTOC'));
-			    }
+			    // }
 				break;
             case 'workflow/workflow.tpl':
                 $smarty->addJavaScript('vgWort-labels',
