@@ -66,7 +66,7 @@ class VGWortEditorAction {
 			}
 			$detail = $soapFault->detail;
 			$function = $detail->orderPixelFault;
-			return array(false, __('plugins.generic.vgWort.order.errorCode'.$function->errorcode, array('maxOrder' => $function->maxOrder)));
+			return array(false, __('plugins.generic.vgWort.order.errorCode' . $function->errorcode, array('maxOrder' => $function->maxOrder)));
 		}
 	}
 
@@ -229,7 +229,7 @@ class VGWortEditorAction {
 			$detail = $soapFault->detail;
 			$function = $detail->checkAuthorFault;
 			if (isset($function)) {
-			     return array(false, __('plugins.generic.vgWort.check.errorCode'.$function->errorcode));
+			     return array(false, __('plugins.generic.vgWort.check.errorCode' . $function->errorcode));
 			}
 			return array(false, __('plugins.generic.vgWort.check.errorCode'), array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring));
 		}
@@ -240,8 +240,8 @@ class VGWortEditorAction {
 	 * @param $pixelTag PixelTag
 	 * @param $request Request
 	 * @return array (successful boolean, errorMsg string)
-	 * the check is already done, i.e. the article and the issue are published,
-	 * there is a supported galley and the existing card numbers are valid
+	 *  the check is already done, i.e. the article and the issue are published,
+	 *  there is a supported galley and the existing card numbers are valid
 	 */
 	function newMessage($pixelTag, $request, $contextId = null) {
 		$vgWortPlugin = $this->_plugin;
@@ -269,17 +269,17 @@ class VGWortEditorAction {
 			foreach ($submissionAuthors as $author) {
 				$cardNo = $author->getData('vgWortCardNo');
 				if (!empty($cardNo)) {
-				    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-                        $authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => mb_substr($author->getFirstName(), 0, 39, 'utf8'), 'surName' => $author->getLastName());
-				    } else {
-					   $authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => mb_substr($author->getGivenName($locale), 0, 39, 'utf8'), 'surName' => $author->getFamilyName($locale));
-				    }
+				    // if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+                    //     $authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => mb_substr($author->getFirstName(), 0, 39, 'utf8'), 'surName' => $author->getLastName());
+				    // } else {
+					$authors['author'][] = array('cardNumber' => $author->getData('vgWortCardNo'), 'firstName' => mb_substr($author->getGivenName($locale), 0, 39, 'utf8'), 'surName' => $author->getFamilyName($locale));
+				    // }
 				} else {
-				    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-				        $authors['author'][] = array('firstName' => mb_substr($author->getFirstName(), 0, 39, 'utf8'), 'surName' => $author->getLastName());
-                    } else {
-					   $authors['author'][] = array('firstName' => mb_substr($author->getGivenName($locale), 0, 39,'utf8'), 'surName' => $author->getFamilyName($locale));
-                    }
+				    // if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+				    //     $authors['author'][] = array('firstName' => mb_substr($author->getFirstName(), 0, 39, 'utf8'), 'surName' => $author->getLastName());
+                    // } else {
+					$authors['author'][] = array('firstName' => mb_substr($author->getGivenName($locale), 0, 39,'utf8'), 'surName' => $author->getFamilyName($locale));
+                    // }
 				}
 			}
 			$parties = array('authors' => $authors);
@@ -290,17 +290,17 @@ class VGWortEditorAction {
 			foreach ($submissionTranslators as $translator) {
 				$cardNo = $translator->getData('vgWortCardNo');
 				if (!empty($cardNo)) {
-				    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-					   $translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => mb_substr($translator->getFirstName(), 0, 39,'utf8'), 'surName' => $translator->getLastName());
-				    } else {
-					   $translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => mb_substr($translator->getGivenName($locale), 0, 39, 'utf8'), 'surName' => $translator->getFamilyName($locale));
-				    }
+				    // if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+					//    $translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => mb_substr($translator->getFirstName(), 0, 39,'utf8'), 'surName' => $translator->getLastName());
+				    // } else {
+					$translators['translator'][] = array('cardNumber' => $translator->getData('vgWortCardNo'), 'firstName' => mb_substr($translator->getGivenName($locale), 0, 39, 'utf8'), 'surName' => $translator->getFamilyName($locale));
+				    // }
 				} else {
-				    if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-					   $translators['translator'][] = array('firstName' => mb_substr($translator->getFirstName(), 0, 39, 'utf8'), 'surName' => $translator->getLastName());
-				    } else {
-					   $translators['translator'][] = array('firstName' => mb_substr($translator->getGivenName($locale), 0, 39, 'utf8'), 'surName' => $translator->getFamilyName($locale));
-				    }
+				    // if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
+					//    $translators['translator'][] = array('firstName' => mb_substr($translator->getFirstName(), 0, 39, 'utf8'), 'surName' => $translator->getLastName());
+				    // } else {
+					$translators['translator'][] = array('firstName' => mb_substr($translator->getGivenName($locale), 0, 39, 'utf8'), 'surName' => $translator->getFamilyName($locale));
+				    // }
 				}
 			}
 			$parties['translators'] = $translators;
@@ -364,9 +364,15 @@ class VGWortEditorAction {
 		$primaryLocale = AppLocale::getPrimaryLocale();
 		// TODO: getTitle() defined?
 		$title = $submission->getTitle('de_DE');
-		if (!isset($title) || $title == '') $title = $submission->getTitle('en_US');
-		if (!isset($title) || $title == '') $title = $submission->getTitle($submissionLocale);
-		if (!isset($title) || $title == '') $title = $submission->getTitle($primaryLocale);
+		if (!isset($title) || $title == '') {
+			$title = $submission->getTitle('en_US');
+		}
+		if (!isset($title) || $title == '') {
+			$title = $submission->getTitle($submissionLocale);
+		}
+		if (!isset($title) || $title == '') {
+			$title = $submission->getTitle($primaryLocale);
+		}
 		$shortText = mb_substr($title, 0, 99, 'utf8');
 
 		// is it a poem
@@ -429,7 +435,7 @@ class VGWortEditorAction {
 	 * Check if the contributor is an author.
 	 * @param $contributor Author
 	 * @return boolean
-	*/
+	 */
 	function _filterAuthors($contributor) {
 		$userGroup = $contributor->getUserGroup();
 		return $userGroup->getData('nameLocaleKey') == 'default.groups.name.author';
@@ -439,7 +445,7 @@ class VGWortEditorAction {
 	 * Check if the contributor is a translator.
 	 * @param $contributor Author
 	 * @return boolean
-	*/
+	 */
 	function _filterTranslators($contributor) {
 		$userGroup = $contributor->getUserGroup();
 		return $userGroup->getData('nameLocaleKey') == 'default.groups.name.translator';
@@ -449,7 +455,7 @@ class VGWortEditorAction {
 	 * Check if the galley locale is de_DE.
 	 * @param $galley ArticleGalley
 	 * @return boolean
-	*/
+	 */
 	function _filterDEGalleys($galley) {
 		return $galley->getLocale() == 'de_DE';
 	}
@@ -458,7 +464,7 @@ class VGWortEditorAction {
 	 * Check if the galley locale is en_US.
 	 * @param $galley ArticleGalley
 	 * @return boolean
-	*/
+	 */
 	function _filterENGalleys($galley) {
 		return $galley->getLocale() == 'en_US';
 	}
@@ -483,12 +489,12 @@ class VGWortEditorAction {
 		curl_close($curl);
 		// catch and throw an exception if the authentication or the authorization error occurs
 		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, str_replace('://', '://'.$vgWortUserId.':'.$vgWortUserPassword.'@', $vgWortAPI));
+		curl_setopt($curl, CURLOPT_URL, str_replace('://', '://' . $vgWortUserId.':' . $vgWortUserPassword . '@', $vgWortAPI));
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$wsdlContent = curl_exec($curl);
 		$httpStatusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		if($httpStatusCode != 200) {
-			throw new SoapFault('httpError', __('plugins.generic.vgWort.'.$httpStatusCode));
+			throw new SoapFault('httpError', __('plugins.generic.vgWort.' . $httpStatusCode));
 		}
 		curl_close($curl);
 	}
