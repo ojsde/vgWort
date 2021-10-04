@@ -539,7 +539,7 @@ class VGWortPlugin extends GenericPlugin {
     }
 
     /**
-     * Ge t the pixel tag
+     * Get the pixel tag
      * @param $pubObject Article|ArticleGalley
      * @param $contextId int
      * @return PixelTag|null
@@ -608,7 +608,9 @@ class VGWortPlugin extends GenericPlugin {
     function filterDownloadGalleys($galley) {
         // check if it is a full text
         $galleyFile = $galley->getFile();
-        if (!$galleyFile) return false;
+        if (!$galleyFile) {
+            return false;
+        }
         $genreDao = DAORegistry::getDAO('GenreDAO');
         $genre = $genreDao->getById($galleyFile->getGenreId());
         if ($genre->getCategory() != GENRE_CATEGORY_DOCUMENT ||
@@ -618,7 +620,9 @@ class VGWortPlugin extends GenericPlugin {
         }
         // check if the file size is bigger than 15MB
         $megaByte = 1024*1024;
-        if (round((int) $galleyFile->getFileSize() / $megaByte) > 15) return false;
+        if (round((int) $galleyFile->getFileSize() / $megaByte) > 15) {
+            return false;
+        }
         // check if the galley is for download
         $pdfJsViewerPlugin = PluginRegistry::getPlugin('generic', 'pdfjsviewerplugin');
         $htmlArticleGalley = PluginRegistry::getPlugin('generic', 'htmlarticlegalleyplugin');
@@ -776,12 +780,16 @@ class VGWortPlugin extends GenericPlugin {
         // get the galley if it exists and check if it is supported by VG Wort
         // currently the variable is provided only by the PdfJSViewerPlugin and the HTMLArticleGalleyPlugin
         $galley = $smarty->get_template_vars('galley');
-        if (!$galley || !$this->galleySupported($galley)) $galley = null;
+        if (!$galley || !$this->galleySupported($galley)) {
+            $galley = null;
+        }
 
         // if it is the article view page, get the primary galleys
         $galleys = $smarty->get_template_vars('primaryGalleys');
+        // error_log("primaryGalleys: " . var_export($galleys,true));
         // get only download galleys, that should get the VG Wort pixel tag
         $downloadGalleys = array_filter($galleys, array($this, 'filterDownloadGalleys'));
+        error_log("downloadGalleys: " . var_export($downloadGalleys,true));
         $submissionDao = Application::getSubmissionDAO(); // Application allows usage for both OJS and OMP
         $submission = $submissionDao->getById($article->getId());//,$journal->getId());
         if (isset($submission)) {
