@@ -1,0 +1,255 @@
+msgid "plugins.generic.vgWort.displayName"
+msgstr "VG Wort"
+
+msgid "plugins.generic.vgWort.description"
+msgstr "Dieses Plug-In erlaubt die Integration und Verwaltung von Zählpixeln der <a href="http://www.vgwort.de/" target="_blank">VG Wort</a> in OJS. Es benötigt einen VG-Wort-Verlagsaccount und das Setzen der Plug-In-Einstellungen."
+
+msgid "plugins.generic.vgWort.descriptionDisabled"
+msgstr "Dieses Plug-In erlaubt die Integration und Verwaltung von Zählpixeln der <a href="http://www.vgwort.de/" target="_blank">VG Wort</a> in OJS. <strong>Die Systemanforderungen wurden nicht erfüllt. Bitte stellen Sie sicher, dass PHP Soap, OpenSSL und CURL extension modules auf dem Server verfügbar sind.</strong>"
+
+msgid "plugins.generic.vgWort.descriptionDisabled"
+msgstr "Dieses Plug-In erlaubt die Integration und Verwaltung von Zählpixeln der <a href="http://www.vgwort.de/" target="_blank">VG Wort</a> in OJS. <strong>Die Systemanforderungen wurden nicht erfüllt. Bitte stellen Sie sicher, dass PHP Soap, OpenSSL und CURL extension modules auf dem Server verfügbar sind.</strong>"
+
+msgid "plugins.generic.vgWort.settings.vgWortUserIdPassword"
+msgstr "VG-Wort-Benutzer/innenname und -Passwort"
+
+msgid "plugins.generic.vgWort.settings.vgWortUserIdPassword.description"
+msgstr "Geben Sie Nutzer/innennamen und Passwort des VG-Wort-Verlagsaccounts ein, der für die Authentifizierung der VG-Wort-Dienste benutzt wird."
+
+msgid "plugins.generic.vgWort.settings.vgWortUserId"
+msgstr "VG-Wort-Benutzer/innenname"
+
+msgid "plugins.generic.vgWort.settings.vgWortUserPassword"
+msgstr "VG-Wort-Passwort"
+
+msgid "plugins.generic.vgWort.settings.vgWortUserIdRequired"
+msgstr "Der VG-Wort-Benutzer/innenname wird benötigt."
+
+msgid "plugins.generic.vgWort.settings.vgWortUserPasswordRequired"
+msgstr "Das VG-Wort-Passwort wird benötigt."
+
+msgid "plugins.generic.vgWort.settings.vgWortRegistration"
+msgstr "Automatische Meldung"
+
+msgid "plugins.generic.vgWort.settings.vgWortRegistration.description"
+msgstr "Bestimmen Sie ein Datum im Jahr und/oder die Anzahl der Tage nach der Artikelpublikation. Die nicht gemeldeten und aktiven Zählmarken werden dann am definierten Datum jedes Jahr oder unter Berücksichtigung der definierten Zeit nach der Artikelpublikation automatisch bei VG Wort gemeldet. Falls beide Optionen gesetzt sind und das definierte Datum im Jahr einsetzt, es werden alle Zählpixel berücksichtigt, unabhängig vom Artikelpublikationsdatum. Wenn die Meldung einer Zählmarke fehlschlägt, es wird erneut versucht die Zählmarke zu melden bei der nächsten Ausführung der geplanten Aufgabe."
+
+msgid "plugins.generic.vgWort.settings.vgWortRegistration.dateInYear"
+msgstr "Datum im Jahr"
+
+msgid "plugins.generic.vgWort.settings.vgWortRegistration.daysAfterPublication"
+msgstr "Anzahl der Tage nach der Artikelpublikation"
+
+msgid "plugins.generic.vgWort.settings.clearDate"
+msgstr "Leeren"
+
+msgid "plugins.generic.vgWort.settings.vgWortPrivacy"
+msgstr "Datenschutz"
+
+msgid "plugins.generic.vgWort.settings.vgWortPrivacyRequired"
+msgstr "Der Datenschutztext wird benötigt."
+
+msgid "plugins.generic.vgWort.settings.vgWortPrivacy.description"
+msgstr "Dieser Datenschutztext wird dargestellt ..."
+
+msgid "plugins.generic.vgWort.settings.vgWortPrivacy.content"
+msgstr ""
+
+msgid "plugins.generic.vgWort.settings.vgWortTestMode"
+msgstr "Testmodus"
+
+msgid "plugins.generic.vgWort.settings.vgWortTestMode.description"
+msgstr "Die VG-Wort-Test-API (Testumgebung) benutzen. Bitte vergessen Sie nicht, diese Option vor dem Produktivbetrieb abzuwählen."
+
+msgid "plugins.generic.vgWort.cardNo"
+msgstr "VG-Wort-Karteinummer"
+
+msgid "plugins.generic.vgWort.cardNo.description"
+msgstr "(Ihre VG-Wort-Karteinummer)"
+
+msgid "plugins.generic.vgWort.cardNoValid"
+msgstr "Bitte geben Sie eine gültige Karteinummer (2-7 Ziffern) an."
+
+msgid "plugins.generic.vgWort.pixelTag"
+msgstr "VG-Wort-Zählpixel"
+
+msgid "plugins.generic.vgWort.pixelTag.privateCode"
+msgstr "Privater Code"
+
+msgid "plugins.generic.vgWort.pixelTag.publicCode"
+msgstr "Öffentlicher Code"
+
+msgid "plugins.generic.vgWort.pixelTag.domain"
+msgstr "Domain"
+
+msgid "plugins.generic.vgWort.pixelTag.dateOrdered"
+msgstr "Bestellt"
+
+msgid "plugins.generic.vgWort.pixelTag.dateAssigned"
+msgstr "Zugewiesen"
+
+msgid "plugins.generic.vgWort.pixelTag.dateRemoved"
+msgstr "Entfernt"
+
+msgid "plugins.generic.vgWort.pixelTag.dateRegistered"
+msgstr "Gemeldet"
+
+msgid "plugins.generic.vgWort.pixelTag.status"
+msgstr "Status"
+
+msgid "plugins.generic.vgWort.pixelTag.message"
+msgstr "Fehlermeldung"
+
+msgid "plugins.generic.vgWort.pixelTag.textType"
+msgstr "Texttyp"
+
+msgid "plugins.generic.vgWort.pixelTag.textType.description"
+msgstr "Wählen Sie den Texttyp "Gedicht" wenn der Beitrag weniger als 1800 Zeichen hat."
+
+msgid "plugins.generic.vgWort.pixelTag.textType.text"
+msgstr "Text"
+
+msgid "plugins.generic.vgWort.pixelTag.textType.lyric"
+msgstr "Gedicht"
+
+msgid "plugins.generic.vgWort.pixelTag.assign"
+msgstr "Ein VG-Wort-Zählpixel diesem Artikel zuweisen."
+
+msgid "plugins.generic.vgWort.pixelTag.remove"
+msgstr "Das VG-Wort-Zählpixel von diesem Artikel entfernen."
+
+msgid "plugins.generic.vgWort.pixelTag.removed"
+msgstr "Das VG-Wort-Zählpixel wurde von diesem Artikel entfernt."
+
+msgid "plugins.generic.vgWort.pixelTag.representation.notAssigned"
+msgstr "Es wurde diesem Artikel noch kein VG-Wort-Zählpixel zugewiesen."
+
+msgid "plugins.generic.vgWort.pixelTag.representation.notSupported"
+msgstr "Das VG-Wort-Zählpixel kann dieser Fahne nicht zugewiesen werden. Die Fahne ist entweder kein Volltext, oder sie ist nicht im Format PDF, HTML oder EPUB, oder die Datei ist größer als 15MB."
+
+msgid "plugins.generic.vgWort.pixelTag.representation.assigned"
+msgstr "Das VG-Wort-Zählpixel wird dieser Fahne zugewiesen d.h. diese Fahne wird für die VG-Wort-Zählung berücksichtigt."
+
+msgid "plugins.generic.vgWort.pixelTag.representation.exclude"
+msgstr "Diese Fahne von der Zuweisung eines VG-Wort-Zählpixels d.h. von der VG-Wort-Zählung ausnehmen."
+
+msgid "plugins.generic.vgWort.pixelTag.representation.excluded"
+msgstr "Diese Fahne wurde von der Zuweisung eines VG-Wort-Zählpixels d.h. von der VG-Wort-Zählung ausgenommen."
+
+msgid "plugins.generic.vgWort.pixelTag.any"
+msgstr "Jeder Status"
+
+msgid "plugins.generic.vgWort.pixelTag.available"
+msgstr "Verfügbar"
+
+msgid "plugins.generic.vgWort.pixelTag.unregistered.active"
+msgstr "Nicht gemeldet, aktiv"
+
+msgid "plugins.generic.vgWort.pixelTag.unregistered.active.notPublished"
+msgstr "Nicht gemeldet, aktiv (nicht veröffentlicht)"
+
+msgid "plugins.generic.vgWort.pixelTag.unregistered.removed"
+msgstr "Nicht gemeldet, entfernt"
+
+msgid "plugins.generic.vgWort.pixelTag.registered.active"
+msgstr "Gemeldet, aktiv"
+
+msgid "plugins.generic.vgWort.pixelTag.registered.removed"
+msgstr "Gemeldet, entfernt"
+
+msgid "plugins.generic.vgWort.pixelTag.failed"
+msgstr "Fehlgeschlagen"
+
+msgid "plugins.generic.vgWort.pixelTag.noStatusMessage"
+msgstr "Es wurde keine Fehlermeldung gefunden."
+
+msgid "plugins.generic.vgWort.pixelTag.LocalizationNotice"
+msgstr "Bitte beachten sie, dass die Daten in der Einreichungssprache des ausgewählten Artikels übertragen werden. Für Personen welche an der Ausschüttung von Tantiemen teilnehmen möchten, muss die Schreibweise der Namen indentisch sein zu der bei vgWort registrierten Schreibweise. Die Einreichungssprache kann in den Artikel-Metadaten ausgewählt werden."
+
+msgid "plugins.generic.vgWort.pixelTags"
+msgstr "Zählpixel"
+
+msgid "plugins.generic.vgWort.pixelTags.codes"
+msgstr "Privater and Öffentlicher Code"
+
+msgid "plugins.generic.vgWort.pixelTags.dates"
+msgstr "Bestellt, Zugewiesen, Gemeldet, Entfernt"
+
+msgid "plugins.generic.vgWort.pixelTags.register"
+msgstr "melden"
+
+msgid "plugins.generic.vgWort.pixelTags.register.confirm"
+msgstr "Sind Sie sicher, dass Sie dieses Zählpixel melden möchten?"
+
+msgid "plugins.generic.vgWort.pixelTags.register.success"
+msgstr "Meldung erfolgreich!"
+
+msgid "plugins.generic.vgWort.notification.vgWortError"
+msgstr "Die Meldung des VG-Wort-Zählpixels ist fehlgeschlagen."
+
+msgid "plugins.generic.vgWort.notification.vgWortErrorExists"
+msgstr "Es existieren fehlgeschlagene Zählpixelmeldungen."
+
+msgid "plugins.generic.vgwort.senderTask.name"
+msgstr "VG Wort pixel tag automatic registration task."
+
+msgid "plugins.generic.vgWort.requirementsRequired"
+msgstr "Die Systemanforderungen sind nicht erfüllt. Bitte stellen Sie sicher, dass PHP Soap, OpenSSL, sowie CURL extension modules auf dem Server verfügbar sind."
+
+msgid "plugins.generic.vgWort.noWSDL"
+msgstr "WSDL nicht gefunden unter {$wsdl}. Der VG-Wort-Server könnte momentan nicht verfügbar sein. Bitte versuchen Sie es später noch einmal."
+
+msgid "plugins.generic.vgWort.401"
+msgstr "Ungültige VG-Wort-Zugangsdaten (Benutzer/innenname oder Passwort) in den Plug-In-Einstellungen festgelegt."
+
+msgid "plugins.generic.vgWort.403"
+msgstr "Der/die VG-Wort-Benutzer/in aus den Plug-In-Einstellungen ist nicht berechtigt, dies zu tun."
+
+msgid "plugins.generic.vgWort.order.errorCode1"
+msgstr "Die maximale Anzahl an Zählpixeln ({$maxOrder}) für diesen Auftrag wurde überschritten."
+
+msgid "plugins.generic.vgWort.order.errorCode2"
+msgstr "Die maximale Anzahl an Zählpixeln ({$maxOrder}) für dieses Jahr wurde überschritten."
+
+msgid "plugins.generic.vgWort.order.errorCode3"
+msgstr "Es wurde keine E-Mail-Adresse für Ihren VG-Wort-Account angegeben. Bitte geben Sie eine E-Mail-Adresse für Ihren Account im VG-Wort-Portal ein."
+
+msgid "plugins.generic.vgWort.order.errorCode100"
+msgstr "Ein technisches Problem ist aufgetreten. Bitte versuchen Sie es später noch einmal."
+
+msgid "plugins.generic.vgWort.check.errorCode"
+msgstr "Ein nicht handhabbarer Fehler ({$faultcode}/{$faultstring}) ist beim überprüfen der Autoren aufgetreten."
+
+msgid "plugins.generic.vgWort.check.notValid"
+msgstr "Der/die Autor/in oder der/die Übersetzer/in {$surName} hat keine gültige VG-Wort-Karteinummer."
+
+msgid "plugins.generic.vgWort.check.errorCode100"
+msgstr "Ein technisches Problem ist aufgetreten. Bitte versuchen Sie es später noch einmal."
+
+msgid "plugins.generic.vgWort.check.galleyRequired"
+msgstr "Es wird eine PDF-, HTML- oder EPUB-Fahne benötigt, die kleiner als 15MB ist."
+
+msgid "plugins.generic.vgWort.check.articleNotPublished"
+msgstr "Der Artikel ist nicht veröffentlicht."
+
+msgid "plugins.generic.vgWort.register.errorCode"
+msgstr "Ein nicht handhabbarer Fehler ({$faultcode}/{$faultstring}) ist bei der Meldung aufgetreten."
+
+msgid "plugins.generic.vgWort.register.validationError"
+msgstr "Ein vgWort-Validierungsfehler ist aufgetreten."
+
+msgid "plugins.generic.vgWort.register.vgWortBusinessException"
+msgstr "Eine vgWort-Business-Ausnahme ist aufgetreten."
+
+msgid "plugin.generic.vgWort.pixelTag.status.registeredactive"
+msgstr "Registriert, aktiv"
+
+msgid "plugin.generic.vgWort.pixelTag.status.unregisteredactive"
+msgstr "Unregistriert, aktiv"
+
+msgid "plugin.generic.vgWort.pixelTag.status.registeredremoved"
+msgstr "Registriert, entfernt"
+
+msgid "plugin.generic.vgWort.pixelTag.status.unregisteredremoved"
+msgstr "Unregistriert, entfernt"
+
