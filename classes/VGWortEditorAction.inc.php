@@ -55,7 +55,13 @@ class VGWortEditorAction {
 
 			// check web service: availability and credentials
 			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);
-			$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword, 'exceptions' => true, 'trace' => 1, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS));
+			$client = new SoapClient($vgWortAPI, array(
+				'login' => $vgWortUserId,
+				'password' => $vgWortUserPassword,
+				'exceptions' => true,
+				'trace' => 1,
+				'features' => SOAP_SINGLE_ELEMENT_ARRAYS
+			));
 			$result = $client->orderPixel(array("count" => 1));
 
 			return array(true, $result);
@@ -66,7 +72,10 @@ class VGWortEditorAction {
 			}
 			$detail = $soapFault->detail;
 			$function = $detail->orderPixelFault;
-			return array(false, __('plugins.generic.vgWort.order.errorCode' . $function->errorcode, array('maxOrder' => $function->maxOrder)));
+			return array(
+				false,
+				__('plugins.generic.vgWort.order.errorCode' . $function->errorcode,
+				array('maxOrder' => $function->maxOrder)));
 		}
 	}
 
@@ -218,9 +227,15 @@ class VGWortEditorAction {
 			}
 			// check web service: availability and credentials
 			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);
-			$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
+			$client = new SoapClient($vgWortAPI, array(
+				'login' => $vgWortUserId,
+				'password' => $vgWortUserPassword
+			));
 			$result = $client->checkAuthor(array("cardNumber" => $cardNo, "surName" => $lastName));
-			return array($result->valid, __('plugins.generic.vgWort.check.notValid', array('surName' => $lastName)));
+			return array(
+				$result->valid,
+				__('plugins.generic.vgWort.check.notValid', array('surName' => $lastName))
+			);
 		}
 		catch (SoapFault $soapFault) {
 			if($soapFault->faultcode == 'noWSDL' || $soapFault->faultcode == 'httpError') {
@@ -231,7 +246,14 @@ class VGWortEditorAction {
 			if (isset($function)) {
 			     return array(false, __('plugins.generic.vgWort.check.errorCode' . $function->errorcode));
 			}
-			return array(false, __('plugins.generic.vgWort.check.errorCode'), array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring));
+			return array(
+				false,
+				__('plugins.generic.vgWort.check.errorCode'),
+				array(
+					'faultcode' => $soapFault->faultcode,
+					'faultstring' => $soapFault->faultstring
+				)
+			);
 		}
 	}
 
@@ -314,15 +336,46 @@ class VGWortEditorAction {
 
         $dispatcher = Application::get()->getDispatcher();
         foreach ($supportedGalleys as $supportedGalley) {
-		    $url = $dispatcher->url($request, ROUTE_PAGE, null, 'article', 'view', array($submission->getBestArticleId(), $supportedGalley->getBestGalleyId()));
+		    $url = $dispatcher->url(
+				$request,
+				ROUTE_PAGE,
+				null,
+				'article',
+				'view',
+				array(
+					$submission->getBestArticleId(),
+					$supportedGalley->getBestGalleyId()
+				)
+			);
 			$webrange = array('url' => array($url));
 			$webranges['webrange'][] = $webrange;
 
-			$downlaodUrl1 = $dispatcher->url($request, ROUTE_PAGE, null, 'article', 'view', array($submission->getBestArticleId(), $supportedGalley->getBestGalleyId()));
+			$downlaodUrl1 = $dispatcher->url(
+				$request,
+				ROUTE_PAGE,
+				null,
+				'article',
+				'view',
+				array(
+					$submission->getBestArticleId(),
+					$supportedGalley->getBestGalleyId()
+				)
+			);
 			$webrange = array('url' => array($downlaodUrl1));
 			$webranges['webrange'][] = $webrange;
 
-			$downlaodUrl2 = $dispatcher->url($request, ROUTE_PAGE, null, 'article', 'view', array($submission->getBestArticleId(), $supportedGalley->getBestGalleyId(), $supportedGalley->getFileId()));
+			$downlaodUrl2 = $dispatcher->url(
+				$request,
+				ROUTE_PAGE,
+				null,
+				'article',
+				'view',
+				array(
+					$submission->getBestArticleId(),
+					$supportedGalley->getBestGalleyId(),
+					$supportedGalley->getFileId()
+				)
+			);
 			$webrange = array('url' => array($downlaodUrl2));
 			$webranges['webrange'][] = $webrange;
 		}
@@ -396,8 +449,15 @@ class VGWortEditorAction {
 
 			// check web service: availability and credentials
 			$this->_checkService($vgWortUserId, $vgWortUserPassword, $vgWortAPI);
-			$client = new SoapClient($vgWortAPI, array('login' => $vgWortUserId, 'password' => $vgWortUserPassword));
-			$result = $client->newMessage(array("parties" => $parties, "privateidentificationid" => $pixelTag->getPrivateCode(), "messagetext" => $message, "webranges" => $webranges));
+			$client = new SoapClient($vgWortAPI, array(
+				'login' => $vgWortUserId,
+				'password' => $vgWortUserPassword
+			));
+			$result = $client->newMessage(array(
+				'parties' => $parties,
+				'privateidentificationid' => $pixelTag->getPrivateCode(),
+				'messagetext' => $message,
+				'webranges' => $webranges));
 			return array($result->status == 'OK', '');
 		}
 		catch (SoapFault $soapFault) {
@@ -415,18 +475,44 @@ class VGWortEditorAction {
 			case "Validation error":
 				$errorDetails = (array) $soapFault->detail;
 				error_log(print_r($errorDetails, TRUE));
-				return array(false, __('plugins.generic.vgWort.register.validationError', array('details' => is_array($errorDetails['ValidationError'])?implode($errorDetails['ValidationError']):print_r($errorDetails['ValidationError'], TRUE))));
+				return array(
+					false,
+					__('plugins.generic.vgWort.register.validationError',
+					array(
+						'details' => is_array($errorDetails['ValidationError'])
+							? implode($errorDetails['ValidationError'])
+							: print_r($errorDetails['ValidationError'], TRUE)
+					))
+				);
 			case "Business Exception":
 			        $errorDetails = $soapFault->detail->newMessageFault;
 			        error_log(print_r($errorDetails, TRUE));
-			        return array(false, __('plugins.generic.vgWort.register.vgWortBusinessException', array('errorcode' => $errorDetails->errorcode, 'errormsg' => $errorDetails->errormsg)));
-				return array(false, __('plugins.generic.vgWort.register.errorCode', array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring)));
+			        return array(
+						false,
+						__('plugins.generic.vgWort.register.vgWortBusinessException', array(
+							'errorcode' => $errorDetails->errorcode,
+							'errormsg' => $errorDetails->errormsg
+						))
+					);
+				return array(
+					false,
+					__('plugins.generic.vgWort.register.errorCode', array(
+						'faultcode' => $soapFault->faultcode,
+						'faultstring' => $soapFault->faultstring
+					))
+				);
 			default:
 				if (isset($soapFault->detail)) {
 					// TODO: Is this error log necessary??
 					error_log(print_r($soapFault->detail, TRUE));
 				}
-				return array(false, __('plugins.generic.vgWort.register.errorCode', array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring)));
+				return array(
+					false,
+					__('plugins.generic.vgWort.register.errorCode', array(
+						'faultcode' => $soapFault->faultcode,
+						'faultstring' => $soapFault->faultstring
+					))
+				);
 			}
 		}
 	}

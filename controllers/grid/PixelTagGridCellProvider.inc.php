@@ -38,7 +38,14 @@ class PixelTagGridCellProvider extends GridCellProvider {
 						new LinkAction(
 							'failureMessage',
 							new AjaxModal(
-								$router->url($request, null, null, 'statusMessage', null, array('pixelTagId' => $pixelTag->getId())),
+								$router->url(
+									$request,
+									null,
+									null,
+									'statusMessage',
+									null,
+									array('pixelTagId' => $pixelTag->getId())
+								),
 								__('plugins.generic.vgWort.pixelTag.failed'),
 								'failureMessage'
 							),
@@ -83,10 +90,18 @@ class PixelTagGridCellProvider extends GridCellProvider {
 			case 'domain':
 				return array('label' => $pixelTag->getDomain());
 			case 'dates':
-				$dateOrdered = $pixelTag->getDateOrdered() ? strftime(Config::getVar('general', 'date_format_short'), strtotime($pixelTag->getDateOrdered())) : '&mdash;';
-				$dateAssigned = $pixelTag->getDateAssigned() ? strftime(Config::getVar('general', 'date_format_short'), strtotime($pixelTag->getDateAssigned())) : '&mdash;';
-				$dateRegistered = $pixelTag->getDateRegistered() ? strftime(Config::getVar('general', 'date_format_short'), strtotime($pixelTag->getDateRegistered())) : '&mdash;';
-				$dateRemoved = $pixelTag->getDateRemoved() ? strftime(Config::getVar('general', 'date_format_short'), strtotime($pixelTag->getDateRemoved())) : '&mdash;';
+				$dateOrdered = $pixelTag->getDateOrdered()
+					? strftime(Config::getVar('general', 'date_format_short'), strtotime($pixelTag->getDateOrdered()))
+					: '&mdash;';
+				$dateAssigned = $pixelTag->getDateAssigned()
+					? strftime(Config::getVar('general', 'date_format_short'), strtotime($pixelTag->getDateAssigned()))
+					: '&mdash;';
+				$dateRegistered = $pixelTag->getDateRegistered()
+					? strftime(Config::getVar('general', 'date_format_short'), strtotime($pixelTag->getDateRegistered()))
+					: '&mdash;';
+				$dateRemoved = $pixelTag->getDateRemoved()
+					? strftime(Config::getVar('general', 'date_format_short'), strtotime($pixelTag->getDateRemoved())) 
+					: '&mdash;';
 				return array('label' => $dateOrdered .'<br />' . $dateAssigned .'<br />' . $dateRegistered .'<br />' . $dateRemoved);
 			case 'status':
 				return array('label' => $pixelTag->getStatusString());

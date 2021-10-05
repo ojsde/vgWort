@@ -23,4 +23,3 @@
 {capture assign="pixelTagsGridUrl"}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.vgWort.controllers.grid.PixelTagGridHandler" op="fetchGrid" escape=false}{/capture}
 {load_url_in_div id="pixelTagsGridContainer" url=$pixelTagsGridUrl}
 <!-- /VG Wort -->
-

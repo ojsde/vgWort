@@ -98,7 +98,7 @@ class VGWortInfoSender extends ScheduledTask {
 			// check the plugin setting daysAfterPublication, if the pixel tags
 			// should be registered in specific time after the article publication
 			$daysAfterPublication = $plugin->getSetting($journal->getId(), 'daysAfterPublication');
-			$publicationDate = date('Y-m-d', strtotime('-' . $daysAfterPublication.' days', time()));
+			$publicationDate = date('Y-m-d', strtotime('-' . $daysAfterPublication . ' days', time()));
 
 			if ($daysAfterPublication > 0 && !$justRegistered) {
                 // echo("daysAfterPublication set to $daysAfterPublication\n");
@@ -108,7 +108,7 @@ class VGWortInfoSender extends ScheduledTask {
 			    $unregisteredActivePixelTags = $pixelTagDao->getAllForRegistration($journal->getId(), $publicationDate);
 
 				// register the pixel tags
-			    $this->_registerPixelTags($unregisteredActivePixelTags,$journal->getId());
+			    $this->_registerPixelTags($unregisteredActivePixelTags, $journal->getId());
 			}
 		}
 		return true;

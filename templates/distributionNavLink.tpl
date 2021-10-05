@@ -10,7 +10,7 @@
 
 <tab id="pixelTagsTab" label="{translate key="plugins.generic.vgWort.pixelTags"}">
 	<!-- VG Wort -->
-	
+
 	{fbvFormSection}
 	     <p class="pkp_help">{translate key="plugins.generic.vgWort.pixelTag.LocalizationNotice"}</p>
 	{/fbvFormSection}
@@ -22,18 +22,18 @@
 	     	</div>
 	     </div>
 	{/if}
-	
+
 	{**{url|assign:pixelTagsGridUrl router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.vgWort.controllers.grid.PixelTagGridHandler" op="fetchGrid" escape=false}*}
 
 	{capture assign="pixelTagsGridUrl"}{url router=$smarty.const.ROUTE_COMPONENT component="plugins.generic.vgWort.controllers.grid.PixelTagGridHandler" op="fetchGrid" escape=false}{/capture}
 	{load_url_in_div id="pixelTagsGridContainer" url=$pixelTagsGridUrl}
-	
+
 	<!-- /VG Wort -->
 
 		{** {help file="settings/distribution-settings" section="pixeltags" class="pkp_help_tab"}
 		* <pkp-form
 		*	v-bind="components.{$smarty.const.ROUTE_COMPONENT}"
 		*	@set="set"
-		*/> 
+		*/>
 		*}
 </tab>

@@ -13,7 +13,7 @@
 		// Attach the form handler.
 		$('#vgWortSettingsForm').pkpHandler('$.pkp.controllers.form.AjaxFormHandler');
 	{rdelim});
-	
+
 	{literal}
 	<!--
 	// function to clear the dateInYear date filed

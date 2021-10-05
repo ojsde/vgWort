@@ -65,9 +65,11 @@ class PixelTagGridHandler extends GridHandler {
 				null,
 				'controllers/grid/gridCell.tpl',
 				$pixelTagGridCellProvider,
-				array('html' => true,
-						'alignment' => COLUMN_ALIGNMENT_LEFT,
-						'width' => 20)
+				array(
+					'html' => true,
+					'alignment' => COLUMN_ALIGNMENT_LEFT,
+					'width' => 20
+				)
 			)
 		);
 		$this->addColumn(
@@ -77,8 +79,10 @@ class PixelTagGridHandler extends GridHandler {
 				null,
 				'controllers/grid/gridCell.tpl',
 				$pixelTagGridCellProvider,
-				array('html' => true,
-						'alignment' => COLUMN_ALIGNMENT_LEFT)
+				array(
+					'html' => true,
+					'alignment' => COLUMN_ALIGNMENT_LEFT
+				)
 			)
 		);
 		$this->addColumn(
@@ -88,8 +92,10 @@ class PixelTagGridHandler extends GridHandler {
 				null,
 				'controllers/grid/gridCell.tpl',
 				$pixelTagGridCellProvider,
-				array('alignment' => COLUMN_ALIGNMENT_LEFT,
-						'width' => 10)
+				array(
+					'alignment' => COLUMN_ALIGNMENT_LEFT,
+					'width' => 10
+				)
 			)
 		);
 		$this->addColumn(
@@ -99,8 +105,10 @@ class PixelTagGridHandler extends GridHandler {
 				null,
 				'controllers/grid/gridCell.tpl',
 				$pixelTagGridCellProvider,
-				array('alignment' => COLUMN_ALIGNMENT_LEFT,
-						'width' => 10)
+				array(
+					'alignment' => COLUMN_ALIGNMENT_LEFT,
+					'width' => 10
+				)
 			)
 		);
 		$this->addColumn(
@@ -111,8 +119,9 @@ class PixelTagGridHandler extends GridHandler {
 				'controllers/grid/gridCell.tpl',
 				$pixelTagGridCellProvider,
 				array('html' => true,
-						'alignment' => COLUMN_ALIGNMENT_LEFT,
-						'width' => 10)
+					'alignment' => COLUMN_ALIGNMENT_LEFT,
+					'width' => 10
+				)
 			)
 		);
 		$this->addColumn(
@@ -122,9 +131,11 @@ class PixelTagGridHandler extends GridHandler {
 				null,
 				'controllers/grid/gridCell.tpl',
 				$pixelTagGridCellProvider,
-				array('html' => true,
-						'alignment' => COLUMN_ALIGNMENT_LEFT,
-						'width' => 10)
+				array(
+					'html' => true,
+					'alignment' => COLUMN_ALIGNMENT_LEFT,
+					'width' => 10
+				)
 			)
 		);
 	}
@@ -176,7 +187,8 @@ class PixelTagGridHandler extends GridHandler {
 				'columns' => $filterColumns,
 				'status' => $statusNames,
 				'gridId' => $this->getId(),
-		));
+			)
+		);
 		return parent::renderFilter($request, $allFilterData);
 	}
 
@@ -200,7 +212,9 @@ class PixelTagGridHandler extends GridHandler {
 	function getFilterForm() {
 		//return 'plugins/generic/vgWort/templates/controllers/grid/pixelTagGridFilter.tpl';
 		$vgWortPlugin = PluginRegistry::getPlugin('generic', VGWORT_PLUGIN_NAME);
-		$template = method_exists($vgWortPlugin, 'getTemplateResource') ? $vgWortPlugin->getTemplateResource('/controllers/grid/pixelTagGridFilter.tpl') : $vgWortPlugin->getTemplatePath() . '/controllers/grid/pixelTagGridFilter.tpl';
+		$template = method_exists($vgWortPlugin, 'getTemplateResource')
+			? $vgWortPlugin->getTemplateResource('/controllers/grid/pixelTagGridFilter.tpl')
+			: $vgWortPlugin->getTemplatePath() . '/controllers/grid/pixelTagGridFilter.tpl';
 		return $template;
 	}
 
@@ -262,8 +276,10 @@ class PixelTagGridHandler extends GridHandler {
 		$vgWortPlugin = PluginRegistry::getPlugin('generic', VGWORT_PLUGIN_NAME);
 		$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
 		$templateMgr = TemplateManager::getManager($request);
-		$templateMgr->assign('failedExists', $pixelTagDao->failedUnregisteredActiveExists($request->getContext()->getId()));		
-		$templateFile = method_exists($vgWortPlugin, 'getTemplateResource') ? $vgWortPlugin->getTemplateResource('pixelTagsTab.tpl') : $vgWortPlugin->getTemplatePath() . 'pixelTagsTab.tpl';
+		$templateMgr->assign('failedExists', $pixelTagDao->failedUnregisteredActiveExists($request->getContext()->getId()));
+		$templateFile = method_exists($vgWortPlugin, 'getTemplateResource')
+			? $vgWortPlugin->getTemplateResource('pixelTagsTab.tpl')
+			: $vgWortPlugin->getTemplatePath() . 'pixelTagsTab.tpl';
 		return $templateMgr->fetchJson($templateFile);
 	}
 
@@ -278,12 +294,13 @@ class PixelTagGridHandler extends GridHandler {
 		$pixelTagId = $request->getUserVar('pixelTagId');
 		$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
 		$pixelTag = $pixelTagDao->getById($pixelTagId);
-		$statusMessage = !empty($pixelTag->getMessage()) ? $pixelTag->getMessage() : __('plugins.generic.vgWort.pixelTag.noStatusMessage');
+		$statusMessage = !empty($pixelTag->getMessage())
+			? $pixelTag->getMessage()
+			: __('plugins.generic.vgWort.pixelTag.noStatusMessage');
 		$templateMgr = TemplateManager::getManager($request);
 		$templateMgr->assign(array(
 			'statusMessage' => htmlentities($statusMessage),
 		));
-		//return $templateMgr->fetchJson($vgWortPlugin->getTemplatePath() . 'statusMessage.tpl');
 		return $templateMgr->fetchJson($vgWortPlugin->getTemplateResource('statusMessage.tpl'));
 	}
 

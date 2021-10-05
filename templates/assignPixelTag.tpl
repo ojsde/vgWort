@@ -92,7 +92,7 @@
 			{fbvFormSection title="plugins.generic.vgWort.pixelTag"}
 				<p>{translate key="plugins.generic.vgWort.pixelTag.representation.notAssigned"}</p>
 			{/fbvFormSection}
-		{else}	
+		{else}
 			{if $pixelTag->getDateRemoved()}
 				{fbvFormSection title="plugins.generic.vgWort.pixelTag"}
 					<p>{translate key="plugins.generic.vgWort.pixelTag.removed"}</p>
@@ -115,4 +115,3 @@
 	{/if}
 {/fbvFormArea}
 <!-- /VG Wort -->
-

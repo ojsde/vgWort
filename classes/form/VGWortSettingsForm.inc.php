@@ -32,13 +32,12 @@ class VGWortSettingsForm extends Form {
 		$this->contextId = $contextId;
 		$this->plugin = $plugin;
 
-		//parent::__construct($plugin->getTemplatePath() . 'settingsForm.tpl');
-		//parent::__construct($plugin->getTemplateResource('settingsForm.tpl'));
-		parent::__construct(method_exists($plugin, 'getTemplateResource') ? $plugin->getTemplateResource('settingsForm.tpl') : $plugin->getTemplatePath() . 'settingsForm.tpl');
+		parent::__construct(method_exists($plugin, 'getTemplateResource')
+			? $plugin->getTemplateResource('settingsForm.tpl')
+			: $plugin->getTemplatePath() . 'settingsForm.tpl');
 
 		$this->addCheck(new FormValidator($this, 'vgWortUserId', 'required', 'plugins.generic.vgWort.settings.vgWortUserIdRequired'));
 		$this->addCheck(new FormValidator($this, 'vgWortUserPassword', 'required', 'plugins.generic.vgWort.settings.vgWortUserPasswordRequired'));
-		//$this->addCheck(new FormValidator($this, 'vgWortPrivacy', 'required', 'plugins.generic.vgWort.settings.vgWortPrivacyRequired'));
 		$this->addCheck(new FormValidatorPost($this));
 		$this->addCheck(new FormValidatorCSRF($this));
 	}
@@ -52,25 +51,6 @@ class VGWortSettingsForm extends Form {
 			if ($fieldName == 'daysAfterPublication') {
 				if (!$fieldValue) $fieldValue = '';
 			}
-			/*
-			elseif ($fieldName =='vgWortPrivacy') {
-				if (empty($fieldValue)) {
-					$defaultLocale = 'de_DE';
-					$defaultTranslatedText = __('plugins.generic.vgWort.settings.vgWortPrivacy.content', array(), $defaultLocale);
-					$fieldValue = array($defaultLocale => $defaultTranslatedText);
-					$context = $request->getContext();
-					$supportedFormLocales = $context->getSupportedFormLocales();
-					foreach ($supportedFormLocales as $supportedFormLocale) {
-						if ($supportedFormLocale != $defaultLocale) {
-							$this->plugin->addLocaleData($supportedFormLocale);
-							$translatedText = __('plugins.generic.vgWort.settings.vgWortPrivacy.content', array(), $supportedFormLocale);
-							if (substr($translatedText, 0, 2) === '##') $translatedText = $defaultTranslatedText;
-							$fieldValue[$supportedFormLocale] = $translatedText;
-						}
-					}
-				}
-			}
-			*/
 			$this->setData($fieldName, $fieldValue);
 		}
 	}
@@ -112,7 +92,6 @@ class VGWortSettingsForm extends Form {
 			'vgWortUserPassword' => 'string',
 			'dateInYear' => 'string',
 			'daysAfterPublication' => 'int',
-			//'vgWortPrivacy' => 'object',
 			'vgWortTestAPI' => 'bool'
 		);
 	}
