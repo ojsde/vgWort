@@ -1,9 +1,9 @@
-==========================================================
-=== OJS VG Wort Plugin
-=== Version: 2.1
-=== Authors: Božana Bokan, Ronald Steffen, Christoph Otte
-=== Last updated: October 8, 2021
-==========================================================
+    ==========================================================
+    === OJS VG Wort Plugin
+    === Version: 2.1
+    === Authors: Božana Bokan, Ronald Steffen, Christoph Otte
+    === Last updated: October 8, 2021
+    ==========================================================
 
 # OJS VG Wort Plugin
 
@@ -31,34 +31,34 @@ The plugin is a part of the project [OJS-de.net](http://www.ojs-de.net).
 
 1. Go to the folder of your OJS instance and clone the repository.
 
-```console
-$ cd [path/to/your/ojs]/plugins/generic
-$ git clone https://github.com/ojsde/vgWort
-```
+    ```console
+    $ cd [path/to/your/ojs]/plugins/generic
+    $ git clone https://github.com/ojsde/vgWort
+    ```
 
 2. Switch to the vgWort directory and checkout the branch.
 
-```console
-$ cd vgWort
-$ git checkout [branch]
-```
+    ```console
+    $ cd vgWort
+    $ git checkout [branch]
+    ```
 
 3. Run the `upgrade.php` script.
 
-```console
-$ cd [path/to/your/ojs]
-$ php tools/upgrade.php upgrade
-```
+    ```console
+    $ cd [path/to/your/ojs]
+    $ php tools/upgrade.php upgrade
+    ```
 
 
 ## Usage
 
 * **Assign Pixel Tags** &mdash; Make sure that your publication has not been published yet. Then, go to `Publication > VG Wort`.
 
-1. Choose the **text type**; the publication is defined to be "Poem" if it does not contain more than 1800 characters.
-2. Initially, the **status** is set to "No VG Wort pixel tag has been assigned to this article yet." and the checkbox "Assign a VG Wort pixel tag to this article." is active. By simply saving this form, the status will switch to "Unregistered, active" and a new pixel tag is assigned. Note that the pixel tag can only be activated if the status has been changed.
+    1. Choose the **text type**; the publication is defined to be "Poem" if it does not contain more than 1800 characters.
+    2. Initially, the **status** is set to "No VG Wort pixel tag has been assigned to this article yet." and the checkbox "Assign a VG Wort pixel tag to this article." is active. By simply saving this form, the status will switch to "Unregistered, active" and a new pixel tag is assigned. Note that the pixel tag can only be activated if the status has been changed.
 
-By publishing this version, the pixel tag will be activated.
+    By publishing this version, the pixel tag will be activated.
 
 * **Pixel Tag Listing** &mdash; All activated pixel tags will be listed under `Settings > Distribution > Pixel Tags`. By clicking the blue triangle at the beginning of each line you will be able to register the pixel tag. **Note that only registered pixel tags will be counted.**
 
