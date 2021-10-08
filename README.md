@@ -56,7 +56,7 @@ The plugin is a part of the project [OJS-de.net](http://www.ojs-de.net).
 * **Assign Pixel Tags** &mdash; Make sure that your publication has not been published yet. Then, go to `Publication > VG Wort`.
 
     1. Choose the **text type**; the publication is defined to be "Poem" if it does not contain more than 1800 characters.
-    2. Initially, the **status** is set to "No VG Wort pixel tag has been assigned to this article yet." and the checkbox "Assign a VG Wort pixel tag to this article." is active. By simply saving this form, the status will switch to "Unregistered, active" and a new pixel tag is assigned. Note that the pixel tag can only be activated if the status has been changed.
+    2. Initially, the **status** is set to "No VG Wort pixel tag has been assigned to this article yet." and the checkbox "Remove [...]" is disabled. Please select the checkbox "Assign [...]" By saving this form, the status will switch to "Unregistered, active" and a new pixel tag is assigned.
 
     By publishing this version, the pixel tag will be activated.
 
@@ -77,16 +77,16 @@ This plugin version is compatible with OJS 3.2.1. Additionally PHP Soap, and PHP
 
 ## Version History
 
-* 1.0 - Initial Release
-* 1.1 - Updated to support OJS 2.4.1
-* 1.2 - Updated to support OJS 2.4.2
-* 1.3 - Insert already registered pixel tags
-* 1.4 - Very important fix - use VG Wort live instead of test server
-* 1.5 - VG Wort test system in plugin settings,
-* 1.6 - Fix a major error: all authors and translators has to be registered at VG Wort. Also: add the possibility to enter translators and to remove a registration.
-* 1.7 - Plugin version for OJS 3.1.1-4
-* 2.0 - Plugin version for OJS 3.1.2
-* 2.1 - Plugin version for OJS 3.2.1
+* 1.0 &ndash; Initial Release
+* 1.1 &ndash; Updated to support OJS 2.4.1
+* 1.2 &ndash; Updated to support OJS 2.4.2
+* 1.3 &ndash; Insert already registered pixel tags
+* 1.4 &ndash; Very important fix - use VG Wort live instead of test server
+* 1.5 &ndash; VG Wort test system in plugin settings,
+* 1.6 &ndash; Fix a major error: all authors and translators has to be registered at VG Wort. Also: add the possibility to enter translators and to remove a registration.
+* 1.7 &ndash; Plugin version for OJS 3.1.1-4
+* 2.0 &ndash; Plugin version for OJS 3.1.2
+* 2.1 &ndash; Plugin version for OJS 3.2.1
 
 
 ## Contact
