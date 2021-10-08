@@ -19,13 +19,16 @@ import('lib.pkp.classes.components.forms.FieldOptions');
 define('NOTIFICATION_TYPE_VGWORT_ERROR',0x400000A);
 
 class VGWortPlugin extends GenericPlugin {
+
     public $pixelTagStatusLabels;
+
     /**
      * @copydoc Plugin::register()
      */
     function register($category, $path, $mainContextId = null) {
         if (parent::register($category, $path, $mainContextId)) {
             if ($this->getEnabled($mainContextId)) {
+                $this->import('classes.form.VGWortForm');
                 $this->import('classes.PixelTag');
                 $this->import('classes.PixelTagDAO');
                 $pixelTagDao = new PixelTagDAO($this->getName());
@@ -47,10 +50,7 @@ class VGWortPlugin extends GenericPlugin {
                 HookRegistry::register('authordao::getAdditionalFieldNames', array($this, 'addFieldName'));
 
                 // Assign pixel tag
-                HookRegistry::register('Form::config::before', array($this, 'addPixelField'));
                 HookRegistry::register('Publication::edit', array($this, 'pixelExecuteSubmission'));
-
-                // Assign pixel tag
                 HookRegistry::register('Templates::Controllers::Tab::PubIds::Form::PublicIdentifiersForm', array($this, 'pixelEdit'));
                 HookRegistry::register('publicidentifiersform::readuservars', array($this, 'pixelReadUserVars'));
                 HookRegistry::register('publicidentifiersform::execute', array($this, 'pixelExecuteRepresentation'));
@@ -67,8 +67,9 @@ class VGWortPlugin extends GenericPlugin {
                 // Hook for error notifications for editors
                 HookRegistry::register('NotificationManager::getNotificationMessage', array($this, 'getNotificationMessage'));
 
-                // Add VG Wort field to "Publication Identifiers" Form
+                // Add VG Wort field to form tab
                 HookRegistry::register('Schema::get::publication', array($this, 'addToPublicationSchema'));
+                HookRegistry::register('Template::Workflow::Publication', array($this, 'addVGWortFormTab'));
 
                 // Add vgWortCardNo field to "Edit contributor" Form
                 HookRegistry::register('Schema::get::author', array($this, 'addToAuthorSchema'));
@@ -130,14 +131,9 @@ class VGWortPlugin extends GenericPlugin {
     /**
      * @copydoc Plugin::getTemplatePath()
      */
-    // TODO: Version anpassen?
     function getTemplatePath($inCore = false) {
         $ojsVersion = Application::getApplication()->getCurrentVersion()->getVersionString();
-        // if (preg_match_all('#3.1.1#', $ojsVersion)  === 1) {
-        //     return parent::getTemplatePath() . 'templates/';
-        // } else {
         return parent::getTemplatePath();
-        // }
     }
 
     /**
@@ -154,22 +150,22 @@ class VGWortPlugin extends GenericPlugin {
         $this->import('classes.form.VGWortSettingsForm');
         switch($request->getUserVar('verb')) {
             case 'settings':
-            $settingsForm = new VGWortSettingsForm($this, $request->getContext()->getId());
-            $settingsForm->initData($request);
-            return new JSONMessage(true, $settingsForm->fetch($request));
+                $settingsForm = new VGWortSettingsForm($this, $request->getContext()->getId());
+                $settingsForm->initData($request);
+                return new JSONMessage(true, $settingsForm->fetch($request));
             case 'save':
-            $settingsForm = new VGWortSettingsForm($this, $request->getContext()->getId());
-            $settingsForm->readInputData();
-            if ($settingsForm->validate()) {
-                $settingsForm->execute();
-                $notificationManager = new NotificationManager();
-                $notificationManager->createTrivialNotification(
-                    $request->getUser()->getId(),
-                    NOTIFICATION_TYPE_SUCCESS
-                );
-                return new JSONMessage(true);
-            }
-            return new JSONMessage(true, $settingsForm->fetch($request));
+                $settingsForm = new VGWortSettingsForm($this, $request->getContext()->getId());
+                $settingsForm->readInputData();
+                if ($settingsForm->validate()) {
+                    $settingsForm->execute();
+                    $notificationManager = new NotificationManager();
+                    $notificationManager->createTrivialNotification(
+                        $request->getUser()->getId(),
+                        NOTIFICATION_TYPE_SUCCESS
+                    );
+                    return new JSONMessage(true);
+                }
+                return new JSONMessage(true, $settingsForm->fetch($request));
         }
         return parent::manage($args, $request);
     }
@@ -181,28 +177,30 @@ class VGWortPlugin extends GenericPlugin {
         $router = $request->getRouter();
         import('lib.pkp.classes.linkAction.request.AjaxModal');
         return array_merge(
-            $this->getEnabled()?array(
-                new LinkAction(
-                    'settings',
-                    new AjaxModal(
-                        $router->url(
-                            $request,
-                            null,
-                            null,
-                            'manage',
-                            null,
-                            array(
-                                'verb' => 'settings',
-                                'plugin' => $this->getName(),
-                                'category' => 'generic'
-                            )
+            $this->getEnabled()
+                ? array(
+                    new LinkAction(
+                        'settings',
+                        new AjaxModal(
+                            $router->url(
+                                $request,
+                                null,
+                                null,
+                                'manage',
+                                null,
+                                array(
+                                    'verb' => 'settings',
+                                    'plugin' => $this->getName(),
+                                    'category' => 'generic'
+                                )
+                            ),
+                            $this->getDisplayName()
                         ),
-                        $this->getDisplayName()
+                        __('manager.plugins.settings'),
+                        null
                     ),
-                    __('manager.plugins.settings'),
-                    null
-                ),
-            ):array(),
+                )
+                : array(),
             parent::getActions($request, $verb)
         );
     }
@@ -353,14 +351,15 @@ class VGWortPlugin extends GenericPlugin {
     }
 
     /**
-     * Assign pixel tag to the article or the galley object
+     * Assign pixel tag to the galley object
      */
     function pixelExecuteRepresentation($hookName, $params) {
         $form =& $params[0];
         $pubObject = $form->getPubObject();
         $contextId = $form->getContextId();
         $pixelTag = $this->getPixelTagByPubObject($pubObject, $contextId);
-        // save the setting for a supported galley only if it is excluded from assignment
+
+        // Save the setting for a supported galley only if it is excluded from assignment
         if (is_a($pubObject, 'Representation') && $pixelTag && !$pixelTag->getDateRemoved()) {
             if ($this->galleySupported($pubObject)) {
                 $galleyExcluded = $pubObject->getData('excludeVGWortAssignPixel');
@@ -376,25 +375,25 @@ class VGWortPlugin extends GenericPlugin {
     }
 
     /**
-     * Assign pixel tag to the article or the galley object
+     * Assign pixel tag to the submission object
      */
     function pixelExecuteSubmission($hookName, $params) {
-        $form =& $params[0];
-        $submissionId = $form->getData('submissionId');
+        $publication =& $params[0];
+        $submissionId = $publication->getData('submissionId');
         $submissionFileDao =& DAORegistry::getDAO('SubmissionFileDAO');
         $submissionDao = DAORegistry::getDAO('SubmissionDAO');
-        $submission = $submissionDao->getById($submissionId); // Submission object
+        $submission = $submissionDao->getById($submissionId);
         $contextId = $submission->getData('contextId');
         $pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
         $pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submissionId, $contextId);
 
         if (is_a($submission, 'Submission')) {
-            $vgWortTextType = $form->getData('vgWort::texttype');
+            $vgWortTextType = $publication->getData('vgWort::texttype');
             if (isset($pixelTag)) {
                 $updatePixelTag = false;
                 // pixel tag has been removed, see if it should be assigned again
                 if ($pixelTag->getDateRemoved()) {
-                    $vgWortAssignPixel = $form->getData('vgWort::pixeltag::assign') ? 1 : 0;
+                    $vgWortAssignPixel = $publication->getData('vgWort::pixeltag::assign') ? 1 : 0;
                     if ($vgWortAssignPixel) {
                         $pixelTag->setDateRemoved(null);
                         if ($pixelTag->getStatus() == PT_STATUS_UNREGISTERED_REMOVED) {
@@ -405,7 +404,7 @@ class VGWortPlugin extends GenericPlugin {
                         $updatePixelTag = true;
                     }
                 } else {
-                    $removeVGWortPixel = $form->getData('vgWort::pixeltag::assign') ? 0 : 1;
+                    $removeVGWortPixel = $publication->getData('vgWort::pixeltag::assign') ? 0 : 1;
                     if ($removeVGWortPixel) {
                         $pixelTag->setDateRemoved(Core::getCurrentDate());
                         if ($pixelTag->getStatus() == PT_STATUS_UNREGISTERED_ACTIVE) {
@@ -426,14 +425,14 @@ class VGWortPlugin extends GenericPlugin {
                     $pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
                     $pixelTagDao->updateObject($pixelTag);
                 }
-                $form->setData('vgWort::pixeltag::status', $pixelTag->getStatus());
+                $publication->setData('vgWort::pixeltag::status', $pixelTag->getStatus());
             } else {
-                $vgWortAssignPixel = $form->getData('vgWort::pixeltag::assign') ? 1 : 0;
+                $vgWortAssignPixel = $publication->getData('vgWort::pixeltag::assign') ? 1 : 0;
                 if ($vgWortAssignPixel) {
                     // assign pixel tag
                     if ($this->assignPixelTag($submission, $vgWortTextType)) {
                         $pixelTagStatus = 2; // unregistered, active
-                        $form->setData('vgWort::pixeltag::status', $pixelTagStatus);
+                        $publication->setData('vgWort::pixeltag::status', $pixelTagStatus);
                     }
                 }
             }
@@ -489,71 +488,15 @@ class VGWortPlugin extends GenericPlugin {
     }
 
     /**
-     * Add pixel field to the public identifiers form
-     */
-    public function addPixelField($hookName, $form) {
-
-        if ($form->id !== 'publicationIdentifiers') {
-            return;
-        }
-
-        $submissionId = $form->publication->getData('submissionId');
-        $pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
-        $pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submissionId);
-
-        if ($pixelTag == NULL) {
-            $pixelTagStatus = 0;
-            $pixelTagAssigned = false;
-            $pixelTagRemoved = false;
-            $form->publication->setData('vgWort::pixeltag::status', $pixelTagStatus);
-            $form->publication->setData('vgWort::pixeltag::assign', $pixelTagAssigned);
-            $form->publication->setData('vgWort::pixeltag::remove', $pixelTagRemoved);
-        } else {
-            $pixelTagStatus = $pixelTag->getStatus();
-            $form->publication->setData('vgWort::pixeltag::status',$pixelTagStatus);
-        }
-        if ($pixelTagStatus == PT_STATUS_UNREGISTERED_ACTIVE || $pixelTagStatus == PT_STATUS_REGISTERED_ACTIVE) {
-            $pixelTagAssigned = true;
-            $pixelTagRemoved = false;
-            $form->publication->setData('vgWort::pixeltag::assign', $pixelTagAssigned);
-            $form->publication->setData('vgWort::pixeltag::remove', $pixelTagRemoved);
-        } elseif ($pixelTagStatus == PT_STATUS_UNREGISTERED_REMOVED || $pixelTagStatus == PT_STATUS_REGISTERED_REMOVED) {
-            $pixelTagAssigned = false;
-            $pixelTagRemoved = true;
-            $form->publication->setData('vgWort::pixeltag::assign', $pixelTagAssigned);
-            $form->publication->setData('vgWort::pixeltag::remove', $pixelTagRemoved);
-        }
-
-        $form->addField(new \PKP\components\forms\FieldSelect('vgWort::texttype', [
-            'label' => __('plugins.generic.vgWort.pixelTag.textType'),
-            'description' =>  __('plugins.generic.vgWort.pixelTag.textType.description'),
-            // TODO: What defines the default value??
-            'value' => TYPE_TEXT,
-            'options' => [
-                ['value' => TYPE_TEXT, 'label' => __('plugins.generic.vgWort.pixelTag.textType.text')],
-                ['value' => TYPE_LYRIC, 'label' => __('plugins.generic.vgWort.pixelTag.textType.lyric')]
-            ],
-        ]));
-
-        $form->addField(new \PKP\components\forms\FieldOptions('vgWort::pixeltag::assign', [
-            'label' => __('plugins.generic.vgWort.pixelTag'),
-            'description' => "Status: " . $this->pixelTagStatusLabels[$pixelTagStatus],
-            'value' => $pixelTagAssigned,
-            'type' => 'radio',
-            'options' => [
-                [
-                    'value' => true,
-                    'label' => __('plugins.generic.vgWort.pixelTag.assign'),
-                    'disabled' => $pixelTagAssigned
-                ],
-                [
-                    'value' => false,
-                    'label' => __('plugins.generic.vgWort.pixelTag.remove'),
-                    'disabled' => $pixelTagRemoved || $pixelTagStatus == 0
-                ],
-            ],
-        ]));
-    }
+	 * Add a new form tab for the VG Wort.
+	 */
+	function addVGWortFormTab($hookName, $args) {
+		$html =& $args[2];
+		$html = '<tab id="vgwortformtab" label="VG Wort">
+			<pkp-form v-bind="components.'. FORM_VGWORT . '" @set="set" />
+		</tab>';
+		return false;
+	}
 
     /**
      * Get the pixel tag
@@ -723,20 +666,34 @@ class VGWortPlugin extends GenericPlugin {
         switch ($template) {
             case 'frontend/pages/article.tpl':
                 $smarty->registerFilter('output',array($this, 'insertPixelTagArticlePage'));
-            break;
+                break;
             case 'frontend/pages/indexJournal.tpl':
             case 'frontend/pages/issue.tpl':
                 $smarty->registerFilter('output',array($this, 'insertPixelTagIssueTOC'));
-            break;
+                break;
             case 'workflow/workflow.tpl':
-                $smarty->addJavaScript('vgWort-labels',
-                    'window.vgWortPixeltagStatusLabels = ' . json_encode($this->pixelTagStatusLabels) . ';',
-                    [
-                        'inline' => true,
-                        'contexts' => 'backend',
-                        'priority' => STYLE_SEQUENCE_CORE
-                    ]
+				$this->import('classes.form.VGWortForm');
+				$context = $smarty->getTemplateVars('currentJournal');
+				$submission = $smarty->getTemplateVars('submission');
+				$request = Application::get()->getRequest();
+				$latestPublicationApiUrl = $request->getDispatcher()->url(
+                    $request,
+                    ROUTE_API,
+                    $context->getPath(),
+                    'submissions/' . $submission->getId() . '/publications/' . $submission->getLatestPublication()->getId()
                 );
+				$form = new VGWortForm($latestPublicationApiUrl, [], $context, $submission);
+				$workflowData = $smarty->getTemplateVars('workflowData');
+				$workflowData['components'][FORM_VGWORT] = $form->getConfig();
+				$smarty->assign('workflowData', $workflowData);
+				$smarty->addJavaScript('vgWort-labels',
+					'window.vgWortPixeltagStatusLabels = ' . json_encode($this->pixelTagStatusLabels) . ';',
+					[
+						'inline' => true,
+						'contexts' => 'backend',
+						'priority' => STYLE_SEQUENCE_CORE
+					]
+				);
             $smarty->addJavaScript(
                 'vgwort',
                 Application::get()->getRequest()->getBaseUrl()
