@@ -56,9 +56,7 @@ The plugin is a part of the project [OJS-de.net](http://www.ojs-de.net).
 * **Assign Pixel Tags** &mdash; Make sure that your publication has not been published yet. Then, go to `Publication > VG Wort`.
 
     1. Choose the **text type**; the publication is defined to be "Poem" if it does not contain more than 1800 characters.
-    2. Initially, the **status** is set to "No VG Wort pixel tag has been assigned to this article yet." and the checkbox "Remove [...]" is disabled. Please select the checkbox "Assign [...]" By saving this form, the status will switch to "Unregistered, active" and a new pixel tag is assigned.
-
-    By publishing this version, the pixel tag will be activated.
+    2. Initially, the **status** is set to "No VG Wort pixel tag has been assigned to this article yet." and the checkbox "Remove [...]" is disabled. Please select the checkbox "Assign [...]". By saving this form, the status will switch to "Unregistered, active" and a new pixel tag is assigned.
 
 * **Pixel Tag Listing** &mdash; All activated pixel tags will be listed under `Settings > Distribution > Pixel Tags`. By clicking the blue triangle at the beginning of each line you will be able to register the pixel tag. **Note that only registered pixel tags will be counted.**
 
