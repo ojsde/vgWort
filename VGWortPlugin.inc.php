@@ -77,6 +77,7 @@ class VGWortPlugin extends GenericPlugin {
                 // Add VG Wort Pixel to heiViewer Article Galley page
                 HookRegistry::register("Plugins::heiViewerGalley::ArticleGalley", array($this,'insertPixelTagGalleyPageHook'));
                 HookRegistry::register('AcronPlugin::parseCronTab', array($this, 'callbackParseCronTab'));
+
                 $this->pixelTagStatusLabels = [
                     0 => __('plugins.generic.vgWort.pixelTag.representation.notAssigned'),
                     PT_STATUS_REGISTERED_ACTIVE => __('plugin.generic.vgWort.pixelTag.status.registeredactive'),
@@ -84,7 +85,6 @@ class VGWortPlugin extends GenericPlugin {
                     PT_STATUS_REGISTERED_REMOVED => __('plugin.generic.vgWort.pixelTag.status.registeredremoved'),
                     PT_STATUS_UNREGISTERED_REMOVED => __('plugin.generic.vgWort.pixelTag.status.unregisteredremoved')
                 ];
-
             }
             return true;
         }
@@ -530,17 +530,19 @@ class VGWortPlugin extends GenericPlugin {
     function galleySupported($galley) {
         // check if the galley is a full text
         $galleyFile = $galley->getFile();
-        if (!$galleyFile) return false;
+        if (!$galleyFile) {
+            return false;
+        }
         $genreDao = DAORegistry::getDAO('GenreDAO');
         $genre = $genreDao->getById($galleyFile->getGenreId());
-        if ($genre->getCategory() != GENRE_CATEGORY_DOCUMENT ||
-        $genre->getSupplementary() ||
-        $genre->getDependent()) {
+        if ($genre->getCategory() != GENRE_CATEGORY_DOCUMENT || $genre->getSupplementary() || $genre->getDependent()) {
             return false;
         }
         // check the file size (<=15MB)
         $megaByte = 1024*1024;
-        if (round((int) $galleyFile->getFileSize() / $megaByte) > 15) return false;
+        if (round((int) $galleyFile->getFileSize() / $megaByte) > 15) {
+            return false;
+        }
         // check the galley file format
         return $this->fileTypeSupported($galleyFile->getFileType());
     }
@@ -553,7 +555,7 @@ class VGWortPlugin extends GenericPlugin {
     function fileTypeSupported($galleyFileType) {
         return ($galleyFileType == 'application/pdf' ||
         $galleyFileType == 'application/epub+zip' ||
-        // AddeD XML support. Check with vgWort if allowed
+        // Added XML support. Check with vgWort if allowed
         $galleyFileType == 'text/xml' ||
         $galleyFileType == 'text/html');
     }
@@ -587,8 +589,9 @@ class VGWortPlugin extends GenericPlugin {
         $pdfJsViewerPlugin = PluginRegistry::getPlugin('generic', 'pdfjsviewerplugin');
         $htmlArticleGalley = PluginRegistry::getPlugin('generic', 'htmlarticlegalleyplugin');
         return (($galleyFile->getFileType() == 'text/html' && !$htmlArticleGalley) ||
-        ($galley->isPdfGalley() && !$pdfJsViewerPlugin) ||
-        $galley->getFileType() == 'application/epub+zip') && !$galley->getData('excludeVGWortAssignPixel');
+            ($galley->isPdfGalley() && !$pdfJsViewerPlugin) ||
+            $galley->getFileType() == 'application/epub+zip') &&
+            !$galley->getData('excludeVGWortAssignPixel');
     }
 
     /**
@@ -822,7 +825,6 @@ class VGWortPlugin extends GenericPlugin {
                             $replace = '<a href="' . $galleyUrl . '" onclick="vgwPixelCall();" class="download" download>';
                             // insert pixel tag for galleys download links using VG Wort redirect
                             $output = str_replace($search, $replace, $output);
-
                         }
                     } elseif (!$galley && !empty($downloadGalleys)) { // it is the article view page and there are download galley links there
                         // insert the JS function, used when galley links are clicked on
@@ -882,7 +884,6 @@ class VGWortPlugin extends GenericPlugin {
                             $search = '<div class="obj_issue_toc">';
                             $replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="<img src=\'' . $pixelTagSrc . '\' width=\'1\' height=\'1\' alt=\'\' />"; }</script>';
                             $output = str_replace($search, $replace, $output);
-
                             $scriptInserted = true;
                         }
                         foreach ($downloadGalleys as $galley) {

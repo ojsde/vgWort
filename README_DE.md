@@ -2,7 +2,7 @@
     === OJS VG Wort Plugin
     === Version: 2.1
     === Authors: Božana Bokan, Ronald Steffen, Christoph Otte
-    === Last updated: 8. Oktober 2021
+    === Zuletzt aktualisiert: 11. Oktober 2021
     ==========================================================
 
 # OJS VG Wort Plugin
@@ -14,13 +14,12 @@ Das Plugin ist Teil des Projekts [OJS-de.net](http://www.ojs-de.net)
 
 ## Getting Started
 
-#### Installation über die OJS-Benutzeroberfläche:
+### Installation über die OJS-Benutzeroberfläche:
 
 1. Download des `vgWort-[version]-.tar.gz` von [GitHub](https://github.com/ojsde/vgWort/)
-2. Install the plugin in OJS
 2. Installation des Plugins im Managementbereich von OJS (`Einstellungen > Website > Plugins > "Ein neues Plugin hochladen" -> vgWort-[Version].tar.gz` hochladen)
 
-#### Installation über die Kommandozeile ohne Git:
+### Installation über die Kommandozeile ohne Git:
 
 1. Download des Archivs `.tar.gz` in der gewünschten Version von [GitHub](https://github.com/ojsde/vgWort)
 2. Entpacken des Plugins in das Verzeichnis `plugins/generic/` und ggf. Umbennen des Hauptverzeichnisses in "vgWort"
@@ -29,33 +28,33 @@ Das Plugin ist Teil des Projekts [OJS-de.net](http://www.ojs-de.net)
    `php tools/installPluginVersion.php` (siehe [GitHub](https://github.com/pkp/pkp-lib/issues/2503))
 
 
-#### Installation über die Kommandozeile mit Git:
+### Installation über die Kommandozeile mit Git:
 
 1. Wechseln Sie in das Verzeichnis Ihrer OJS-Installation und clonen sie das Repository
 
-```console
-$ cd [path/to/your/ojs]/plugins/generic
-$ git clone https://github.com/ojsde/vgWort
-```
+    ```console
+    $ cd [path/to/your/ojs]/plugins/generic
+    $ git clone https://github.com/ojsde/vgWort
+    ```
 
 2. Wechseln Sie in das vgWort-Verzeichnis und checken Sie den entsprechenden Branch aus
 
-```console
-$ cd vgWort
-$ git checkout [branch]
-```
+    ```console
+    $ cd vgWort
+    $ git checkout [branch]
+    ```
 
 3. Führen Sie das Skript `upgrade.php` aus
 
-```console
-$ cd [path/to/your/ojs]
-$ php tools/upgrade.php upgrade
-```
+    ```console
+    $ cd [path/to/your/ojs]
+    $ php tools/upgrade.php upgrade
+    ```
 
 
-## Usage
+## Gebrauch
 
-* **Pixel Tags zuordnen** &mdash; Vergewissern Sie sich, dass der Artikel noch nicht veröffentlicht wurde. Dann gehen Sie nach `Publikation > VG Wort`.
+* **Zählpixel zuordnen** &mdash; Vergewissern Sie sich, dass der Artikel noch nicht veröffentlicht wurde. Dann gehen Sie nach `Publikation > VG Wort`.
 
 1. Wählen Sie den **Texttyp**; Der Artikel gilt als "Gedicht", wenn er nicht mehr als 1800 Zeichen enthält.
 2. Zu Beginn ist der **Status** ist auf "Es wurde diesem Artikel noch kein VG-Wort-Zählpixel zugewiesen." gesetzt und die Checkbox "Das VG-Wort-Zählpixel von diesem Artikel entfernen." deaktiviert. Bitte wählen Sie die Checkbox "Ein VG-Wort-Zählpixel diesem Artikel zuweisen." Nach Speichern des Formulars ändert sich der Status zu "Unregistriert, aktiv" und ein neuer Zählpixel wurde zugeordnet.

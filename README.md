@@ -2,7 +2,7 @@
     === OJS VG Wort Plugin
     === Version: 2.1
     === Authors: Božana Bokan, Ronald Steffen, Christoph Otte
-    === Last updated: October 8, 2021
+    === Last updated: October 11, 2021
     ==========================================================
 
 # OJS VG Wort Plugin
