@@ -859,41 +859,49 @@ class VGWortPlugin extends GenericPlugin {
         $journal = $smarty->get_template_vars('currentJournal');
         $issue = $smarty->get_template_vars('issue');
 
+        // error_log("Journal: " . var_export($journal,true));
+        // error_log("Issue: " . var_export($issue,true));
+        // if (isset($issue) && !empty($issue)) {
+        //     $issue .= $issue
+        // }
+
         $publishedSubmissions = $smarty->get_template_vars('publishedSubmissions');
-        if ($issue->getPublished()) {
-            $scriptInserted = false;
-            foreach ($publishedSubmissions as $sectionId) {
-                foreach ($sectionId['articles'] as $submission) {
-                    // get the assigned pixel tag
-                    $pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
-                    $pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submission->getId(), $journal->getId());
-                    if (isset($pixelTag) && !$pixelTag->getDateRemoved()) {
-                        $application = PKPApplication::getApplication();
-                        $request = $application->getRequest();
-                        $httpProtocol = $request->getProtocol() == 'https' ? 'https://' : 'http://';
-                        // construct pixel URL and image that will be inserted
-                        $pixelTagSrc = $httpProtocol . $pixelTag->getDomain() . '/na/' . $pixelTag->getPublicCode();
-                        $pixelTagImg = '<img src=\'' . $pixelTagSrc . '\' width=\'1\' height=\'1\' alt=\'\' />';
+        if (isset($issue) && !empty($issue)) {
+            if ($issue->getPublished()) {
+                $scriptInserted = false;
+                foreach ($publishedSubmissions as $sectionId) {
+                    foreach ($sectionId['articles'] as $submission) {
+                        // get the assigned pixel tag
+                        $pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
+                        $pixelTag = $pixelTagDao->getPixelTagBySubmissionId($submission->getId(), $journal->getId());
+                        if (isset($pixelTag) && !$pixelTag->getDateRemoved()) {
+                            $application = PKPApplication::getApplication();
+                            $request = $application->getRequest();
+                            $httpProtocol = $request->getProtocol() == 'https' ? 'https://' : 'http://';
+                            // construct pixel URL and image that will be inserted
+                            $pixelTagSrc = $httpProtocol . $pixelTag->getDomain() . '/na/' . $pixelTag->getPublicCode();
+                            $pixelTagImg = '<img src=\'' . $pixelTagSrc . '\' width=\'1\' height=\'1\' alt=\'\' />';
 
-                        $articleGalleys = $submission->getGalleys();
-                        // get only download galleys, that should get the VG Wort pixel tag
-                        $downloadGalleys = array_filter($articleGalleys, array($this, 'filterDownloadGalleys'));
+                            $articleGalleys = $submission->getGalleys();
+                            // get only download galleys, that should get the VG Wort pixel tag
+                            $downloadGalleys = array_filter($articleGalleys, array($this, 'filterDownloadGalleys'));
 
-                        if (!empty($downloadGalleys) && !$scriptInserted) {
-                            // insert the JS function, used when galley links are clicked on
-                            $search = '<div class="obj_issue_toc">';
-                            $replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="<img src=\'' . $pixelTagSrc . '\' width=\'1\' height=\'1\' alt=\'\' />"; }</script>';
-                            $output = str_replace($search, $replace, $output);
-                            $scriptInserted = true;
-                        }
-                        foreach ($downloadGalleys as $galley) {
-                            // change galley download links
-                            $galleyUrl = $request->url(null, 'article', 'view', array($submission->getBestArticleId(), $galley->getBestGalleyId()));
-                            $search = '#<a class="(.+)" href="' . $galleyUrl . '"(.*)>#';
-                            // insert pixel tag for galleys download links using JS
-                            $replace = '<div style="font-size:0;line-height:0; width:0;" id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');" target="_target" $2>';
-                            // insert pixel tag for galleys download links using VG Wort redirect
-                            $output = preg_replace($search, $replace, $output);
+                            if (!empty($downloadGalleys) && !$scriptInserted) {
+                                // insert the JS function, used when galley links are clicked on
+                                $search = '<div class="obj_issue_toc">';
+                                $replace = $search . '<script>function vgwPixelCall(galleyId) { document.getElementById("div_vgwpixel_"+galleyId).innerHTML="<img src=\'' . $pixelTagSrc . '\' width=\'1\' height=\'1\' alt=\'\' />"; }</script>';
+                                $output = str_replace($search, $replace, $output);
+                                $scriptInserted = true;
+                            }
+                            foreach ($downloadGalleys as $galley) {
+                                // change galley download links
+                                $galleyUrl = $request->url(null, 'article', 'view', array($submission->getBestArticleId(), $galley->getBestGalleyId()));
+                                $search = '#<a class="(.+)" href="' . $galleyUrl . '"(.*)>#';
+                                // insert pixel tag for galleys download links using JS
+                                $replace = '<div style="font-size:0;line-height:0; width:0;" id="div_vgwpixel_' . $galley->getId() . '"></div><a class="$1" href="' . $galleyUrl . '" onclick="vgwPixelCall(' . $galley->getId() . ');" target="_target" $2>';
+                                // insert pixel tag for galleys download links using VG Wort redirect
+                                $output = preg_replace($search, $replace, $output);
+                            }
                         }
                     }
                 }
