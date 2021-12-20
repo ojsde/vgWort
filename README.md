@@ -2,7 +2,7 @@
     === OJS VG Wort Plugin
     === Version: 2.1
     === Authors: Božana Bokan, Ronald Steffen, Christoph Otte
-    === Last updated: October 11, 2021
+    === Last updated: December 20, 2021
     ==========================================================
 
 # OJS VG Wort Plugin
@@ -60,7 +60,7 @@ The plugin is a part of the project [OJS-de.net](http://www.ojs-de.net).
 
 * **Pixel Tag Listing** &mdash; All activated pixel tags will be listed under `Settings > Distribution > Pixel Tags`. By clicking the blue triangle at the beginning of each line you will be able to register the pixel tag. **Note that only registered pixel tags will be counted.**
 
-* **Exclude Galleys from Counting** &mdash; Please activate the **DOI plugin**. Then, when edititing the galley under `Publication > Galleys > Edit`, there will appear a second tab ("Identifiers") with a checkbox.
+* **Exclude Galleys from Counting** &mdash; Please activate the **DOI plugin**. Then, when edititing the galley under `Publication > Galleys > Edit`, a second tab ("Identifiers") with a checkbox will appear allowing you to exclude galleys from counting.
 
 
 ## License
