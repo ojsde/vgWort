@@ -859,12 +859,6 @@ class VGWortPlugin extends GenericPlugin {
         $journal = $smarty->get_template_vars('currentJournal');
         $issue = $smarty->get_template_vars('issue');
 
-        // error_log("Journal: " . var_export($journal,true));
-        // error_log("Issue: " . var_export($issue,true));
-        // if (isset($issue) && !empty($issue)) {
-        //     $issue .= $issue
-        // }
-
         $publishedSubmissions = $smarty->get_template_vars('publishedSubmissions');
         if (isset($issue) && !empty($issue)) {
             if ($issue->getPublished()) {
