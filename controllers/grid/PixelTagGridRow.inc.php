@@ -40,7 +40,13 @@ class PixelTagGridRow extends GridRow {
 									$request->getSession(),
 									__('plugins.generic.vgWort.pixelTags.register.confirm'),
 									__('plugins.generic.vgWort.pixelTags.register'),
-									$router->url($request, null, null, 'registerPixelTag', null, array('pixelTagId' => $pixelTagId)),
+									$router->url(
+										$request,
+										null,
+										null,
+										'registerPixelTag',
+										null,
+										array('pixelTagId' => $pixelTagId)),
 									'modal_confirm'
 								),
 								__('plugins.generic.vgWort.pixelTags.register'),

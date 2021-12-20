@@ -13,7 +13,7 @@
 		// Attach the form handler.
 		$('#vgWortSettingsForm').pkpHandler('$.pkp.controllers.form.AjaxFormHandler');
 	{rdelim});
-	
+
 	{literal}
 	<!--
 	// function to clear the dateInYear date filed
@@ -32,7 +32,7 @@
 			{fbvElement type="text" name="vgWortUserId" id="vgWortUserId" value=$vgWortUserId label="plugins.generic.vgWort.settings.vgWortUserId" required=true size=$fbvStyles.size.MEDIUM}
 		{/fbvFormSection}
 		{fbvFormSection}
-			{fbvElement type="text" name="vgWortUserPassword" id="vgWortUserPassword" value=$vgWortUserPassword label="plugins.generic.vgWort.settings.vgWortUserPassword" required=true size=$fbvStyles.size.MEDIUM}
+			{fbvElement type="text" password=true name="vgWortUserPassword" id="vgWortUserPassword" value=$vgWortUserPassword label="plugins.generic.vgWort.settings.vgWortUserPassword" required=true size=$fbvStyles.size.MEDIUM}
 		{/fbvFormSection}
 	{/fbvFormArea}
 	{fbvFormArea id="vgWortRegistration" title="plugins.generic.vgWort.settings.vgWortRegistration" class="border"}

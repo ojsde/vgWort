@@ -271,16 +271,18 @@ class PixelTag extends DataObject {
 	 * @return boolean
 	 */
 	function isPublished() {
-		$publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
-		$publishedArticle = $publishedArticleDao->getByArticleId($this->getSubmissionId());
-		if ($publishedArticle) {
+	
+		$submission = $this->getSubmission();
+	
+		if ($submission) {
 			$issueDao = DAORegistry::getDAO('IssueDAO');
-			$issue = $issueDao->getById($publishedArticle->getIssueId(), $this->getContextId());
-			if ($issue->getPublished()) return true;
+			$issue = $issueDao->getBySubmissionId($submission->getId());
+			if (isset($issue) && !empty($issue)) {
+                if ($issue->getPublished()) return true;
+            }
 		}
 		return false;
 	}
-
 }
 
 ?>

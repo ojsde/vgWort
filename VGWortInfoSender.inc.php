@@ -27,7 +27,7 @@ class VGWortInfoSender extends ScheduledTask {
 		PluginRegistry::loadCategory('generic');
 		$plugin = PluginRegistry::getPlugin('generic', 'vgwortplugin'); /* @var $plugin VGWortPlugin */
 		$this->_plugin = $plugin;
-		
+
 		if (is_a($plugin, 'VGWortPlugin')) {
 			$plugin->addLocaleData();
 			$plugin->import('classes.PixelTag');
@@ -50,14 +50,15 @@ class VGWortInfoSender extends ScheduledTask {
 	 * @copydoc ScheduledTask::executeActions()
 	 */
 	function executeActions() {
-		if (!$this->_plugin) return false;	
+		if (!$this->_plugin) return false;
 		$plugin = $this->_plugin;
 		$journals = $this->_getJournals();
 
 		$pixelTagDao = DAORegistry::getDAO('PixelTagDAO');
 		import('plugins.generic.vgWort.classes.VGWortEditorAction');
 
-		foreach ($journals as $journal) {	    
+    	foreach ($journals as $journal) {
+	        $unregisteredActivePixelTags = $pixelTagDao->getAllForRegistration($journal->getId());
 			// get this task's last run date
 			$taskDao = DAORegistry::getDAO('ScheduledTaskDAO'); /* @var $taskDao ScheduledTaskDAO */
 			$lastRunTime = $taskDao->getLastRunTime('plugins.generic.vgwort.VGWortInfoSender');
@@ -74,19 +75,22 @@ class VGWortInfoSender extends ScheduledTask {
 			// should be registered on a specific day in a year
 			$dateInYear = $plugin->getSetting($journal->getId(), 'dateInYear');
 			if ($dateInYear != '') {
+                //echo("dateInYear set to $dateInYear\n");
 				$day = date('d', strtotime($dateInYear));
 				$month = date('m', strtotime($dateInYear));
 				$currYear = date("Y");
 				//$checkDateInYear = new DateTime();
 				$checkDateInYear = date("Y-m-d", mktime(0, 0, 0, $month, $day, $currYear));
+				$this->addExecutionLogEntry("lastRunShortDate = $lastRunShortDate", SCHEDULED_TASK_MESSAGE_TYPE_NOTICE);
+				if (time() >= strtotime($checkDateInYear) /* nw for testing && strtotime($lastRunShortDate) < strtotime($checkDateInYear)*/) {
 
-				if (time() >= strtotime($checkDateInYear) && strtotime($lastRunShortDate) < strtotime($checkDateInYear)) {
-			    
 					// get all unregistered and active pixel tags,
 					// the failed pixel tags (containing a message) are considered here as well
 					$unregisteredActivePixelTags = $pixelTagDao->getAllForRegistration($journal->getId());
+                    // echo ("unregisteredActivePixelTags: \n");
+                    // var_dump($unregisteredActivePixelTags);
 					// register the pixel tags
-					$this->_registerPixelTags($unregisteredActivePixelTags);
+					$this->_registerPixelTags($unregisteredActivePixelTags, $journal->getId());
 					$justRegistered = true;
 				}
 			}
@@ -94,15 +98,17 @@ class VGWortInfoSender extends ScheduledTask {
 			// check the plugin setting daysAfterPublication, if the pixel tags
 			// should be registered in specific time after the article publication
 			$daysAfterPublication = $plugin->getSetting($journal->getId(), 'daysAfterPublication');
-			$publicationDate = date('Y-m-d', strtotime('-'.$daysAfterPublication.' days', time()));
-			
+			$publicationDate = date('Y-m-d', strtotime('-' . $daysAfterPublication . ' days', time()));
+
 			if ($daysAfterPublication > 0 && !$justRegistered) {
+                // echo("daysAfterPublication set to $daysAfterPublication\n");
 				// get all unregistered, active and failed pixel tags
-				// assigned to articles that are published before the specified date			    
-			    
+				// assigned to articles that are published before the specified date
+
 			    $unregisteredActivePixelTags = $pixelTagDao->getAllForRegistration($journal->getId(), $publicationDate);
+
 				// register the pixel tags
-			    $this->_registerPixelTags($unregisteredActivePixelTags,$journal->getId());
+			    $this->_registerPixelTags($unregisteredActivePixelTags, $journal->getId());
 			}
 		}
 		return true;
@@ -117,9 +123,11 @@ class VGWortInfoSender extends ScheduledTask {
 	    $application = PKPApplication::getApplication();
 	    $request = $application->getRequest();
 	    $vgWortEditorAction = new VGWortEditorAction($plugin);
-	    
+	    //echo( $pixelTags->getCount() . " unregistered pixeltags \n");
 		while ($pixelTag = $pixelTags->next()) {
 			// double check that the pixel tag was not removed
+            // echo("pixelTag:");
+            // var_dump($pixelTag);
 			if (!$pixelTag->getDateRemoved()) {
 				$vgWortEditorAction->registerPixelTag($pixelTag, $request, $contextId);
 			}
@@ -135,13 +143,17 @@ class VGWortInfoSender extends ScheduledTask {
 		$plugin = $this->_plugin;
 		$contextDao = Application::getContextDAO(); /* @var $contextDao JournalDAO */
 		$journalFactory = $contextDao->getAll(true);
-		
+
 		$journals = array();
 		while($journal = $journalFactory->next()) {
 			$journalId = $journal->getId();
-			
-			if (!$plugin->getSetting($journalId, 'vgWortUserId') || !$plugin->getSetting($journalId, 'vgWortUserPassword') ||
-				($plugin->getSetting($journalId, 'dateInYear') == '' && !$plugin->getSetting($journalId, 'daysAfterPublication'))) continue;
+			// echo $journal->getLocalizedName();
+			if (!$plugin->getSetting($journalId, 'vgWortUserId') ||
+				!$plugin->getSetting($journalId, 'vgWortUserPassword') ||
+				($plugin->getSetting($journalId, 'dateInYear') == '' &&
+				!$plugin->getSetting($journalId, 'daysAfterPublication'))) {
+					continue;
+				}
 			$journals[] = $journal;
 		}
 		return $journals;

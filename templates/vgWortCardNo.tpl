@@ -12,4 +12,3 @@
 	{fbvElement type="text" label="plugins.generic.vgWort.cardNo.description" id="vgWortCardNo" name="vgWortCardNo" value=$vgWortCardNo maxlength="40" inline=true size=$fbvStyles.size.MEDIUM}
 {/fbvFormSection}
 <!-- /VG Wort -->
-

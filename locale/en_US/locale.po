@@ -1,0 +1,249 @@
+msgid "plugins.generic.vgWort.displayName"
+msgstr "VG Wort"
+
+msgid "plugins.generic.vgWort.description"
+msgstr "This plugin enables integration and management of the <a href="http://www.vgwort.de/" target="_blank">VG Wort</a> pixel tags in OJS. It requires the VG Wort publisher account and the configuration of the plugin settings."
+
+msgid "plugins.generic.vgWort.descriptionDisabled"
+msgstr "This plugin enables integration and management of the <a href="http://www.vgwort.de/" target="_blank">VG Wort</a> pixel tags in OJS. <strong>The system requirements are not fulfilled. Please ensure that PHP Soap, OpenSSL and CURL extension modules are available on the server.</strong>"
+
+msgid "plugins.generic.vgWort.settings.vgWortUserIdPassword"
+msgstr "VG Wort username and password"
+
+msgid "plugins.generic.vgWort.settings.vgWortUserIdPassword.description"
+msgstr "Enter VG Wort publisher username and password that will be used for the VG Wort services authentication."
+
+msgid "plugins.generic.vgWort.settings.vgWortUserId"
+msgstr "Username"
+
+msgid "plugins.generic.vgWort.settings.vgWortUserPassword"
+msgstr "Password"
+
+msgid "plugins.generic.vgWort.settings.vgWortUserIdRequired"
+msgstr "VG Wort username is required."
+
+msgid "plugins.generic.vgWort.settings.vgWortUserPasswordRequired"
+msgstr "VG Wort password is required."
+
+msgid "plugins.generic.vgWort.settings.vgWortRegistration"
+msgstr "Automatic registration"
+
+msgid "plugins.generic.vgWort.settings.vgWortRegistration.description"
+msgstr "Specify a date in a year and/or the number of days after the article publication. The unregistered and active pixel tags will then be automatically registered with VG Wort on the specified date every year, or considering the specified amount of time after the article publication. If both options are set and the specified date in a year applies, all pixel tags will be considered regardless of the article publication date. If a pixel tag registration fails, a new attempt will be made to register the pixel tag next time the scheduled task runs."
+
+msgid "plugins.generic.vgWort.settings.vgWortRegistration.dateInYear"
+msgstr "Date in a year"
+
+msgid "plugins.generic.vgWort.settings.vgWortRegistration.daysAfterPublication"
+msgstr "Number of days after publication"
+
+msgid "plugins.generic.vgWort.settings.clearDate"
+msgstr "Clear"
+
+msgid "plugins.generic.vgWort.settings.vgWortPrivacy"
+msgstr "Privacy"
+
+msgid "plugins.generic.vgWort.settings.vgWortPrivacyRequired"
+msgstr "Privacy text is required."
+
+msgid "plugins.generic.vgWort.settings.vgWortPrivacy.description"
+msgstr "This privacy text will be displayed ..."
+
+msgid "plugins.generic.vgWort.settings.vgWortTestMode"
+msgstr "Test mode"
+
+msgid "plugins.generic.vgWort.settings.vgWortTestMode.description"
+msgstr "Use the VG Wort test API (testing environment). Please do not forget to remove this option for the production."
+
+msgid "plugins.generic.vgWort.cardNo"
+msgstr "VG Wort Card Number"
+
+msgid "plugins.generic.vgWort.cardNo.description"
+msgstr "(Your VG Wort card number)"
+
+msgid "plugins.generic.vgWort.cardNoValid"
+msgstr "Please enter a valid card number (2-7 numbers)."
+
+msgid "plugins.generic.vgWort.pixelTag"
+msgstr "VG Wort Pixel Tag"
+
+msgid "plugins.generic.vgWort.pixelTag.privateCode"
+msgstr "Private Code"
+
+msgid "plugins.generic.vgWort.pixelTag.publicCode"
+msgstr "Public Code"
+
+msgid "plugins.generic.vgWort.pixelTag.domain"
+msgstr "Domain"
+
+msgid "plugins.generic.vgWort.pixelTag.dateOrdered"
+msgstr "Date Ordered"
+
+msgid "plugins.generic.vgWort.pixelTag.dateAssigned"
+msgstr "Date Assigned"
+
+msgid "plugins.generic.vgWort.pixelTag.dateRemoved"
+msgstr "Date Removed"
+
+msgid "plugins.generic.vgWort.pixelTag.dateRegistered"
+msgstr "Date Registered"
+
+msgid "plugins.generic.vgWort.pixelTag.status"
+msgstr "Status"
+
+msgid "plugins.generic.vgWort.pixelTag.message"
+msgstr "Message"
+
+msgid "plugins.generic.vgWort.pixelTag.textType"
+msgstr "Text type"
+
+msgid "plugins.generic.vgWort.pixelTag.textType.description"
+msgstr "Choose the text type "Poem" if the submission text has less than 1800 characters."
+
+msgid "plugins.generic.vgWort.pixelTag.textType.text"
+msgstr "Text"
+
+msgid "plugins.generic.vgWort.pixelTag.textType.lyric"
+msgstr "Poem"
+
+msgid "plugins.generic.vgWort.pixelTag.assign"
+msgstr "Assign a VG Wort pixel tag to this article."
+
+msgid "plugins.generic.vgWort.pixelTag.remove"
+msgstr "Remove/unassign the VG Wort pixel tag from this article."
+
+msgid "plugins.generic.vgWort.pixelTag.removed"
+msgstr "VG Wort pixel tag was removed/unassigned from this article."
+
+msgid "plugins.generic.vgWort.pixelTag.representation.notAssigned"
+msgstr "No VG Wort pixel tag has been assigned to this article yet."
+
+msgid "plugins.generic.vgWort.pixelTag.representation.notSupported"
+msgstr "The VG Wort pixel tag cannot be assigned to this galley. The galley either does not contain a full text file, it is not in the format PDF, HTML or EPUB, or the file size is bigger than 15MB."
+
+msgid "plugins.generic.vgWort.pixelTag.representation.assigned"
+msgstr "The VG Wort pixel tag will be assigned to this galley i.e. this galley will be considered in the VG Wort counting."
+
+msgid "plugins.generic.vgWort.pixelTag.representation.exclude"
+msgstr "Exclude this galley from assigning it the VG Wort pixel tag i.e. from the VG Wort counting."
+
+msgid "plugins.generic.vgWort.pixelTag.representation.excluded"
+msgstr "This galley has been excluded from assigning it the VG Wort pixel tag i.e. from the VG Wort counting."
+
+msgid "plugins.generic.vgWort.pixelTag.any"
+msgstr "Any"
+
+msgid "plugins.generic.vgWort.pixelTag.available"
+msgstr "Available"
+
+msgid "plugins.generic.vgWort.pixelTag.unregistered.active"
+msgstr "Unregistered, active"
+
+msgid "plugins.generic.vgWort.pixelTag.unregistered.active.notPublished"
+msgstr "Unregistered, active (not published)"
+
+msgid "plugins.generic.vgWort.pixelTag.unregistered.removed"
+msgstr "Unregistered, removed"
+
+msgid "plugins.generic.vgWort.pixelTag.registered.active"
+msgstr "Registered, active"
+
+msgid "plugins.generic.vgWort.pixelTag.registered.removed"
+msgstr "Registered, removed"
+
+msgid "plugins.generic.vgWort.pixelTag.failed"
+msgstr "Failed"
+
+msgid "plugins.generic.vgWort.pixelTag.noStatusMessage"
+msgstr "No failure message found."
+
+msgid "plugins.generic.vgWort.pixelTag.LocalizationNotice"
+msgstr "Please note that the data is transferred in the submission language of the selected article. For individuals to participate in royalty disribution, the spelling of names has to be identical to the spelling as registered with vgWort. The submission langauge can be selected in the article metadata."
+
+msgid "plugins.generic.vgWort.pixelTags"
+msgstr "Pixel Tags"
+
+msgid "plugins.generic.vgWort.pixelTags.codes"
+msgstr "Private and Public Code"
+
+msgid "plugins.generic.vgWort.pixelTags.dates"
+msgstr "Ordered, Assigned, Registered, Removed"
+
+msgid "plugins.generic.vgWort.pixelTags.register"
+msgstr "register"
+
+msgid "plugins.generic.vgWort.pixelTags.register.confirm"
+msgstr "Are you sure you want to register this pixel tag?"
+
+msgid "plugins.generic.vgWort.pixelTags.register.success"
+msgstr "Registration successful!"
+
+msgid "plugins.generic.vgWort.notification.vgWortError"
+msgstr "VG Wort pixel tag registration failed."
+
+msgid "plugins.generic.vgWort.notification.vgWortErrorExists"
+msgstr "There are failed pixel tag registrations."
+
+msgid "plugins.generic.vgwort.senderTask.name"
+msgstr "VG Wort pixel tag automatic registration task."
+
+msgid "plugins.generic.vgWort.requirementsRequired"
+msgstr "The system requirements are not fulfilled. Please ensure that PHP Soap and OpenSSL extension modules, as well as PHP CURL are available on the server."
+
+msgid "plugins.generic.vgWort.noWSDL"
+msgstr "The WSDL not found at {$wsdl}. The VG Wort server could currently not be available. Please try later."
+
+msgid "plugins.generic.vgWort.401"
+msgstr "Invalid VG Wort username or password defined in the plugin settings."
+
+msgid "plugins.generic.vgWort.403"
+msgstr "The VG Wort user defined in the plugin settings is not authorized to do this."
+
+msgid "plugins.generic.vgWort.order.errorCode1"
+msgstr "The maximum count of pixel tags ({$maxOrder}) for this order exceeded."
+
+msgid "plugins.generic.vgWort.order.errorCode2"
+msgstr "The maximum count of pixel tags ({$maxOrder}) for this year exceeded."
+
+msgid "plugins.generic.vgWort.order.errorCode3"
+msgstr "No email exists for your VG Wort account. Please enter an email for your account on VG Wort portal."
+
+msgid "plugins.generic.vgWort.order.errorCode100"
+msgstr "A technical problem occurred. Please try later again."
+
+msgid "plugins.generic.vgWort.check.errorCode"
+msgstr "An unhandled error ({$faultcode}/{$faultstring}) occured while checking the authors."
+
+msgid "plugins.generic.vgWort.check.notValid"
+msgstr "The author or the translator {$surName} has not a valid VG Wort card number."
+
+msgid "plugins.generic.vgWort.check.errorCode100"
+msgstr "A technical problem occurred. Please try later again."
+
+msgid "plugins.generic.vgWort.check.galleyRequired"
+msgstr "A full text file in PDF, HTML or EPUB format, and less than 15MB is required."
+
+msgid "plugins.generic.vgWort.check.articleNotPublished"
+msgstr "The article has not been published."
+
+msgid "plugins.generic.vgWort.register.errorCode"
+msgstr "An unhandled error ({$faultcode}/{$faultstring}) occured while registering."
+
+msgid "plugins.generic.vgWort.register.validationError"
+msgstr "A vgWort-Validation-Errror occured."
+
+msgid "plugins.generic.vgWort.register.vgWortBusinessException"
+msgstr "A vgWort-Business-Exception occured."
+
+msgid "plugin.generic.vgWort.pixelTag.status.registeredactive"
+msgstr "Registered, active"
+
+msgid "plugin.generic.vgWort.pixelTag.status.unregisteredactive"
+msgstr "Unregistered, active"
+
+msgid "plugin.generic.vgWort.pixelTag.status.registeredremoved"
+msgstr "Registered, removed"
+
+msgid "plugin.generic.vgWort.pixelTag.status.unregisteredremoved"
+msgstr "Unregistered, removed"
+
