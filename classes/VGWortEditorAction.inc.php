@@ -228,7 +228,7 @@ class VGWortEditorAction {
 			     return array(false, __('plugins.generic.vgWort.check.errorCode'.$function->errorcode));
 			}
 			error_log($soapFault);
-			return array(false, __('plugins.generic.vgWort.check.errorCode'), array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring));
+			return array(false, __('plugins.generic.vgWort.check.errorCode', array('faultcode' => $soapFault->faultcode, 'faultstring' => $soapFault->faultstring)));
 		}
 	}
 
