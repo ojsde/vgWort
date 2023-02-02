@@ -1,11 +1,13 @@
 Attention: This repo is not maintained anymore. Further development of the OJS vgWort plugin is continued at the University Libraray Heidelberg at [https://github.com/UB-Heidelberg/vgWort](https://github.com/UB-Heidelberg/vgWort)
 
+```
 ================================
 === OJS VG Wort Plugin
 === Version: 2.0
 === Author: Božana Bokan, Ronald Steffen
 === Last update: June 23, 2020
 ================================
+```
 
 About
 -----
